@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838f74f8986acb9408cd265ed3920252, type: 3}
+  m_Name: Suspect_SarahChen
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
+  _suspectName: Sarah Chen
+  _portrait: {fileID: 2800000, guid: 6b9594b12663ef64faa52380ac803e8e, type: 3}
+  _description: Local teacher. Active in community events and well-respected by neighbors.
+  _evidenceText: No suspicious activity found. Clean background check.
+  _evidenceImage: {fileID: 0}
+  _drugTestResult: 0
+  _correctRole: 2
+  _feedbackTextCorrect: Sarah was innocent. Sometimes the obvious choice is the right
+    one.
+  _feedbackTextWrong: Sarah was a normal citizen. Her community involvement wasn't
+    a cover - she was genuinely clean.

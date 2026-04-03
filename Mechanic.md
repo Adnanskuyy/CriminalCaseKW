@@ -6,7 +6,7 @@ An investigation game where players analyze suspects to determine if they are Dr
 
 ## Core Gameplay Flow
 
-1. **Intro Video:** Plays automatically on level start (Skippable).
+1. **Intro Video:** Plays automatically on game start (Skippable).
 2. **Tutorial:** Overlay explains controls. Can be reopened via Tutorial Button.
 3. **Investigation:**
    - Player views 4 Suspects in the scene.
@@ -23,7 +23,7 @@ An investigation game where players analyze suspects to determine if they are Dr
 ### 1. Video Player UI
 
 - **Components:** Video Render Texture, Skip Button.
-- **Behavior:** Auto-play on level load. Skip button ends video early.
+- **Behavior:** Auto-play on when game firstly loaded. Skip button ends video early.
 
 ### 2. Tutorial UI
 
@@ -53,7 +53,7 @@ An investigation game where players analyze suspects to determine if they are Dr
 - **Background:** Static GameObject (Visual only).
 - **Suspects:** 4 Interactive GameObjects per level.
   - **Collider:** Required for clicking.
-  - **Visual:** 3D/2D representation of the suspect.
+  - **Visual:** 2D representation of the suspect.
   - **Polish:** On Hover -> Highlight Material, Scale Up, Slight Rotation.
 - **Manager:** `LevelManager` instance handles state.
 
@@ -81,7 +81,7 @@ An investigation game where players analyze suspects to determine if they are Dr
 
 - **Action:** Player clicks "Use Drug Test" button in Detail UI.
 - **Result:** Reveals `drugTestResult` (Positive/Negative).
-- **Constraint:** Can be used once per suspect or unlimited (configurable).
+- **Constraint:** Can be used twice per level.
 
 ### Verdict Mechanic
 

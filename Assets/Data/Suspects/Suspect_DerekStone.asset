@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838f74f8986acb9408cd265ed3920252, type: 3}
+  m_Name: Suspect_DerekStone
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
+  _suspectName: Derek Stone
+  _portrait: {fileID: 2800000, guid: 4e1804f49538b4241a8c679d85927d51, type: 3}
+  _description: Runs a local business. Well-known in the community with many connections
+    and frequent visitors.
+  _evidenceText: Large amounts of cash found during routine traffic stop.
+  _evidenceImage: {fileID: 0}
+  _drugTestResult: 0
+  _correctRole: 1
+  _feedbackTextCorrect: Derek was running an operation right under everyone's nose.
+    Excellent work.
+  _feedbackTextWrong: Derek was the dealer. His clean test was a red herring - dealers
+    don't always use.

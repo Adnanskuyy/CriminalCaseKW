@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="suspect-detail-panel" class="panel">
+        <ui:VisualElement name="detail-header" class="detail-header">
+            <ui:Label name="suspect-name-label" text="Suspect Name" class="suspect-name-label" />
+            <ui:Button name="detail-close-button" text="X" class="close-button" />
+        </ui:VisualElement>
+        <ui:VisualElement name="detail-body" class="detail-body">
+            <ui:VisualElement name="detail-left" class="detail-left">
+                <ui:VisualElement name="portrait-container" class="portrait-container">
+                    <ui:Label name="portrait-placeholder" text="[Portrait]" class="portrait-placeholder" />
+                </ui:VisualElement>
+                <ui:Button name="drug-test-button" text="Use Drug Test" class="drug-test-button" />
+                <ui:Label name="drug-test-result-label" text="" class="drug-test-result-label" />
+            </ui:VisualElement>
+            <ui:VisualElement name="detail-right" class="detail-right">
+                <ui:Label name="description-label" text="Description goes here..." class="description-label" />
+                <ui:VisualElement name="evidence-section" class="evidence-section">
+                    <ui:Label name="evidence-title" text="Evidence:" class="evidence-title" />
+                    <ui:Label name="evidence-text-label" text="Evidence text goes here..." class="evidence-text-label" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="verdict-section" class="verdict-section">
+            <ui:Label name="verdict-title" text="Your Verdict:" class="verdict-title" />
+            <ui:VisualElement name="verdict-buttons" class="verdict-buttons">
+                <ui:Button name="verdict-user-button" text="Drug User" class="verdict-button verdict-user" />
+                <ui:Button name="verdict-dealer-button" text="Drug Dealer" class="verdict-button verdict-dealer" />
+                <ui:Button name="verdict-normal-button" text="Normal" class="verdict-button verdict-normal" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

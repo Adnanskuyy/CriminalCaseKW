@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="tutorial-panel" class="panel">
+        <ui:VisualElement name="tutorial-content" class="tutorial-content">
+            <ui:Label name="tutorial-title" text="How to Play" class="tutorial-title" />
+            <ui:VisualElement name="tutorial-text" class="tutorial-text">
+                <ui:Label name="tutorial-line1" text="1. Click on each suspect to investigate them." class="tutorial-text-line" />
+                <ui:Label name="tutorial-line2" text="2. Read their description and evidence." class="tutorial-text-line" />
+                <ui:Label name="tutorial-line3" text="3. Use the Drug Test (2 per level) to check for substances." class="tutorial-text-line" />
+                <ui:Label name="tutorial-line4" text="4. Make your verdict: Drug User, Drug Dealer, or Normal." class="tutorial-text-line" />
+                <ui:Label name="tutorial-line5" text="5. Judge all 4 suspects to complete the level." class="tutorial-text-line" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="tutorial-buttons" class="tutorial-buttons">
+            <ui:Button name="tutorial-replay-video-button" text="Replay Video" class="tutorial-button" />
+            <ui:Button name="tutorial-close-button" text="Start Investigation" class="tutorial-button primary" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
