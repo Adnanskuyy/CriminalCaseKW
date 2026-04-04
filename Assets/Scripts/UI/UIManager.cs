@@ -30,49 +30,32 @@ namespace CriminalCase2.UI
 
             Instance = this;
             AutoFindPanels();
-            LoadUXMLAssets();
+        }
+
+        private void Start()
+        {
+            InitializePanels();
+            HideAllPanels();
         }
 
         private void AutoFindPanels()
         {
             var documents = GetComponentsInChildren<UIDocument>();
-            if (documents.Length > 0) _videoPlayerPanel = documents[0];
-            if (documents.Length > 1) _tutorialPanel = documents[1];
-            if (documents.Length > 2) _suspectDetailPanel = documents[2];
-            if (documents.Length > 3) _resultPanel = documents[3];
+            if (_videoPlayerPanel == null && documents.Length > 0) _videoPlayerPanel = documents[0];
+            if (_tutorialPanel == null && documents.Length > 1) _tutorialPanel = documents[1];
+            if (_suspectDetailPanel == null && documents.Length > 2) _suspectDetailPanel = documents[2];
+            if (_resultPanel == null && documents.Length > 3) _resultPanel = documents[3];
         }
 
-        private void LoadUXMLAssets()
+        private void InitializePanels()
         {
-            if (_videoPlayerPanel != null)
-            {
-                var videoAsset = Resources.Load<VisualTreeAsset>("UI/VideoPanel");
-                if (videoAsset != null) _videoPlayerPanel.visualTreeAsset = videoAsset;
-            }
-            if (_tutorialPanel != null)
-            {
-                var tutorialAsset = Resources.Load<VisualTreeAsset>("UI/TutorialPanel");
-                if (tutorialAsset != null) _tutorialPanel.visualTreeAsset = tutorialAsset;
-            }
-            if (_suspectDetailPanel != null)
-            {
-                var suspectAsset = Resources.Load<VisualTreeAsset>("UI/SuspectDetailPanel");
-                if (suspectAsset != null) _suspectDetailPanel.visualTreeAsset = suspectAsset;
-            }
-            if (_resultPanel != null)
-            {
-                var resultAsset = Resources.Load<VisualTreeAsset>("UI/ResultPanel");
-                if (resultAsset != null) _resultPanel.visualTreeAsset = resultAsset;
-            }
-        }
+            var commonStyle = Resources.Load<StyleSheet>("UI/Common");
 
-        private void OnEnable()
-        {
-            InitializeComponents();
-        }
+            InitializePanel(_videoPlayerPanel, "UI/VideoPanel", commonStyle);
+            InitializePanel(_tutorialPanel, "UI/TutorialPanel", commonStyle);
+            InitializePanel(_suspectDetailPanel, "UI/SuspectDetailPanel", commonStyle);
+            InitializePanel(_resultPanel, "UI/ResultPanel", commonStyle);
 
-        private void InitializeComponents()
-        {
             if (_videoPlayerUI == null && _videoPlayerPanel != null)
                 _videoPlayerUI = _videoPlayerPanel.GetComponent<VideoPlayerUI>();
 
@@ -84,6 +67,25 @@ namespace CriminalCase2.UI
 
             if (_resultUI == null && _resultPanel != null)
                 _resultUI = _resultPanel.GetComponent<ResultUI>();
+        }
+
+        private void InitializePanel(UIDocument panel, string resourcePath, StyleSheet commonStyle)
+        {
+            if (panel == null) return;
+
+            var uxml = Resources.Load<VisualTreeAsset>(resourcePath);
+            if (uxml == null)
+            {
+                Debug.LogWarning($"[UIManager] Failed to load UXML from Resources/{resourcePath}.uxml");
+                return;
+            }
+
+            panel.visualTreeAsset = uxml;
+
+            if (commonStyle != null && panel.rootVisualElement != null)
+            {
+                panel.rootVisualElement.styleSheets.Add(commonStyle);
+            }
         }
 
         public void ShowVideoPlayer()
@@ -122,7 +124,15 @@ namespace CriminalCase2.UI
 
         private void SetPanelActive(UIDocument panel, bool active)
         {
-            if (panel != null)
+            if (panel == null) return;
+            if (panel.rootVisualElement == null) return;
+
+            var panelElement = panel.rootVisualElement.Q<VisualElement>(className: "panel");
+            if (panelElement != null)
+            {
+                panelElement.style.display = active ? DisplayStyle.Flex : DisplayStyle.None;
+            }
+            else
             {
                 panel.rootVisualElement.style.display = active ? DisplayStyle.Flex : DisplayStyle.None;
             }

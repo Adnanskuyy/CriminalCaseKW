@@ -503,6 +503,7 @@ GameObject:
   m_Component:
   - component: {fileID: 663030569}
   - component: {fileID: 663030570}
+  - component: {fileID: 663030571}
   m_Layer: 0
   m_Name: ResultPanel
   m_TagString: Untagged
@@ -539,7 +540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: ae3c654fef327e14cbd0f844307ab7d7, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: bf06acdd36f5f2e468b5b3d511bf05bc, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -548,6 +549,19 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &663030571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663030568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44e6c637f9021cb44a4274a8b8110a3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.ResultUI
+  _document: {fileID: 663030570}
 --- !u!1 &755927283
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,6 +572,7 @@ GameObject:
   m_Component:
   - component: {fileID: 755927284}
   - component: {fileID: 755927285}
+  - component: {fileID: 755927286}
   m_Layer: 0
   m_Name: VideoPlayerPanel
   m_TagString: Untagged
@@ -594,7 +609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 542e1a3a29713734b931a493fec71d31, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: dee6782eb64041543b2d88369c42ebbf, type: 3}
   m_SortingOrder: 1
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -603,6 +618,20 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &755927286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755927283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b583fb85a279c9b48bb25a2c69b8abe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.VideoPlayerUI
+  _videoPlayer: {fileID: 0}
+  _document: {fileID: 755927285}
 --- !u!1 &1422299051
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,6 +642,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1422299052}
   - component: {fileID: 1422299053}
+  - component: {fileID: 1422299054}
   m_Layer: 0
   m_Name: SuspectDetailPanel
   m_TagString: Untagged
@@ -649,8 +679,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 92935a1f444d2284da1fd91d1cb065fa, type: 3}
-  m_SortingOrder: 0
+  sourceAsset: {fileID: 9197481963319205126, guid: 260505f21a105ae49aaa4acf9a70d4b9, type: 3}
+  m_SortingOrder: 10
   m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
@@ -658,6 +688,19 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &1422299054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422299051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec2a2d26f92e49f4fb59ca0542c7b934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.SuspectDetailUI
+  _document: {fileID: 1422299053}
 --- !u!1 &1774677758
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,10 +730,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edcf4778e0f27b49b42ea396ced4a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.UIManager
-  _videoPlayerPanel: {fileID: 0}
-  _tutorialPanel: {fileID: 0}
-  _suspectDetailPanel: {fileID: 0}
-  _resultPanel: {fileID: 0}
+  _videoPlayerPanel: {fileID: 755927285}
+  _tutorialPanel: {fileID: 2137827712}
+  _suspectDetailPanel: {fileID: 1422299053}
+  _resultPanel: {fileID: 663030570}
 --- !u!4 &1774677760
 Transform:
   m_ObjectHideFlags: 0
@@ -720,6 +763,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2137827711}
   - component: {fileID: 2137827712}
+  - component: {fileID: 2137827713}
   m_Layer: 0
   m_Name: TutorialPanel
   m_TagString: Untagged
@@ -756,7 +800,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: f568def2b7059d341a23b105f724914f, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: b3608ca492064904ca937cba467f7fcd, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -765,6 +809,19 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &2137827713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137827710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 852c30a667340e346bd29cd443d50d2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.TutorialUI
+  _document: {fileID: 2137827712}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

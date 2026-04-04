@@ -21,15 +21,22 @@ namespace CriminalCase2.UI
         private Button _verdictNormalButton;
         private Button _closeButton;
 
+        private bool _isBound;
+
         public void Populate(SuspectData suspect)
         {
+            if (!_isBound) BindUI();
+
             _currentSuspect = suspect;
             UpdateUI();
         }
 
         private void OnEnable()
         {
-            BindUI();
+            if (_document != null && _document.rootVisualElement != null)
+            {
+                BindUI();
+            }
         }
 
         private void OnDisable()
@@ -40,8 +47,10 @@ namespace CriminalCase2.UI
         private void BindUI()
         {
             if (_document == null) return;
+            if (_isBound) return;
 
             var root = _document.rootVisualElement;
+            if (root == null) return;
 
             _suspectNameLabel = root.Q<Label>("suspect-name-label");
             _descriptionLabel = root.Q<Label>("description-label");
@@ -78,6 +87,7 @@ namespace CriminalCase2.UI
                 _closeButton.clicked += OnCloseClicked;
             }
 
+            _isBound = true;
             UpdateUI();
         }
 
@@ -85,6 +95,7 @@ namespace CriminalCase2.UI
         {
             if (_drugTestButton != null) _drugTestButton.clicked -= OnDrugTestClicked;
             if (_closeButton != null) _closeButton.clicked -= OnCloseClicked;
+            _isBound = false;
         }
 
         private void UpdateUI()
