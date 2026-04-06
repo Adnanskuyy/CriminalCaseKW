@@ -8,16 +8,20 @@ namespace CriminalCase2.Managers
     {
         public static LevelManager Instance { get; private set; }
 
-        [SerializeField] private LevelConfig _levelConfig;
-
+        [Header("Level Setup")]
+        [SerializeField] private Transform _levelSpawnPoint;
+        
+        private LevelConfig _currentLevelConfig;
+        private GameObject _currentLevelInstance;
         private List<SuspectData> _judgedSuspects = new List<SuspectData>();
         private int _drugTestsRemaining;
 
-        public LevelConfig LevelConfig => _levelConfig;
+        public LevelConfig CurrentLevelConfig => _currentLevelConfig;
+        public GameObject CurrentLevelInstance => _currentLevelInstance;
         public int DrugTestsRemaining => _drugTestsRemaining;
-        public bool AllSuspectsJudged => _judgedSuspects.Count >= _levelConfig.Suspects.Length;
+        public bool AllSuspectsJudged => _judgedSuspects.Count >= (_currentLevelConfig?.Suspects.Length ?? 0);
         public int JudgedCount => _judgedSuspects.Count;
-        public int TotalSuspects => _levelConfig.Suspects.Length;
+        public int TotalSuspects => _currentLevelConfig?.Suspects.Length ?? 0;
 
         public bool IsSuspectJudged(SuspectData suspect)
         {
@@ -47,9 +51,68 @@ namespace CriminalCase2.Managers
             Instance = this;
         }
 
+        private void Start()
+        {
+            // Load initial level from GameManager
+            if (GameManager.Instance != null && GameManager.Instance.CurrentLevel != null)
+            {
+                LoadLevel(GameManager.Instance.CurrentLevel);
+            }
+        }
+
+        /// <summary>
+        /// Load a level by its config
+        /// </summary>
+        public void LoadLevel(LevelConfig config)
+        {
+            if (config == null)
+            {
+                Debug.LogError("[LevelManager] Cannot load null level config!");
+                return;
+            }
+
+            // Unload current level if any
+            UnloadCurrentLevel();
+
+            _currentLevelConfig = config;
+            
+            // Spawn level prefab
+            if (config.LevelPrefab != null)
+            {
+                Vector3 spawnPosition = _levelSpawnPoint != null ? _levelSpawnPoint.position : Vector3.zero;
+                _currentLevelInstance = Instantiate(config.LevelPrefab, spawnPosition, Quaternion.identity);
+                _currentLevelInstance.name = $"Level_{config.LevelIndex:D2}_Instance";
+                Debug.Log($"[LevelManager] Spawned level prefab: {_currentLevelInstance.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"[LevelManager] No prefab assigned for level: {config.LevelName}");
+            }
+
+            // Initialize level data
+            Initialize(config);
+            
+            Debug.Log($"[LevelManager] Loaded level: {config.LevelName}");
+        }
+
+        /// <summary>
+        /// Unload the current level
+        /// </summary>
+        public void UnloadCurrentLevel()
+        {
+            if (_currentLevelInstance != null)
+            {
+                Debug.Log($"[LevelManager] Unloading level: {_currentLevelInstance.name}");
+                Destroy(_currentLevelInstance);
+                _currentLevelInstance = null;
+            }
+
+            _judgedSuspects.Clear();
+            _currentLevelConfig = null;
+        }
+
         public void Initialize(LevelConfig config)
         {
-            _levelConfig = config;
             _judgedSuspects.Clear();
             _drugTestsRemaining = config.MaxDrugTestsPerLevel;
             Debug.Log($"[LevelManager] Initialized level: {config.LevelName}");
@@ -88,9 +151,9 @@ namespace CriminalCase2.Managers
 
         private void OnValidate()
         {
-            if (_levelConfig == null)
+            if (_currentLevelConfig == null && GameManager.Instance != null)
             {
-                Debug.LogWarning("[LevelManager] No LevelConfig assigned in inspector.");
+                // This is just for validation in editor
             }
         }
     }

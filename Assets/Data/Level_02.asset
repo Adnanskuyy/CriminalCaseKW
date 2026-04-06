@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d8f8cbc83966b34db20d87f4a43f673, type: 3}
-  m_Name: Level_01
+  m_Name: Level_02
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.LevelConfig
-  _levelIndex: 0
-  _levelName: Level 01 - The Street Corner
+  _levelIndex: 1
+  _levelName: Level 02 - Testing Prototype
   _backgroundSprite: {fileID: -337824335596450224, guid: 87244cc19ac46ad47a1fbd5bf67f299e, type: 3}
-  _levelPrefab: {fileID: 2564422756802905360, guid: d5849c6b4ac2ec74cae728f679e40774, type: 3}
+  _levelPrefab: {fileID: 2564422756802905360, guid: b43531c2c12798c4387e40f19eae15e1, type: 3}
   _suspects:
   - {fileID: 11400000, guid: 4912bdcc8b7cf264f97b6fe244a99bbf, type: 2}
   - {fileID: 11400000, guid: 3bfcfe4de2dbc6a46b67dd63abaacdbe, type: 2}

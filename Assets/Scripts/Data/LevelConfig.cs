@@ -13,6 +13,10 @@ namespace CriminalCase2.Data
         [Header("Visuals")]
         [SerializeField] private Sprite _backgroundSprite;
 
+        [Header("Level Prefab")]
+        [Tooltip("The prefab to instantiate for this level")]
+        [SerializeField] private GameObject _levelPrefab;
+
         [Header("Suspects")]
         [SerializeField] private SuspectData[] _suspects;
 
@@ -22,6 +26,7 @@ namespace CriminalCase2.Data
         public int LevelIndex => _levelIndex;
         public string LevelName => _levelName;
         public Sprite BackgroundSprite => _backgroundSprite;
+        public GameObject LevelPrefab => _levelPrefab;
         public SuspectData[] Suspects => _suspects;
         public int MaxDrugTestsPerLevel => _maxDrugTestsPerLevel;
 
