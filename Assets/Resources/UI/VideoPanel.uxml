@@ -6,7 +6,9 @@
             <ui:Button name="play-button" text="Play Intro" class="play-button" />
         </ui:VisualElement>
         <ui:VisualElement name="video-container" class="video-container">
-            <ui:Button name="skip-button" text="Skip" class="skip-button" />
+            <ui:VisualElement class="skip-button-container">
+                <ui:Button name="skip-button" text="Skip >>" class="skip-button" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

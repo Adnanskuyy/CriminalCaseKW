@@ -156,6 +156,7 @@ namespace CriminalCase2.UI
 
         private void OnVideoFinishedOrSkipped()
         {
+            UIManager.Instance?.HideAllPanels();
             GameManager.Instance?.SetState(GameState.Investigation);
         }
     }
