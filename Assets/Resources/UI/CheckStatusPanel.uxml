@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="check-status-panel" class="panel">
+        <ui:VisualElement name="check-status-header" class="check-status-header">
+            <ui:Label name="check-status-title" text="Current Deductions" class="check-status-title" />
+            <ui:Button name="check-status-close-button" text="X" class="close-button" />
+        </ui:VisualElement>
+        <ui:ScrollView name="check-status-scroll" class="check-status-scroll">
+            <ui:VisualElement name="check-status-container" class="check-status-container" />
+        </ui:ScrollView>
+        <ui:Button name="check-result-button" text="Check to see result" class="check-result-button" />
+    </ui:VisualElement>
+</ui:UXML>

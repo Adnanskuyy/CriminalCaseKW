@@ -57,6 +57,7 @@ namespace CriminalCase2.UI
         private void OnCloseClicked()
         {
             UIManager.Instance?.HideAllPanels();
+            UIManager.Instance?.ShowStatusHUD();
             GameManager.Instance?.SetState(GameState.Investigation);
         }
 

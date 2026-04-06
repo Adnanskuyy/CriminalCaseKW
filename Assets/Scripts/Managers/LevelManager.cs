@@ -16,6 +16,25 @@ namespace CriminalCase2.Managers
         public LevelConfig LevelConfig => _levelConfig;
         public int DrugTestsRemaining => _drugTestsRemaining;
         public bool AllSuspectsJudged => _judgedSuspects.Count >= _levelConfig.Suspects.Length;
+        public int JudgedCount => _judgedSuspects.Count;
+        public int TotalSuspects => _levelConfig.Suspects.Length;
+
+        public bool IsSuspectJudged(SuspectData suspect)
+        {
+            return _judgedSuspects.Contains(suspect);
+        }
+
+        public SuspectRole GetSuspectVerdict(SuspectData suspect)
+        {
+            foreach (var record in GameManager.Instance.VerdictRecords)
+            {
+                if (record.Suspect == suspect)
+                {
+                    return record.PlayerChoice;
+                }
+            }
+            return SuspectRole.Normal;
+        }
 
         private void Awake()
         {
@@ -64,8 +83,7 @@ namespace CriminalCase2.Managers
 
         private void OnAllSuspectsJudged()
         {
-            Debug.Log("[LevelManager] All suspects judged. Triggering results.");
-            GameManager.Instance.SetState(GameState.Results);
+            Debug.Log("[LevelManager] All suspects judged. Waiting for player to check results.");
         }
 
         private void OnValidate()

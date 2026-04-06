@@ -32,26 +32,21 @@ namespace CriminalCase2.Managers
 
         private void HandleIntroVideo()
         {
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowVideoPlayer();
-                GameManager.Instance.SetState(GameState.Tutorial);
-            }
+            // Skipped - video/tutorial not yet implemented
+            GameManager.Instance.SetState(GameState.Investigation);
         }
 
         private void HandleTutorial()
         {
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowTutorial();
-            }
+            // Skipped - tutorial not yet implemented
+            GameManager.Instance.SetState(GameState.Investigation);
         }
 
         private void HandleInvestigation()
         {
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.HideAllPanels();
+                UIManager.Instance.ShowStatusHUD();
             }
         }
 

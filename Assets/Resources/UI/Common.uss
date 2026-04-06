@@ -200,6 +200,9 @@
     color: rgb(220, 220, 220);
     font-size: 16px;
     -unity-text-align: upper-left;
+    white-space: normal;
+    max-height: 120px;
+    overflow: hidden;
 }
 
 .evidence-section {
@@ -218,6 +221,9 @@
     color: rgb(200, 200, 200);
     font-size: 14px;
     -unity-text-align: upper-left;
+    white-space: normal;
+    max-height: 100px;
+    overflow: hidden;
 }
 
 .verdict-section {
@@ -310,6 +316,7 @@
 .result-entry Label {
     color: rgb(220, 220, 220);
     font-size: 14px;
+    white-space: normal;
 }
 
 .next-level-button {
@@ -325,4 +332,98 @@
 
 .next-level-button:hover {
     background-color: rgb(60, 140, 220);
+}
+
+/* ===== Status HUD ===== */
+.hud-panel {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: auto;
+    height: auto;
+    pointer-events: none;
+}
+
+.status-hud-button {
+    background-color: rgb(40, 140, 80);
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    -unity-font-weight: bold;
+    -unity-text-align: middle-center;
+    padding: 12px 24px;
+    border-radius: 25px;
+    pointer-events: auto;
+}
+
+.status-hud-button:hover {
+    background-color: rgb(60, 170, 100);
+}
+
+/* ===== Check Status Panel ===== */
+.check-status-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 600px;
+    padding: 15px 20px;
+    background-color: rgb(30, 30, 45);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.check-status-title {
+    color: rgb(255, 210, 60);
+    font-size: 24px;
+    -unity-font-weight: bold;
+}
+
+.check-status-scroll {
+    width: 600px;
+    height: 350px;
+    background-color: rgb(40, 40, 55);
+    padding: 15px;
+}
+
+.check-status-container {
+    flex-direction: column;
+    gap: 12px;
+}
+
+.check-status-entry {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background-color: rgb(50, 50, 70);
+    border-radius: 8px;
+}
+
+.check-status-name {
+    color: rgb(255, 210, 60);
+    font-size: 18px;
+    -unity-font-weight: bold;
+}
+
+.check-status-verdict {
+    color: rgb(220, 220, 220);
+    font-size: 16px;
+}
+
+.check-result-button {
+    width: 600px;
+    height: 48px;
+    background-color: rgb(40, 120, 200);
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border-radius: 0 0 12px 12px;
+    -unity-text-align: middle-center;
+    -unity-font-weight: bold;
+}
+
+.check-result-button:hover {
+    background-color: rgb(60, 140, 220);
+}
+
+.check-result-button:disabled {
+    background-color: rgb(60, 60, 70);
+    color: rgb(150, 150, 150);
 }

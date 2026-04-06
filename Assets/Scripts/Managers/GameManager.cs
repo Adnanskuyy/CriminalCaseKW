@@ -34,7 +34,7 @@ namespace CriminalCase2.Managers
 
         private void Start()
         {
-            SetState(GameState.IntroVideo);
+            SetState(GameState.Investigation);
         }
 
         public void SetState(GameState newState)

@@ -43,6 +43,8 @@ namespace CriminalCase2.Interactables
         {
             if (_suspectData == null) return;
 
+            if (GameManager.Instance == null || GameManager.Instance.CurrentState != GameState.Investigation) return;
+
             UIManager.Instance?.ShowSuspectDetail(_suspectData);
         }
 
