@@ -38,6 +38,42 @@
     background-color: rgb(80, 80, 80);
 }
 
+.play-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.title-label {
+    color: rgb(255, 210, 60);
+    font-size: 48px;
+    -unity-font-weight: bold;
+    -unity-text-align: middle-center;
+}
+
+.subtitle-label {
+    color: rgb(180, 180, 180);
+    font-size: 20px;
+    -unity-text-align: middle-center;
+}
+
+.play-button {
+    width: 200px;
+    height: 60px;
+    background-color: rgb(40, 140, 80);
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    border-radius: 8px;
+    -unity-text-align: middle-center;
+    -unity-font-weight: bold;
+    margin-top: 30px;
+}
+
+.play-button:hover {
+    background-color: rgb(60, 170, 100);
+}
+
 /* ===== Tutorial Panel ===== */
 .tutorial-content {
     width: 500px;
@@ -360,6 +396,12 @@
 }
 
 /* ===== Check Status Panel ===== */
+.check-status-content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .check-status-header {
     flex-direction: row;
     justify-content: space-between;
@@ -369,6 +411,21 @@
     background-color: rgb(30, 30, 45);
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
+}
+
+.check-status-header .close-button {
+    width: 36px;
+    height: 36px;
+    background-color: rgb(180, 50, 50);
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border-radius: 50%;
+    -unity-text-align: middle-center;
+    -unity-font-weight: bold;
+}
+
+.check-status-header .close-button:hover {
+    background-color: rgb(220, 60, 60);
 }
 
 .check-status-title {
@@ -382,6 +439,11 @@
     height: 350px;
     background-color: rgb(40, 40, 55);
     padding: 15px;
+}
+
+.check-status-scroll > .unity-scroll-view__content-container {
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .check-status-container {
@@ -406,6 +468,30 @@
 .check-status-verdict {
     color: rgb(220, 220, 220);
     font-size: 16px;
+}
+
+.check-status-empty {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 30px;
+    display: none;
+}
+
+.check-status-empty-title {
+    color: rgb(150, 150, 150);
+    font-size: 20px;
+    -unity-font-weight: bold;
+    -unity-text-align: middle-center;
+    margin-bottom: 15px;
+}
+
+.check-status-empty-message {
+    color: rgb(180, 180, 180);
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+    max-width: 500px;
 }
 
 .check-result-button {

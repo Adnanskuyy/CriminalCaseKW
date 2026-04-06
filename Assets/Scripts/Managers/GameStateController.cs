@@ -32,8 +32,10 @@ namespace CriminalCase2.Managers
 
         private void HandleIntroVideo()
         {
-            // Skipped - video/tutorial not yet implemented
-            GameManager.Instance.SetState(GameState.Investigation);
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowVideoPlayer();
+            }
         }
 
         private void HandleTutorial()

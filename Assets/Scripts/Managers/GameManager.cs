@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Video;
 using CriminalCase2.Data;
 using System.Collections.Generic;
 
@@ -8,8 +9,12 @@ namespace CriminalCase2.Managers
     {
         public static GameManager Instance { get; private set; }
 
+        [Header("Level Data")]
         [SerializeField] private List<LevelConfig> _levels;
         [SerializeField] private int _currentLevelIndex = 0;
+
+        [Header("Video")]
+        [SerializeField] private VideoClip _globalIntroVideo;
 
         private GameState _currentState;
         private List<VerdictRecord> _verdictRecords = new List<VerdictRecord>();
@@ -19,6 +24,7 @@ namespace CriminalCase2.Managers
         public int CurrentLevelIndex => _currentLevelIndex;
         public IReadOnlyList<VerdictRecord> VerdictRecords => _verdictRecords.AsReadOnly();
         public int TotalLevels => _levels.Count;
+        public VideoClip GlobalIntroVideo => _globalIntroVideo;
 
         private void Awake()
         {
@@ -34,7 +40,7 @@ namespace CriminalCase2.Managers
 
         private void Start()
         {
-            SetState(GameState.Investigation);
+            SetState(GameState.IntroVideo);
         }
 
         public void SetState(GameState newState)

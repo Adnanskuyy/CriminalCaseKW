@@ -11,6 +11,7 @@ namespace CriminalCase2.UI
         [SerializeField] private UIDocument _document;
 
         private VisualElement _container;
+        private VisualElement _emptyState;
         private Button _closeButton;
         private Button _checkResultButton;
         private bool _isBound;
@@ -33,6 +34,7 @@ namespace CriminalCase2.UI
             if (root == null) return;
 
             _container = root.Q<VisualElement>("check-status-container");
+            _emptyState = root.Q<VisualElement>("check-status-empty");
             _closeButton = root.Q<Button>("check-status-close-button");
             _checkResultButton = root.Q<Button>("check-result-button");
 
@@ -74,6 +76,13 @@ namespace CriminalCase2.UI
 
             _container.Clear();
 
+            // Show/hide empty state based on records count
+            bool hasRecords = records.Count > 0;
+            if (_container != null)
+                _container.style.display = hasRecords ? DisplayStyle.Flex : DisplayStyle.None;
+            if (_emptyState != null)
+                _emptyState.style.display = hasRecords ? DisplayStyle.None : DisplayStyle.Flex;
+
             foreach (var record in records)
             {
                 var entry = CreateStatusEntry(record);
@@ -89,11 +98,11 @@ namespace CriminalCase2.UI
                 if (!allJudged)
                 {
                     int remaining = LevelManager.Instance.TotalSuspects - LevelManager.Instance.JudgedCount;
-                    _checkResultButton.text = $"Check to see result ({remaining} remaining)";
+                    _checkResultButton.text = $"Submit Final Verdict ({remaining} remaining)";
                 }
                 else
                 {
-                    _checkResultButton.text = "Check to see result";
+                    _checkResultButton.text = "Submit Final Verdict";
                 }
             }
         }

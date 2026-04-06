@@ -573,7 +573,6 @@ GameObject:
   - component: {fileID: 755927284}
   - component: {fileID: 755927285}
   - component: {fileID: 755927286}
-  - component: {fileID: 755927287}
   m_Layer: 0
   m_Name: VideoPlayerPanel
   m_TagString: Untagged
@@ -631,45 +630,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b583fb85a279c9b48bb25a2c69b8abe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.VideoPlayerUI
-  _videoPlayer: {fileID: 755927287}
+  _videoPlayer: {fileID: 0}
   _document: {fileID: 755927285}
-  _targetCamera: {fileID: 519420031}
---- !u!328 &755927287
-VideoPlayer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 755927283}
-  m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 4b950fba64096ac40816f7ffe911869c, type: 3}
-  m_TargetCameraAlpha: 1
-  m_TargetCamera3DLayout: 0
-  m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 0}
-  m_TimeReference: 0
-  m_TargetMaterialRenderer: {fileID: 0}
-  m_TargetMaterialProperty: <noninit>
-  m_RenderMode: 1
-  m_AspectRatio: 3
-  m_DataSource: 0
-  m_TimeUpdateMode: 2
-  m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
-  m_TargetAudioSources:
-  - {fileID: 0}
-  m_DirectAudioVolumes:
-  - 1
-  m_Url: 
-  m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 00
-  m_ControlledAudioTrackCount: 1
-  m_PlayOnAwake: 0
-  m_SkipOnDrop: 1
-  m_Looping: 0
-  m_WaitForFirstFrame: 1
-  m_FrameReadyEventEnabled: 0
-  m_VideoShaders: []
 --- !u!1 &840256332
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,7 +664,6 @@ MonoBehaviour:
   _levels:
   - {fileID: 11400000, guid: 7431840e869811f4d93d3cf051b9f782, type: 2}
   _currentLevelIndex: 1
-  _globalIntroVideo: {fileID: 32900000, guid: 4b950fba64096ac40816f7ffe911869c, type: 3}
 --- !u!4 &840256334
 Transform:
   m_ObjectHideFlags: 0
@@ -861,9 +822,9 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
+  m_PanelSettings: {fileID: 0}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: e0384f31bba0d874dbe2630e5d1712cb, type: 3}
+  sourceAsset: {fileID: 0}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -884,7 +845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f72e663b87fb12a448965ed0468b4c53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.CheckStatusUI
-  _document: {fileID: 1489806697}
+  _document: {fileID: 0}
 --- !u!4 &1489806699
 Transform:
   m_ObjectHideFlags: 0
