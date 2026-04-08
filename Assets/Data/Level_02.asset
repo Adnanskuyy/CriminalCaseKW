@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d8f8cbc83966b34db20d87f4a43f673, type: 3}
   m_Name: Level_02
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.LevelConfig
-  _levelIndex: 1
-  _levelName: Level 02 - Testing Prototype
-  _backgroundSprite: {fileID: -337824335596450224, guid: 87244cc19ac46ad47a1fbd5bf67f299e, type: 3}
+  _levelIndex: 2
+  _levelName: Level 02 - The Downtown District
+  _backgroundSprite: {fileID: 5948498617112210040, guid: af4c6c67bf763b441946ec6938788b40, type: 3}
   _levelPrefab: {fileID: 2564422756802905360, guid: b43531c2c12798c4387e40f19eae15e1, type: 3}
   _suspects:
-  - {fileID: 11400000, guid: 4912bdcc8b7cf264f97b6fe244a99bbf, type: 2}
-  - {fileID: 11400000, guid: 3bfcfe4de2dbc6a46b67dd63abaacdbe, type: 2}
-  - {fileID: 11400000, guid: 1e741981b20046c4eb88b321c63be855, type: 2}
-  - {fileID: 11400000, guid: 6ea98bd02c1ff2a42aada0b8e50408db, type: 2}
+  - {fileID: 11400000, guid: f4583ccb8f69ffd45ae826c0d4278baa, type: 2}
+  - {fileID: 11400000, guid: 9178148e066b5c54d8750e0d641f7507, type: 2}
+  - {fileID: 11400000, guid: 4cbc2112afc52db44a6feda65792d28f, type: 2}
+  - {fileID: 11400000, guid: 4000364ba431daa44a7e2f6f5b40e5f0, type: 2}
   _maxDrugTestsPerLevel: 2

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838f74f8986acb9408cd265ed3920252, type: 3}
+  m_Name: Suspect_FinnWalker
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
+  _suspectName: Finn 'Cloud' Walker
+  _portrait: {fileID: 2800000, guid: 57402f9fc8f559748a93db54979f458a, type: 3}
+  _description: A street artist known for his surreal murals. Often works through
+    the night, claiming the creative energy keeps him going.
+  _evidenceText: Small bag of white powder residue found in his art supply case.
+  _evidenceImage: {fileID: 0}
+  _drugTestResult: 1
+  _correctRole: 0
+  _feedbackTextCorrect: Finn was using substances to fuel his art. The creative energy
+    was actually stimulants.
+  _feedbackTextWrong: Finn Walker was the user. His erratic behavior and creative
+    lifestyle were classic signs of substance abuse.
