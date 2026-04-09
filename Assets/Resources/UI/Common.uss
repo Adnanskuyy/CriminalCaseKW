@@ -18,24 +18,24 @@
 }
 
 .video-placeholder {
-    color: rgb(150, 150, 150);
-    font-size: 18px;
+    color: rgb(195, 195, 195);
+    font-size: 22px;
     -unity-text-align: middle-center;
 }
 
 .skip-button-container {
     position: absolute;
-    right: 30px;
-    bottom: 30px;
+    right: 40px;
+    bottom: 40px;
 }
 
 .skip-button {
-    width: 100px;
-    height: 36px;
+    width: 150px;
+    height: 52px;
     background-color: rgba(40, 40, 40, 0.8);
     color: rgb(220, 220, 220);
-    font-size: 14px;
-    border-radius: 6px;
+    font-size: 22px;
+    border-radius: 8px;
     -unity-text-align: middle-center;
     border-width: 1px;
     border-color: rgba(255, 255, 255, 0.3);
@@ -50,31 +50,31 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 28px;
 }
 
 .title-label {
     color: rgb(255, 210, 60);
     font-size: 48px;
-    -unity-font-weight: bold;
+    -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
 
 .subtitle-label {
-    color: rgb(180, 180, 180);
-    font-size: 20px;
+    color: rgb(210, 210, 210);
+    font-size: 28px;
     -unity-text-align: middle-center;
 }
 
 .play-button {
-    width: 200px;
-    height: 60px;
+    width: 260px;
+    height: 72px;
     background-color: rgb(40, 140, 80);
     color: rgb(255, 255, 255);
-    font-size: 24px;
-    border-radius: 8px;
+    font-size: 28px;
+    border-radius: 10px;
     -unity-text-align: middle-center;
-    -unity-font-weight: bold;
+    -unity-font-style: bold;
     margin-top: 30px;
 }
 
@@ -84,46 +84,46 @@
 
 /* ===== Tutorial Panel ===== */
 .tutorial-content {
-    width: 500px;
+    width: 800px;
     background-color: rgb(40, 40, 50);
-    border-radius: 12px;
-    padding: 30px;
+    border-radius: 16px;
+    padding: 40px;
     margin-bottom: 20px;
 }
 
 .tutorial-title {
     color: rgb(255, 210, 60);
-    font-size: 28px;
+    font-size: 36px;
     -unity-text-align: middle-center;
-    margin-bottom: 20px;
-    -unity-font-weight: bold;
+    margin-bottom: 24px;
+    -unity-font-style: bold;
 }
 
 .tutorial-text {
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 14px;
+    margin-bottom: 14px;
 }
 
 .tutorial-text-line {
     color: rgb(220, 220, 220);
-    font-size: 16px;
+    font-size: 24px;
     -unity-text-align: middle-left;
 }
 
 .tutorial-buttons {
     flex-direction: row;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
 }
 
 .tutorial-button {
-    width: 180px;
-    height: 44px;
+    width: 280px;
+    height: 64px;
     background-color: rgb(60, 60, 80);
     color: rgb(220, 220, 220);
-    font-size: 16px;
-    border-radius: 6px;
+    font-size: 24px;
+    border-radius: 8px;
     -unity-text-align: middle-center;
 }
 
@@ -148,27 +148,28 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 700px;
-    padding: 15px 20px;
+    width: 1000px;
+    padding: 20px 30px;
     background-color: rgb(30, 30, 45);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
 
 .suspect-name-label {
     color: rgb(255, 210, 60);
-    font-size: 24px;
-    -unity-font-weight: bold;
+    font-size: 34px;
+    -unity-font-style: bold;
 }
 
 .close-button {
-    width: 36px;
-    height: 36px;
+    width: 52px;
+    height: 52px;
     background-color: rgb(180, 50, 50);
     color: rgb(255, 255, 255);
-    font-size: 18px;
+    font-size: 24px;
     border-radius: 50%;
     -unity-text-align: middle-center;
+    -unity-font-style: bold;
 }
 
 .close-button:hover {
@@ -177,8 +178,8 @@
 
 .detail-body {
     flex-direction: row;
-    width: 700px;
-    min-height: 300px;
+    width: 1000px;
+    min-height: 420px;
     background-color: rgb(40, 40, 55);
 }
 
@@ -186,33 +187,33 @@
     flex: 1;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 28px;
     border-right-width: 1px;
     border-right-color: rgb(60, 60, 80);
-    gap: 15px;
+    gap: 20px;
 }
 
 .portrait-container {
-    width: 160px;
-    height: 200px;
+    width: 220px;
+    height: 280px;
     background-color: rgb(50, 50, 70);
-    border-radius: 8px;
+    border-radius: 10px;
     justify-content: center;
     align-items: center;
 }
 
 .portrait-placeholder {
-    color: rgb(120, 120, 140);
-    font-size: 14px;
+    color: rgb(175, 175, 190);
+    font-size: 22px;
 }
 
 .drug-test-button {
-    width: 160px;
-    height: 40px;
+    width: 240px;
+    height: 56px;
     background-color: rgb(40, 100, 160);
     color: rgb(255, 255, 255);
-    font-size: 14px;
-    border-radius: 6px;
+    font-size: 22px;
+    border-radius: 8px;
     -unity-text-align: middle-center;
 }
 
@@ -222,84 +223,84 @@
 
 .drug-test-button:disabled {
     background-color: rgb(60, 60, 70);
-    color: rgb(100, 100, 110);
+    color: rgb(160, 160, 170);
 }
 
 .drug-test-result-label {
     color: rgb(255, 255, 255);
-    font-size: 18px;
-    -unity-font-weight: bold;
+    font-size: 26px;
+    -unity-font-style: bold;
     -unity-text-align: middle-center;
-    min-height: 28px;
+    min-height: 40px;
 }
 
 .detail-right {
     flex: 2;
     flex-direction: column;
-    padding: 20px;
-    gap: 15px;
+    padding: 28px;
+    gap: 20px;
 }
 
 .description-label {
     color: rgb(220, 220, 220);
-    font-size: 16px;
+    font-size: 22px;
     -unity-text-align: upper-left;
     white-space: normal;
-    max-height: 120px;
+    max-height: 160px;
     overflow: hidden;
 }
 
 .evidence-section {
     flex-direction: column;
-    gap: 8px;
-    margin-top: 10px;
+    gap: 10px;
+    margin-top: 14px;
 }
 
 .evidence-title {
     color: rgb(255, 180, 60);
-    font-size: 16px;
-    -unity-font-weight: bold;
+    font-size: 22px;
+    -unity-font-style: bold;
 }
 
 .evidence-text-label {
-    color: rgb(200, 200, 200);
-    font-size: 14px;
+    color: rgb(215, 215, 215);
+    font-size: 20px;
     -unity-text-align: upper-left;
     white-space: normal;
-    max-height: 100px;
+    max-height: 140px;
     overflow: hidden;
 }
 
 .verdict-section {
     flex-direction: column;
     align-items: center;
-    width: 700px;
-    padding: 20px;
+    width: 1000px;
+    padding: 28px;
     background-color: rgb(30, 30, 45);
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    gap: 12px;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    gap: 18px;
 }
 
 .verdict-title {
     color: rgb(255, 210, 60);
-    font-size: 18px;
-    -unity-font-weight: bold;
+    font-size: 26px;
+    -unity-font-style: bold;
 }
 
 .verdict-buttons {
     flex-direction: row;
-    gap: 15px;
+    gap: 20px;
 }
 
 .verdict-button {
-    width: 160px;
-    height: 44px;
+    width: 240px;
+    height: 60px;
     color: rgb(255, 255, 255);
-    font-size: 15px;
-    border-radius: 6px;
+    font-size: 22px;
+    border-radius: 8px;
     -unity-text-align: middle-center;
-    -unity-font-weight: bold;
+    -unity-font-style: bold;
 }
 
 .verdict-user {
@@ -329,49 +330,49 @@
 /* ===== Result Panel ===== */
 .result-title {
     color: rgb(255, 210, 60);
-    font-size: 32px;
-    -unity-font-weight: bold;
+    font-size: 42px;
+    -unity-font-style: bold;
     -unity-text-align: middle-center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .results-scroll {
-    width: 600px;
-    height: 400px;
+    width: 900px;
+    height: 500px;
     background-color: rgb(40, 40, 55);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 24px;
 }
 
 .results-container {
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .result-entry {
     flex-direction: column;
-    padding: 15px;
+    padding: 20px;
     background-color: rgb(50, 50, 70);
-    border-radius: 8px;
-    gap: 6px;
+    border-radius: 10px;
+    gap: 10px;
 }
 
 .result-entry Label {
     color: rgb(220, 220, 220);
-    font-size: 14px;
+    font-size: 22px;
     white-space: normal;
 }
 
 .next-level-button {
-    width: 200px;
-    height: 48px;
+    width: 300px;
+    height: 64px;
     background-color: rgb(40, 120, 200);
     color: rgb(255, 255, 255);
-    font-size: 18px;
-    border-radius: 8px;
+    font-size: 26px;
+    border-radius: 10px;
     -unity-text-align: middle-center;
-    -unity-font-weight: bold;
+    -unity-font-style: bold;
 }
 
 .next-level-button:hover {
@@ -381,23 +382,21 @@
 /* ===== Status HUD ===== */
 .hud-panel {
     position: absolute;
-    right: 20px;
-    bottom: 20px;
+    right: 24px;
+    bottom: 24px;
     width: auto;
     height: auto;
-    pointer-events: none;
-}
+    }
 
 .status-hud-button {
     background-color: rgb(40, 140, 80);
     color: rgb(255, 255, 255);
-    font-size: 16px;
-    -unity-font-weight: bold;
+    font-size: 24px;
+    -unity-font-style: bold;
     -unity-text-align: middle-center;
-    padding: 12px 24px;
-    border-radius: 25px;
-    pointer-events: auto;
-}
+    padding: 18px 36px;
+    border-radius: 30px;
+    }
 
 .status-hud-button:hover {
     background-color: rgb(60, 170, 100);
@@ -414,22 +413,22 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 600px;
-    padding: 15px 20px;
+    width: 900px;
+    padding: 20px 30px;
     background-color: rgb(30, 30, 45);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
 
 .check-status-header .close-button {
-    width: 36px;
-    height: 36px;
+    width: 52px;
+    height: 52px;
     background-color: rgb(180, 50, 50);
     color: rgb(255, 255, 255);
-    font-size: 18px;
+    font-size: 24px;
     border-radius: 50%;
     -unity-text-align: middle-center;
-    -unity-font-weight: bold;
+    -unity-font-style: bold;
 }
 
 .check-status-header .close-button:hover {
@@ -438,15 +437,15 @@
 
 .check-status-title {
     color: rgb(255, 210, 60);
-    font-size: 24px;
-    -unity-font-weight: bold;
+    font-size: 34px;
+    -unity-font-style: bold;
 }
 
 .check-status-scroll {
-    width: 600px;
-    height: 350px;
+    width: 900px;
+    height: 500px;
     background-color: rgb(40, 40, 55);
-    padding: 15px;
+    padding: 20px;
 }
 
 .check-status-scroll > .unity-scroll-view__content-container {
@@ -456,61 +455,61 @@
 
 .check-status-container {
     flex-direction: column;
-    gap: 12px;
+    gap: 18px;
 }
 
 .check-status-entry {
     flex-direction: row;
     justify-content: space-between;
-    padding: 15px 20px;
+    padding: 20px 28px;
     background-color: rgb(50, 50, 70);
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .check-status-name {
     color: rgb(255, 210, 60);
-    font-size: 18px;
-    -unity-font-weight: bold;
+    font-size: 26px;
+    -unity-font-style: bold;
 }
 
 .check-status-verdict {
-    color: rgb(220, 220, 220);
-    font-size: 16px;
+    color: rgb(215, 215, 215);
+    font-size: 22px;
 }
 
 .check-status-empty {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px 30px;
+    padding: 50px 40px;
     display: none;
 }
 
 .check-status-empty-title {
-    color: rgb(150, 150, 150);
-    font-size: 20px;
-    -unity-font-weight: bold;
+    color: rgb(195, 195, 195);
+    font-size: 28px;
+    -unity-font-style: bold;
     -unity-text-align: middle-center;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .check-status-empty-message {
-    color: rgb(180, 180, 180);
-    font-size: 14px;
+    color: rgb(210, 210, 210);
+    font-size: 22px;
     -unity-text-align: middle-center;
     white-space: normal;
-    max-width: 500px;
+    max-width: 700px;
 }
 
 .check-result-button {
-    width: 600px;
-    height: 48px;
+    width: 900px;
+    height: 64px;
     background-color: rgb(40, 120, 200);
     color: rgb(255, 255, 255);
-    font-size: 18px;
-    border-radius: 0 0 12px 12px;
+    font-size: 26px;
+    border-radius: 0 0 16px 16px;
     -unity-text-align: middle-center;
-    -unity-font-weight: bold;
+    -unity-font-style: bold;
 }
 
 .check-result-button:hover {
@@ -519,5 +518,5 @@
 
 .check-result-button:disabled {
     background-color: rgb(60, 60, 70);
-    color: rgb(150, 150, 150);
+    color: rgb(160, 160, 170);
 }

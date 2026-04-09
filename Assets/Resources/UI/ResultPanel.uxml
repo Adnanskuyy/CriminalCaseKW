@@ -1,9 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:VisualElement name="result-panel" class="panel">
-        <ui:Label name="result-title" text="Investigation Complete" class="result-title" />
+        <ui:Label name="result-title" text="Investigasi Selesai" class="result-title" />
         <ui:ScrollView name="results-scroll" class="results-scroll">
             <ui:VisualElement name="results-container" class="results-container" />
         </ui:ScrollView>
-        <ui:Button name="next-level-button" text="Next Level" class="next-level-button" />
+        <ui:Button name="next-level-button" text="Level Berikutnya" class="next-level-button" />
     </ui:VisualElement>
 </ui:UXML>

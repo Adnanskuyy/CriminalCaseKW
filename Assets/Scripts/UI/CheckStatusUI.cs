@@ -98,11 +98,11 @@ namespace CriminalCase2.UI
                 if (!allJudged)
                 {
                     int remaining = LevelManager.Instance.TotalSuspects - LevelManager.Instance.JudgedCount;
-                    _checkResultButton.text = $"Submit Final Verdict ({remaining} remaining)";
+                    _checkResultButton.text = $"Kirim Vonis Akhir ({remaining} tersisa)";
                 }
                 else
                 {
-                    _checkResultButton.text = "Submit Final Verdict";
+                    _checkResultButton.text = "Kirim Vonis Akhir";
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace CriminalCase2.UI
             var nameLabel = new Label(record.Suspect.SuspectName);
             nameLabel.AddToClassList("check-status-name");
 
-            var verdictLabel = new Label($"Your verdict: {record.PlayerChoice}");
+            var verdictLabel = new Label($"Vonis Anda: {record.PlayerChoice.ToDisplayName()}");
             verdictLabel.AddToClassList("check-status-verdict");
 
             entry.Add(nameLabel);

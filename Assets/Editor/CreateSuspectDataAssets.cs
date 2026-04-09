@@ -20,52 +20,52 @@ public class CreateSuspectDataAssets : MonoBehaviour
             suspectsPath + "Suspect_MarcusCole.asset",
             "Marcus Cole",
             manBlackTshirt,
-            "Frequently seen around the area. Known to have erratic behavior and often appears disoriented during late hours.",
-            "Found with suspicious paraphernalia in his vehicle.",
+            "Sering terlihat di sekitar area ini. Dikenal memiliki perilaku tidak menentu dan sering tampak bingung di malam hari.",
+            "Ditemukan alat-alat mencurigakan di kendaraannya.",
             null,
             DrugTestResult.Positive,
             SuspectRole.User,
-            "Marcus was indeed struggling with substance abuse. Good detective work.",
-            "Marcus was actually a drug user. The signs were there - erratic behavior and disorientation."
+            "Marcus memang sedang berjuang melawan penyalahgunaan zat bosan. Kerja detektif yang bagus.",
+            "Marcus sebenarnya seorang pecandu narkoba. Tanda-tandanya sudah ada - perilaku tidak menentu dan kebingungan."
         );
 
         SuspectData derek = CreateSuspectData(
             suspectsPath + "Suspect_DerekStone.asset",
             "Derek Stone",
             manDenimJacket,
-            "Runs a local business. Well-known in the community with many connections and frequent visitors.",
-            "Large amounts of cash found during routine traffic stop.",
+            "Menjalankan bisnis lokal. Dikenal di komunitas dengan banyak koneksi dan pengunjung rutin.",
+            "Jumlah uang tunai besar ditemukan saat pemeriksaan lalu lintas rutin.",
             null,
             DrugTestResult.Negative,
             SuspectRole.Dealer,
-            "Derek was running an operation right under everyone's nose. Excellent work.",
-            "Derek was the dealer. His clean test was a red herring - dealers don't always use."
+            "Derek menjalankan operasi tepat di bawah hidung semua orang. Kerja luar biasa.",
+            "Derek adalah bandar narkobanya. Tes bersihnya hanyalah pengecoh - bandar narkoba tidak selalu mengonsumsi."
         );
 
         SuspectData sarah = CreateSuspectData(
             suspectsPath + "Suspect_SarahChen.asset",
             "Sarah Chen",
             womanOrangeSweater,
-            "Local teacher. Active in community events and well-respected by neighbors.",
-            "No suspicious activity found. Clean background check.",
+            "Guru lokal. Aktif di acara komunitas dan dihormati oleh tetangga.",
+            "Tidak ditemukan aktivitas mencurigakan. Pemeriksaan latar belakang bersih.",
             null,
             DrugTestResult.Negative,
             SuspectRole.Normal,
-            "Sarah was innocent. Sometimes the obvious choice is the right one.",
-            "Sarah was a normal citizen. Her community involvement wasn't a cover - she was genuinely clean."
+            "Sarah tidak bersalah. Terkadang pilihan yang jelas adalah yang benar.",
+            "Sarah adalah warga biasa. Keterlibatannya di komunitas bukan kedok - dia benar-benar bersih."
         );
 
         SuspectData emily = CreateSuspectData(
             suspectsPath + "Suspect_EmilyRoss.asset",
             "Emily Ross",
             womanWhiteShirt,
-            "Works at the local cafe. Recently moved to the area and still getting to know people.",
-            "No evidence linking to any illegal activity.",
+            "Bekerja di kafe lokal. Baru pindah ke daerah ini dan masih mengenal orang-orang.",
+            "Tidak ada bukti yang menghubungkan dengan aktivitas ilegal.",
             null,
             DrugTestResult.Negative,
             SuspectRole.Normal,
-            "Emily was completely innocent. Good call trusting the evidence.",
-            "Emily was innocent. Being new to town doesn't make someone suspicious."
+            "Emily benar-benar tidak bersalah. Keputusan bagus mempercayai buktinya.",
+            "Emily tidak bersalah. Baru pindah ke kota tidak membuat seseorang mencurigakan."
         );
 
         LevelConfig levelConfig = ScriptableObject.CreateInstance<LevelConfig>();
@@ -73,7 +73,7 @@ public class CreateSuspectDataAssets : MonoBehaviour
 
         SerializedObject levelSO = new SerializedObject(levelConfig);
         levelSO.FindProperty("_levelIndex").intValue = 1;
-        levelSO.FindProperty("_levelName").stringValue = "Level 01 - The Street Corner";
+        levelSO.FindProperty("_levelName").stringValue = "Level 01 - Sudut Jalan";
         levelSO.FindProperty("_backgroundSprite").objectReferenceValue = background;
         levelSO.FindProperty("_maxDrugTestsPerLevel").intValue = 2;
 

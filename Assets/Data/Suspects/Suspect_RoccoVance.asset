@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
   _suspectName: Rocco 'Blade' Vance
   _portrait: {fileID: 2800000, guid: 73077f3e91e6757429aded119e4ec9a5, type: 3}
-  _description: Leader of a local motorcycle club. Known for his intimidating presence
-    and connections to various underground circles.
-  _evidenceText: Multiple burner phones recovered from his saddlebag. Financial records
-    show unexplained cash deposits.
+  _description: Pemimpin klub motor lokal. Dikenal dengan kehadiran yang menakutkan
+    dan koneksi ke berbagai lingkaran bawah tanah.
+  _evidenceText: Beberapa ponsel burner ditemukan di tas pelananya. Catatan keuangan
+    menunjukkan setoran uang tunai yang tidak dapat dijelaskan.
   _evidenceImage: {fileID: 0}
   _drugTestResult: 0
   _correctRole: 1
-  _feedbackTextCorrect: Rocco was the supplier running the show. Smart enough not
-    to sample his own product.
-  _feedbackTextWrong: Rocco was the dealer all along. His clean test and intimidating
-    reputation were the perfect cover.
+  _feedbackTextCorrect: Rocco adalah pemasok yang menjalankan acaranya. Cukup pintar
+    untuk tidak mencicipi produknya sendiri.
+  _feedbackTextWrong: Rocco adalah bandar narkoba sejak awal. Tes bersihnya dan reputasi
+    menakutkannya adalah kedok yang sempurna.

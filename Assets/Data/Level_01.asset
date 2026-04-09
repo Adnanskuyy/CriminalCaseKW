@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_01
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.LevelConfig
   _levelIndex: 0
-  _levelName: Level 01 - The Street Corner
+  _levelName: Level 01 - Sudut Jalan
   _backgroundSprite: {fileID: -337824335596450224, guid: 87244cc19ac46ad47a1fbd5bf67f299e, type: 3}
   _levelPrefab: {fileID: 2564422756802905360, guid: d5849c6b4ac2ec74cae728f679e40774, type: 3}
   _suspects:

@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
   _suspectName: Milo Thatcher
   _portrait: {fileID: 2800000, guid: 0a53e9b19c5ab6d40876a145764850be, type: 3}
-  _description: An aspiring novelist who frequents local cafes to write. Keeps to
-    himself and often seems lost in thought.
-  _evidenceText: Notebook filled with fictional crime story drafts. No suspicious
-    items or connections found.
+  _description: Penulis novel aspiratif yang sering mengunjungi kafe lokal untuk menulis.
+    Menyendiri dan sering tampak tenggelam dalam pikiran.
+  _evidenceText: Buku catatan berisi draf cerita kriminal fiksi. Tidak ditemukan
+    barang mencurigakan atau koneksi ilegal.
   _evidenceImage: {fileID: 0}
   _drugTestResult: 0
   _correctRole: 2
-  _feedbackTextCorrect: Milo was just a writer working on his novel. Sometimes a
-    person staring intently at their laptop is just writing fiction.
-  _feedbackTextWrong: Milo was completely innocent. His suspicious behavior was just
-    writer's block and caffeine addiction.
+  _feedbackTextCorrect: Milo hanyalah seorang penulis yang mengerjakan novelnya. Terkadang
+    seseorang yang menatap layar laptop dengan intens hanyalah sedang menulis fiksi.
+  _feedbackTextWrong: Milo benar-benar tidak bersalah. Perilaku mencurigakannya hanyalah
+    sumbatan penulis dan kecanduan kafein.

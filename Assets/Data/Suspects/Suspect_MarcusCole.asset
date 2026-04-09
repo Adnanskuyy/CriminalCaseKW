@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
   _suspectName: Marcus Cole
   _portrait: {fileID: 2800000, guid: d363d04b079648b43bee6d5c91668504, type: 3}
-  _description: Frequently seen around the area. Known to have erratic behavior and
-    often appears disoriented during late hours.
-  _evidenceText: Found with suspicious paraphernalia in his vehicle.
+  _description: Sering terlihat di sekitar area ini. Dikenal memiliki perilaku tidak
+    menentu dan sering tampak bingung di malam hari.
+  _evidenceText: Ditemukan alat-alat mencurigakan di kendaraannya.
   _evidenceImage: {fileID: 0}
   _drugTestResult: 1
   _correctRole: 0
-  _feedbackTextCorrect: Marcus was indeed struggling with substance abuse. Good detective
-    work.
-  _feedbackTextWrong: Marcus was actually a drug user. The signs were there - erratic
-    behavior and disorientation.
+  _feedbackTextCorrect: Marcus memang sedang berjuang melawan penyalahgunaan zat bosan.
+    Kerja detektif yang bagus.
+  _feedbackTextWrong: Marcus sebenarnya seorang pecandu narkoba. Tanda-tandanya sudah
+    ada - perilaku tidak menentu dan kebingungan.

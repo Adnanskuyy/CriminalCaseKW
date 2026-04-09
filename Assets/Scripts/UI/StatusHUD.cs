@@ -67,15 +67,15 @@ namespace CriminalCase2.UI
 
             if (judged >= total)
             {
-                _hudButton.text = $"Show Results ({judged}/{total})";
+                _hudButton.text = $"Lihat Hasil ({judged}/{total})";
             }
             else if (judged > 0)
             {
-                _hudButton.text = $"Check Status ({judged}/{total})";
+                _hudButton.text = $"Cek Status ({judged}/{total})";
             }
             else
             {
-                _hudButton.text = $"Check Status (0/{total})";
+                _hudButton.text = $"Cek Status (0/{total})";
             }
         }
 

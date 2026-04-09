@@ -2,12 +2,12 @@
     <ui:VisualElement name="video-player-panel" class="panel">
         <ui:VisualElement name="play-container" class="play-container">
             <ui:Label name="title-label" text="Criminal Case 2" class="title-label" />
-            <ui:Label name="subtitle-label" text="Click below to start the investigation" class="subtitle-label" />
-            <ui:Button name="play-button" text="Play Intro" class="play-button" />
+            <ui:Label name="subtitle-label" text="Klik di bawah untuk memulai investigasi" class="subtitle-label" />
+            <ui:Button name="play-button" text="Putar Intro" class="play-button" />
         </ui:VisualElement>
         <ui:VisualElement name="video-container" class="video-container">
             <ui:VisualElement class="skip-button-container">
-                <ui:Button name="skip-button" text="Skip >>" class="skip-button" />
+                <ui:Button name="skip-button" text="Lewati >>" class="skip-button" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

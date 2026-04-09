@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
   _suspectName: Derek Stone
   _portrait: {fileID: 2800000, guid: 4e1804f49538b4241a8c679d85927d51, type: 3}
-  _description: Runs a local business. Well-known in the community with many connections
-    and frequent visitors.
-  _evidenceText: Large amounts of cash found during routine traffic stop.
+  _description: Menjalankan bisnis lokal. Dikenal di komunitas dengan banyak koneksi
+    dan pengunjung rutin.
+  _evidenceText: Jumlah uang tunai besar ditemukan saat pemeriksaan lalu lintas rutin.
   _evidenceImage: {fileID: 0}
   _drugTestResult: 0
   _correctRole: 1
-  _feedbackTextCorrect: Derek was running an operation right under everyone's nose.
-    Excellent work.
-  _feedbackTextWrong: Derek was the dealer. His clean test was a red herring - dealers
-    don't always use.
+  _feedbackTextCorrect: Derek menjalankan operasi tepat di bawah hidung semua orang.
+    Kerja luar biasa.
+  _feedbackTextWrong: Derek adalah bandar narkobanya. Tes bersihnya hanyalah pengecoh
+    - bandar narkoba tidak selalu mengonsumsi.

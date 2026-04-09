@@ -64,8 +64,8 @@ namespace CriminalCase2.UI
                 entry.AddToClassList("result-entry");
 
                 var nameLabel = new Label($"{i + 1}. {record.Suspect.SuspectName}");
-                var choiceLabel = new Label($"Your verdict: {record.PlayerChoice}");
-                var correctLabel = new Label($"Correct: {record.CorrectAnswer}");
+                var choiceLabel = new Label($"Vonis Anda: {record.PlayerChoice.ToDisplayName()}");
+                var correctLabel = new Label($"Jawaban Benar: {record.CorrectAnswer.ToDisplayName()}");
                 var feedbackLabel = new Label(record.FeedbackText);
 
                 entry.Add(nameLabel);

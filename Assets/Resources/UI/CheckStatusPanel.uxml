@@ -2,17 +2,17 @@
     <ui:VisualElement name="check-status-panel" class="panel">
         <ui:VisualElement name="check-status-content" class="check-status-content">
             <ui:VisualElement name="check-status-header" class="check-status-header">
-                <ui:Label name="check-status-title" text="Current Deductions" class="check-status-title" />
+                <ui:Label name="check-status-title" text="Deduksi Saat Ini" class="check-status-title" />
                 <ui:Button name="check-status-close-button" text="X" class="close-button" />
             </ui:VisualElement>
             <ui:ScrollView name="check-status-scroll" class="check-status-scroll">
                 <ui:VisualElement name="check-status-container" class="check-status-container" />
                 <ui:VisualElement name="check-status-empty" class="check-status-empty">
-                    <ui:Label name="check-status-empty-title" text="No Deductions Made Yet" class="check-status-empty-title" />
-                    <ui:Label name="check-status-empty-message" text="Click on suspects to investigate and make your deductions. You need to analyze all suspects and determine if they are a Drug User, Dealer, or Normal Citizen." class="check-status-empty-message" />
+                    <ui:Label name="check-status-empty-title" text="Belum Ada Deduksi" class="check-status-empty-title" />
+                    <ui:Label name="check-status-empty-message" text="Klik tersangka untuk menyelidiki dan membuat deduksi. Anda perlu menganalisis semua tersangka dan menentukan apakah mereka Pecandu, Bandar Narkoba, atau Warga Biasa." class="check-status-empty-message" />
                 </ui:VisualElement>
             </ui:ScrollView>
-            <ui:Button name="check-result-button" text="Submit Final Verdict" class="check-result-button" />
+            <ui:Button name="check-result-button" text="Kirim Vonis Akhir" class="check-result-button" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

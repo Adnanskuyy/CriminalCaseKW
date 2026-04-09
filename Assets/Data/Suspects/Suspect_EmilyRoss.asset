@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
   _suspectName: Emily Ross
   _portrait: {fileID: 2800000, guid: f957620d642bff64eb8bf3c3cf1af333, type: 3}
-  _description: Works at the local cafe. Recently moved to the area and still getting
-    to know people.
-  _evidenceText: No evidence linking to any illegal activity.
+  _description: Bekerja di kafe lokal. Baru pindah ke daerah ini dan masih mengenal
+    orang-orang.
+  _evidenceText: Tidak ada bukti yang menghubungkan dengan aktivitas ilegal.
   _evidenceImage: {fileID: 0}
   _drugTestResult: 0
   _correctRole: 2
-  _feedbackTextCorrect: Emily was completely innocent. Good call trusting the evidence.
-  _feedbackTextWrong: Emily was innocent. Being new to town doesn't make someone
-    suspicious.
+  _feedbackTextCorrect: Emily benar-benar tidak bersalah. Keputusan bagus mempercayai
+    buktinya.
+  _feedbackTextWrong: Emily tidak bersalah. Baru pindah ke kota tidak membuat seseorang
+    mencurigakan.

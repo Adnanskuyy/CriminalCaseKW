@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_02
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.LevelConfig
   _levelIndex: 2
-  _levelName: Level 02 - The Downtown District
+  _levelName: Level 02 - Distrik Pusat Kota
   _backgroundSprite: {fileID: 5948498617112210040, guid: af4c6c67bf763b441946ec6938788b40, type: 3}
   _levelPrefab: {fileID: 2564422756802905360, guid: b43531c2c12798c4387e40f19eae15e1, type: 3}
   _suspects:

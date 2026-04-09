@@ -131,7 +131,7 @@ namespace CriminalCase2.UI
                 var result = _currentSuspect.DrugTestResult;
                 if (_drugTestResultLabel != null)
                 {
-                    _drugTestResultLabel.text = result == DrugTestResult.Positive ? "Positive" : "Negative";
+                    _drugTestResultLabel.text = result.ToDisplayName();
                 }
             }
         }
@@ -172,7 +172,7 @@ namespace CriminalCase2.UI
 
                 if (selectedButton != null)
                 {
-                    selectedButton.text = $"{selectedButton.text} [SELECTED]";
+                    selectedButton.text = $"{selectedButton.text} [DIPILIH]";
                 }
             }
             else
@@ -181,9 +181,9 @@ namespace CriminalCase2.UI
                 _verdictDealerButton.SetEnabled(true);
                 _verdictNormalButton.SetEnabled(true);
 
-                _verdictUserButton.text = "Drug User";
-                _verdictDealerButton.text = "Drug Dealer";
-                _verdictNormalButton.text = "Normal";
+                _verdictUserButton.text = SuspectRole.User.ToDisplayName();
+                _verdictDealerButton.text = SuspectRole.Dealer.ToDisplayName();
+                _verdictNormalButton.text = SuspectRole.Normal.ToDisplayName();
             }
         }
     }
