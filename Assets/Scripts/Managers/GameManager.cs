@@ -17,6 +17,7 @@ namespace CriminalCase2.Managers
 
         [Header("Video")]
         [SerializeField] private VideoClip _globalIntroVideo;
+        [SerializeField] private string _introVideoFileName = "Videos/Intro.webm";
 
         [Header("Transition")]
         [SerializeField] private FadeTransition _fadeTransition;
@@ -31,6 +32,7 @@ namespace CriminalCase2.Managers
         public IReadOnlyList<VerdictRecord> VerdictRecords => _verdictRecords.AsReadOnly();
         public int TotalLevels => _levels.Count;
         public VideoClip GlobalIntroVideo => _globalIntroVideo;
+        public string IntroVideoFileName => _introVideoFileName;
         public bool IsTransitioning => _isTransitioning;
 
         private void Awake()

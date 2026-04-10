@@ -6,11 +6,18 @@ namespace CriminalCase2.Managers
 {
     public class GameStateController : MonoBehaviour
     {
+        private GameState? _lastHandledState = null;
+
         private void Update()
         {
             if (GameManager.Instance == null) return;
 
-            switch (GameManager.Instance.CurrentState)
+            GameState currentState = GameManager.Instance.CurrentState;
+
+            if (_lastHandledState.HasValue && currentState == _lastHandledState.Value) return;
+            _lastHandledState = currentState;
+
+            switch (currentState)
             {
                 case GameState.IntroVideo:
                     HandleIntroVideo();
@@ -40,7 +47,6 @@ namespace CriminalCase2.Managers
 
         private void HandleTutorial()
         {
-            // Skipped - tutorial not yet implemented
             GameManager.Instance.SetState(GameState.Investigation);
         }
 

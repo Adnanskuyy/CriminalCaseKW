@@ -9,8 +9,10 @@ namespace CriminalCase2.UI
     {
         public static UIManager Instance { get; private set; }
 
-        [Header("UI Panels")]
-        [SerializeField] private UIDocument _videoPlayerPanel;
+        [Header("Video Panel (UGUI)")]
+        [SerializeField] private GameObject _videoPlayerPanel;
+
+        [Header("UI Toolkit Panels")]
         [SerializeField] private UIDocument _tutorialPanel;
         [SerializeField] private UIDocument _suspectDetailPanel;
         [SerializeField] private UIDocument _checkStatusPanel;
@@ -44,25 +46,30 @@ namespace CriminalCase2.UI
 
         private void AutoFindPanels()
         {
+            if (_videoPlayerPanel == null)
+            {
+                var vui = GetComponentInChildren<VideoPlayerUI>();
+                if (vui != null)
+                    _videoPlayerPanel = vui.gameObject;
+            }
+
             var documents = GetComponentsInChildren<UIDocument>();
-            if (_videoPlayerPanel == null && documents.Length > 0) _videoPlayerPanel = documents[0];
-            if (_tutorialPanel == null && documents.Length > 1) _tutorialPanel = documents[1];
-            if (_suspectDetailPanel == null && documents.Length > 2) _suspectDetailPanel = documents[2];
-            if (_checkStatusPanel == null && documents.Length > 3) _checkStatusPanel = documents[3];
-            if (_resultPanel == null && documents.Length > 4) _resultPanel = documents[4];
-            if (_statusHUD == null && documents.Length > 5) _statusHUD = documents[5];
+            if (_tutorialPanel == null && documents.Length > 0) _tutorialPanel = documents[0];
+            if (_suspectDetailPanel == null && documents.Length > 1) _suspectDetailPanel = documents[1];
+            if (_checkStatusPanel == null && documents.Length > 2) _checkStatusPanel = documents[2];
+            if (_resultPanel == null && documents.Length > 3) _resultPanel = documents[3];
+            if (_statusHUD == null && documents.Length > 4) _statusHUD = documents[4];
         }
 
         private void InitializePanels()
         {
             var commonStyle = Resources.Load<StyleSheet>("UI/Common");
 
-            InitializePanel(_videoPlayerPanel, "UI/VideoPanel", commonStyle);
-            InitializePanel(_tutorialPanel, "UI/TutorialPanel", commonStyle);
-            InitializePanel(_suspectDetailPanel, "UI/SuspectDetailPanel", commonStyle);
-            InitializePanel(_checkStatusPanel, "UI/CheckStatusPanel", commonStyle);
-            InitializePanel(_resultPanel, "UI/ResultPanel", commonStyle);
-            InitializePanel(_statusHUD, "UI/StatusHUD", commonStyle);
+            InitializeUIToolkitPanel(_tutorialPanel, "UI/TutorialPanel", commonStyle);
+            InitializeUIToolkitPanel(_suspectDetailPanel, "UI/SuspectDetailPanel", commonStyle);
+            InitializeUIToolkitPanel(_checkStatusPanel, "UI/CheckStatusPanel", commonStyle);
+            InitializeUIToolkitPanel(_resultPanel, "UI/ResultPanel", commonStyle);
+            InitializeUIToolkitPanel(_statusHUD, "UI/StatusHUD", commonStyle);
 
             if (_videoPlayerUI == null && _videoPlayerPanel != null)
                 _videoPlayerUI = _videoPlayerPanel.GetComponent<VideoPlayerUI>();
@@ -83,7 +90,7 @@ namespace CriminalCase2.UI
                 _statusHUDUI = _statusHUD.GetComponent<StatusHUD>();
         }
 
-        private void InitializePanel(UIDocument panel, string resourcePath, StyleSheet commonStyle)
+        private void InitializeUIToolkitPanel(UIDocument panel, string resourcePath, StyleSheet commonStyle)
         {
             if (panel == null) return;
 
@@ -106,53 +113,60 @@ namespace CriminalCase2.UI
 
         public void ShowVideoPlayer()
         {
+            if (_videoPlayerPanel != null && _videoPlayerPanel.activeSelf)
+                return;
+
             HideAllPanels();
-            SetPanelActive(_videoPlayerPanel, true);
+            if (_videoPlayerPanel != null)
+            {
+                _videoPlayerPanel.SetActive(true);
+                _videoPlayerUI?.ShowPlayScreen();
+            }
         }
 
         public void ShowTutorial()
         {
             HideAllPanels();
-            SetPanelActive(_tutorialPanel, true);
+            SetUIToolkitPanelActive(_tutorialPanel, true);
         }
 
         public void ShowSuspectDetail(SuspectData suspect)
         {
             HideAllPanels();
-            SetPanelActive(_suspectDetailPanel, true);
+            SetUIToolkitPanelActive(_suspectDetailPanel, true);
             _suspectDetailUI?.Populate(suspect);
         }
 
         public void ShowCheckStatus()
         {
             HideAllPanels();
-            SetPanelActive(_checkStatusPanel, true);
+            SetUIToolkitPanelActive(_checkStatusPanel, true);
             _checkStatusUI?.Populate(GameManager.Instance.VerdictRecords);
         }
 
         public void HideCheckStatus()
         {
-            SetPanelActive(_checkStatusPanel, false);
+            SetUIToolkitPanelActive(_checkStatusPanel, false);
         }
 
         public void ShowResults()
         {
             HideAllPanels();
             HideStatusHUD();
-            SetPanelActive(_resultPanel, true);
+            SetUIToolkitPanelActive(_resultPanel, true);
             _resultUI?.Populate(GameManager.Instance.VerdictRecords);
         }
 
         public void ShowStatusHUD()
         {
             if (_statusHUDUI == null) return;
-            SetPanelActive(_statusHUD, true);
+            SetUIToolkitPanelActive(_statusHUD, true);
             _statusHUDUI.Initialize();
         }
 
         public void HideStatusHUD()
         {
-            SetPanelActive(_statusHUD, false);
+            SetUIToolkitPanelActive(_statusHUD, false);
         }
 
         public void UpdateStatusHUD()
@@ -162,14 +176,15 @@ namespace CriminalCase2.UI
 
         public void HideAllPanels()
         {
-            SetPanelActive(_videoPlayerPanel, false);
-            SetPanelActive(_tutorialPanel, false);
-            SetPanelActive(_suspectDetailPanel, false);
-            SetPanelActive(_checkStatusPanel, false);
-            SetPanelActive(_resultPanel, false);
+            if (_videoPlayerPanel != null)
+                _videoPlayerPanel.SetActive(false);
+            SetUIToolkitPanelActive(_tutorialPanel, false);
+            SetUIToolkitPanelActive(_suspectDetailPanel, false);
+            SetUIToolkitPanelActive(_checkStatusPanel, false);
+            SetUIToolkitPanelActive(_resultPanel, false);
         }
 
-        private void SetPanelActive(UIDocument panel, bool active)
+        private void SetUIToolkitPanelActive(UIDocument panel, bool active)
         {
             if (panel == null) return;
             if (panel.rootVisualElement == null) return;
