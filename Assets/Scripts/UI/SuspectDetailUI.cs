@@ -22,8 +22,6 @@ namespace CriminalCase2.UI
         private Button _closeButton;
 
         private bool _isBound;
-        private bool _hasVerdict;
-        private SuspectRole _selectedVerdict;
 
         public void Populate(SuspectData suspect)
         {
@@ -126,11 +124,6 @@ namespace CriminalCase2.UI
                 _drugTestButton.SetEnabled(!alreadyTested && hasTestsRemaining);
             }
 
-            _hasVerdict = LevelManager.Instance != null && LevelManager.Instance.IsSuspectJudged(_currentSuspect);
-            if (_hasVerdict)
-            {
-                _selectedVerdict = LevelManager.Instance.GetSuspectVerdict(_currentSuspect);
-            }
             UpdateVerdictButtons();
         }
 
@@ -173,35 +166,13 @@ namespace CriminalCase2.UI
             if (_verdictUserButton == null || _verdictDealerButton == null || _verdictNormalButton == null)
                 return;
 
-            if (_hasVerdict)
-            {
-                _verdictUserButton.SetEnabled(false);
-                _verdictDealerButton.SetEnabled(false);
-                _verdictNormalButton.SetEnabled(false);
+            _verdictUserButton.text = SuspectRole.User.ToDisplayName();
+            _verdictDealerButton.text = SuspectRole.Dealer.ToDisplayName();
+            _verdictNormalButton.text = SuspectRole.Normal.ToDisplayName();
 
-                var selectedButton = _selectedVerdict switch
-                {
-                    SuspectRole.User => _verdictUserButton,
-                    SuspectRole.Dealer => _verdictDealerButton,
-                    SuspectRole.Normal => _verdictNormalButton,
-                    _ => null
-                };
-
-                if (selectedButton != null)
-                {
-                    selectedButton.text = $"{selectedButton.text} [DIPILIH]";
-                }
-            }
-            else
-            {
-                _verdictUserButton.SetEnabled(true);
-                _verdictDealerButton.SetEnabled(true);
-                _verdictNormalButton.SetEnabled(true);
-
-                _verdictUserButton.text = SuspectRole.User.ToDisplayName();
-                _verdictDealerButton.text = SuspectRole.Dealer.ToDisplayName();
-                _verdictNormalButton.text = SuspectRole.Normal.ToDisplayName();
-            }
+            _verdictUserButton.SetEnabled(true);
+            _verdictDealerButton.SetEnabled(true);
+            _verdictNormalButton.SetEnabled(true);
         }
     }
 }

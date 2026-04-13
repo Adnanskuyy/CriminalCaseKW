@@ -123,15 +123,16 @@ namespace CriminalCase2.Managers
 
         public void RecordJudgedSuspect(SuspectData suspect, SuspectRole playerChoice)
         {
-            if (!_judgedSuspects.Contains(suspect))
+            bool isNew = !_judgedSuspects.Contains(suspect);
+            if (isNew)
             {
                 _judgedSuspects.Add(suspect);
-                GameManager.Instance.RecordVerdict(suspect, playerChoice);
+            }
+            GameManager.Instance.RecordVerdict(suspect, playerChoice);
 
-                if (AllSuspectsJudged)
-                {
-                    OnAllSuspectsJudged();
-                }
+            if (AllSuspectsJudged)
+            {
+                OnAllSuspectsJudged();
             }
         }
 

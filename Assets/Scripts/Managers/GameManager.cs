@@ -60,6 +60,7 @@ namespace CriminalCase2.Managers
 
         public void RecordVerdict(SuspectData suspect, SuspectRole playerChoice)
         {
+            _verdictRecords.RemoveAll(r => r.Suspect == suspect);
             var record = new VerdictRecord(suspect, playerChoice);
             _verdictRecords.Add(record);
         }
