@@ -107,11 +107,23 @@ namespace CriminalCase2.UI
             if (_suspectNameLabel != null) _suspectNameLabel.text = _currentSuspect.SuspectName;
             if (_descriptionLabel != null) _descriptionLabel.text = _currentSuspect.Description;
             if (_evidenceTextLabel != null) _evidenceTextLabel.text = _currentSuspect.EvidenceText;
-            if (_drugTestResultLabel != null) _drugTestResultLabel.text = string.Empty;
+            if (_drugTestResultLabel != null)
+            {
+                if (LevelManager.Instance != null && LevelManager.Instance.HasDrugTestResult(_currentSuspect))
+                {
+                    _drugTestResultLabel.text = LevelManager.Instance.GetDrugTestResult(_currentSuspect).ToDisplayName();
+                }
+                else
+                {
+                    _drugTestResultLabel.text = string.Empty;
+                }
+            }
 
             if (_drugTestButton != null)
             {
-                _drugTestButton.SetEnabled(LevelManager.Instance != null && LevelManager.Instance.DrugTestsRemaining > 0);
+                bool alreadyTested = LevelManager.Instance != null && LevelManager.Instance.HasDrugTestResult(_currentSuspect);
+                bool hasTestsRemaining = LevelManager.Instance != null && LevelManager.Instance.DrugTestsRemaining > 0;
+                _drugTestButton.SetEnabled(!alreadyTested && hasTestsRemaining);
             }
 
             _hasVerdict = LevelManager.Instance != null && LevelManager.Instance.IsSuspectJudged(_currentSuspect);
@@ -129,9 +141,14 @@ namespace CriminalCase2.UI
             if (LevelManager.Instance.UseDrugTest())
             {
                 var result = _currentSuspect.DrugTestResult;
+                LevelManager.Instance.RecordDrugTest(_currentSuspect, result);
                 if (_drugTestResultLabel != null)
                 {
                     _drugTestResultLabel.text = result.ToDisplayName();
+                }
+                if (_drugTestButton != null)
+                {
+                    _drugTestButton.SetEnabled(false);
                 }
             }
         }

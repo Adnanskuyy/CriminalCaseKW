@@ -14,6 +14,7 @@ namespace CriminalCase2.Managers
         private LevelConfig _currentLevelConfig;
         private GameObject _currentLevelInstance;
         private List<SuspectData> _judgedSuspects = new List<SuspectData>();
+        private Dictionary<SuspectData, DrugTestResult> _drugTestResults = new Dictionary<SuspectData, DrugTestResult>();
         private int _drugTestsRemaining;
 
         public LevelConfig CurrentLevelConfig => _currentLevelConfig;
@@ -108,12 +109,14 @@ namespace CriminalCase2.Managers
             }
 
             _judgedSuspects.Clear();
+            _drugTestResults.Clear();
             _currentLevelConfig = null;
         }
 
         public void Initialize(LevelConfig config)
         {
             _judgedSuspects.Clear();
+            _drugTestResults.Clear();
             _drugTestsRemaining = config.MaxDrugTestsPerLevel;
             Debug.Log($"[LevelManager] Initialized level: {config.LevelName}");
         }
@@ -142,6 +145,24 @@ namespace CriminalCase2.Managers
 
             Debug.Log("[LevelManager] No drug tests remaining.");
             return false;
+        }
+
+        public void RecordDrugTest(SuspectData suspect, DrugTestResult result)
+        {
+            if (suspect == null) return;
+            _drugTestResults[suspect] = result;
+        }
+
+        public bool HasDrugTestResult(SuspectData suspect)
+        {
+            return suspect != null && _drugTestResults.ContainsKey(suspect);
+        }
+
+        public DrugTestResult GetDrugTestResult(SuspectData suspect)
+        {
+            if (suspect != null && _drugTestResults.TryGetValue(suspect, out var result))
+                return result;
+            return DrugTestResult.Negative;
         }
 
         private void OnAllSuspectsJudged()
