@@ -20,6 +20,9 @@ namespace CriminalCase2.Data
         [Header("Suspects")]
         [SerializeField] private SuspectData[] _suspects;
 
+        [Header("Clues")]
+        [SerializeField] private ClueData[] _clues;
+
         [Header("Mechanics")]
         [SerializeField] private int _maxDrugTestsPerLevel = 2;
 
@@ -28,6 +31,7 @@ namespace CriminalCase2.Data
         public Sprite BackgroundSprite => _backgroundSprite;
         public GameObject LevelPrefab => _levelPrefab;
         public SuspectData[] Suspects => _suspects;
+        public ClueData[] Clues => _clues;
         public int MaxDrugTestsPerLevel => _maxDrugTestsPerLevel;
 
         private void OnValidate()

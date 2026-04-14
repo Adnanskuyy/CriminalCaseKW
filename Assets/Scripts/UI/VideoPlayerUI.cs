@@ -385,7 +385,7 @@ namespace CriminalCase2.UI
         {
             ShowPlayScreen();
             UIManager.Instance?.HideAllPanels();
-            GameManager.Instance?.SetState(GameState.Investigation);
+            GameManager.Instance?.SetState(GameState.ClueSearch);
         }
 
         private void OnDestroy()

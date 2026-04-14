@@ -11,8 +11,8 @@ namespace CriminalCase2.Data
     {
         IntroVideo,
         Tutorial,
-        Investigation,
-        Verdict,
+        ClueSearch,
+        Deduction,
         Results
     }
 

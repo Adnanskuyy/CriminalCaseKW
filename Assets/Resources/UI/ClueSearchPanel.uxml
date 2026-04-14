@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="clue-search-panel" class="panel">
+        <ui:VisualElement name="clue-search-content" class="clue-search-content">
+            <ui:VisualElement name="clue-search-header" class="clue-search-header">
+                <ui:Label name="clue-search-title" text="Temukan Petunjuk" class="clue-search-title" />
+                <ui:Label name="clue-counter-label" text="Petunjuk Ditemukan: 0/0" class="clue-counter-label" />
+            </ui:VisualElement>
+            <ui:VisualElement name="clue-inventory" class="clue-inventory" />
+            <ui:Button name="proceed-to-deduction-button" text="Lanjut ke Deduksi" class="proceed-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

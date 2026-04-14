@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Suspect_SarahChen
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
   _suspectName: Sarah Chen
-  _portrait: {fileID: 2800000, guid: 6b9594b12663ef64faa52380ac803e8e, type: 3}
+  _portrait: {fileID: 0}
   _description: Guru lokal. Aktif di acara komunitas dan dihormati oleh tetangga.
-  _evidenceText: Tidak ditemukan aktivitas mencurigakan. Pemeriksaan latar belakang bersih.
+  _evidenceText: Tidak ditemukan aktivitas mencurigakan. Pemeriksaan latar belakang
+    bersih.
   _evidenceImage: {fileID: 0}
   _drugTestResult: 0
   _correctRole: 2

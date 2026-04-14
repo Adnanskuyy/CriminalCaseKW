@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Suspect_DerekStone
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
   _suspectName: Derek Stone
-  _portrait: {fileID: 2800000, guid: 4e1804f49538b4241a8c679d85927d51, type: 3}
+  _portrait: {fileID: 0}
   _description: Menjalankan bisnis lokal. Dikenal di komunitas dengan banyak koneksi
     dan pengunjung rutin.
   _evidenceText: Jumlah uang tunai besar ditemukan saat pemeriksaan lalu lintas rutin.

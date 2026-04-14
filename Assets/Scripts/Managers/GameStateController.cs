@@ -25,11 +25,11 @@ namespace CriminalCase2.Managers
                 case GameState.Tutorial:
                     HandleTutorial();
                     break;
-                case GameState.Investigation:
-                    HandleInvestigation();
+                case GameState.ClueSearch:
+                    HandleClueSearch();
                     break;
-                case GameState.Verdict:
-                    HandleVerdict();
+                case GameState.Deduction:
+                    HandleDeduction();
                     break;
                 case GameState.Results:
                     HandleResults();
@@ -47,19 +47,23 @@ namespace CriminalCase2.Managers
 
         private void HandleTutorial()
         {
-            GameManager.Instance.SetState(GameState.Investigation);
+            GameManager.Instance.SetState(GameState.ClueSearch);
         }
 
-        private void HandleInvestigation()
+        private void HandleClueSearch()
+        {
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowClueSearch();
+            }
+        }
+
+        private void HandleDeduction()
         {
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowStatusHUD();
             }
-        }
-
-        private void HandleVerdict()
-        {
         }
 
         private void HandleResults()

@@ -445,3 +445,95 @@
     background-color: rgb(60, 60, 70);
     color: rgb(160, 160, 170);
 }
+
+/* ===== Clue Search Panel ===== */
+.clue-search-content {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 320px;
+    background-color: rgba(30, 30, 45, 0.92);
+    border-radius: 16px;
+    padding: 24px;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.clue-search-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.clue-search-title {
+    color: rgb(255, 210, 60);
+    font-size: 30px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.clue-counter-label {
+    color: rgb(220, 220, 220);
+    font-size: 22px;
+    -unity-text-align: middle-center;
+}
+
+.clue-inventory {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.clue-icon-slot {
+    width: 64px;
+    height: 64px;
+    background-color: rgb(50, 50, 70);
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.clue-icon-slot.found {
+    background-color: rgb(60, 100, 60);
+}
+
+.clue-icon-slot .clue-icon-image {
+    width: 56px;
+    height: 56px;
+}
+
+.clue-icon-silhouette {
+    width: 56px;
+    height: 56px;
+    background-color: rgb(70, 70, 90);
+    border-radius: 6px;
+}
+
+.clue-icon-label {
+    color: rgb(200, 200, 200);
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+}
+
+.proceed-button {
+    width: 100%;
+    height: 56px;
+    background-color: rgb(40, 140, 80);
+    color: rgb(255, 255, 255);
+    font-size: 22px;
+    border-radius: 10px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    display: none;
+}
+
+.proceed-button:hover {
+    background-color: rgb(60, 170, 100);
+}
+
+.proceed-button.visible {
+    display: flex;
+}

@@ -145,7 +145,7 @@ namespace CriminalCase2.Managers
                             LevelManager.Instance.LoadLevel(CurrentLevel);
                         }
                         // Skip video on level transition, go directly to investigation
-                        SetState(GameState.Investigation);
+                        SetState(GameState.ClueSearch);
                     },
                     onComplete: () =>
                     {
@@ -166,7 +166,7 @@ namespace CriminalCase2.Managers
                     LevelManager.Instance.LoadLevel(CurrentLevel);
                 }
                 // Skip video on level transition, go directly to investigation
-                SetState(GameState.Investigation);
+                SetState(GameState.ClueSearch);
                 _isTransitioning = false;
                 onComplete?.Invoke();
             }

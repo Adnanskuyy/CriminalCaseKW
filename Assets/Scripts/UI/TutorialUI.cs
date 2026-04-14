@@ -58,7 +58,7 @@ namespace CriminalCase2.UI
         {
             UIManager.Instance?.HideAllPanels();
             UIManager.Instance?.ShowStatusHUD();
-            GameManager.Instance?.SetState(GameState.Investigation);
+            GameManager.Instance?.SetState(GameState.ClueSearch);
         }
 
         private void OnReplayVideoClicked()

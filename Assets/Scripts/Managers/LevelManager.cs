@@ -1,5 +1,6 @@
 using UnityEngine;
 using CriminalCase2.Data;
+using CriminalCase2.Interactables;
 using System.Collections.Generic;
 
 namespace CriminalCase2.Managers
@@ -118,7 +119,43 @@ namespace CriminalCase2.Managers
             _judgedSuspects.Clear();
             _drugTestResults.Clear();
             _drugTestsRemaining = config.MaxDrugTestsPerLevel;
+
+            if (ClueManager.Instance != null && config.Clues != null)
+            {
+                ClueManager.Instance.Initialize(config.Clues);
+            }
+
+            DeactivateSuspects();
+
             Debug.Log($"[LevelManager] Initialized level: {config.LevelName}");
+        }
+
+        public void AddBonusDrugTest()
+        {
+            _drugTestsRemaining++;
+            Debug.Log($"[LevelManager] Bonus drug test added! Total remaining: {_drugTestsRemaining}");
+        }
+
+        private void DeactivateSuspects()
+        {
+            if (_currentLevelInstance == null) return;
+
+            var clickHandlers = _currentLevelInstance.GetComponentsInChildren<SuspectClickHandler>();
+            foreach (var handler in clickHandlers)
+            {
+                handler.gameObject.SetActive(false);
+            }
+        }
+
+        public void RevealSuspects()
+        {
+            if (_currentLevelInstance == null) return;
+
+            var clickHandlers = _currentLevelInstance.GetComponentsInChildren<SuspectClickHandler>();
+            foreach (var handler in clickHandlers)
+            {
+                handler.gameObject.SetActive(true);
+            }
         }
 
         public void RecordJudgedSuspect(SuspectData suspect, SuspectRole playerChoice)
