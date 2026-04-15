@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Style src="project://database/Assets/Resources/UI/Common.uss" />
     <ui:VisualElement name="video-player-panel" class="panel">
         <ui:VisualElement name="play-container" class="play-container">
             <ui:Label name="title-label" text="Criminal Case 2" class="title-label" />

@@ -14,6 +14,7 @@ namespace CriminalCase2.UI
         private VisualElement _inventory;
         private Button _proceedButton;
         private bool _isBound;
+        private bool _isSubscribed;
 
         private readonly List<VisualElement> _iconSlots = new List<VisualElement>();
 
@@ -44,11 +45,14 @@ namespace CriminalCase2.UI
 
         public void OnClueFound(ClueData clue)
         {
+            Debug.Log($"[ClueSearchUI] OnClueFound() called for clue: {(clue != null ? clue.ClueName : "NULL")}");
+
             if (!_isBound) BindUI();
 
             int foundCount = ClueManager.Instance != null ? ClueManager.Instance.FoundCount : 0;
             int totalCount = ClueManager.Instance != null ? ClueManager.Instance.TotalClueCount : 0;
 
+            Debug.Log($"[ClueSearchUI] Updating counter to: {foundCount}/{totalCount}");
             UpdateCounter(foundCount, totalCount);
             UpdateIconSlot(clue);
 
@@ -60,21 +64,51 @@ namespace CriminalCase2.UI
 
         private void OnEnable()
         {
+            Debug.Log("[ClueSearchUI] OnEnable() called.");
             BindUI();
-            if (ClueManager.Instance != null)
+            SubscribeToEvents();
+            Debug.Log($"[ClueSearchUI] OnEnable complete. _isSubscribed={_isSubscribed}, ClueManager.Instance={(ClueManager.Instance != null ? "exists" : "null")}");
+        }
+
+        private void Update()
+        {
+            // Retry subscription if ClueManager became available after OnEnable
+            if (!_isSubscribed && ClueManager.Instance != null)
             {
-                ClueManager.Instance.OnClueFoundEvent += OnClueFound;
-                ClueManager.Instance.OnAllCluesFoundEvent += OnAllCluesFound;
+                Debug.Log("[ClueSearchUI] Update() - Retrying event subscription...");
+                SubscribeToEvents();
             }
+        }
+
+        private void SubscribeToEvents()
+        {
+            if (ClueManager.Instance == null)
+            {
+                Debug.Log("[ClueSearchUI] SubscribeToEvents() - ClueManager.Instance is null, cannot subscribe.");
+                return;
+            }
+            if (_isSubscribed)
+            {
+                Debug.Log("[ClueSearchUI] SubscribeToEvents() - Already subscribed.");
+                return;
+            }
+
+            Debug.Log("[ClueSearchUI] SubscribeToEvents() - Subscribing to ClueManager events...");
+            ClueManager.Instance.OnClueFoundEvent += OnClueFound;
+            ClueManager.Instance.OnAllCluesFoundEvent += OnAllCluesFound;
+            _isSubscribed = true;
+            Debug.Log("[ClueSearchUI] SubscribeToEvents() - Subscription complete!");
         }
 
         private void OnDisable()
         {
+            Debug.Log("[ClueSearchUI] OnDisable() called - unsubscribing from events.");
             if (ClueManager.Instance != null)
             {
                 ClueManager.Instance.OnClueFoundEvent -= OnClueFound;
                 ClueManager.Instance.OnAllCluesFoundEvent -= OnAllCluesFound;
             }
+            _isSubscribed = false;
             UnbindUI();
         }
 
@@ -104,6 +138,7 @@ namespace CriminalCase2.UI
                 _proceedButton.clicked -= OnProceedClicked;
             }
             _isBound = false;
+            _isSubscribed = false;
         }
 
         private VisualElement CreateClueSlot(ClueData clue)

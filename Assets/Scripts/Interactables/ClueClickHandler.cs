@@ -33,7 +33,11 @@ namespace CriminalCase2.Interactables
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (_clueData == null) return;
+            if (_clueData == null)
+            {
+                Debug.LogError($"[ClueClickHandler] No ClueData assigned on '{gameObject.name}'!");
+                return;
+            }
             if (_isFound) return;
 
             if (GameManager.Instance == null || GameManager.Instance.CurrentState != GameState.ClueSearch) return;
@@ -41,7 +45,13 @@ namespace CriminalCase2.Interactables
             _isFound = true;
             StartCoroutine(FoundAnimationRoutine());
 
-            ClueManager.Instance?.OnClueFound(_clueData);
+            if (ClueManager.Instance == null)
+            {
+                Debug.LogError("[ClueClickHandler] ClueManager.Instance is null! Cannot register clue.");
+                return;
+            }
+
+            ClueManager.Instance.OnClueFound(_clueData);
         }
 
         public void ResetClue()

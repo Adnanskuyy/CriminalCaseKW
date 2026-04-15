@@ -192,10 +192,13 @@ namespace CriminalCase2.UI
 
         public void ShowClueSearch()
         {
+            Debug.Log("[UIManager] ShowClueSearch() called.");
             if (ClueManager.Instance != null && GameManager.Instance.CurrentLevel != null)
             {
+                Debug.Log("[UIManager] Initializing ClueSearchUI...");
                 _clueSearchUI?.Initialize(GameManager.Instance.CurrentLevel.Clues);
             }
+            Debug.Log("[UIManager] Activating ClueSearchPanel GameObject...");
             SetUIToolkitPanelActive(_clueSearchPanel, true);
         }
 
@@ -218,17 +221,10 @@ namespace CriminalCase2.UI
         private void SetUIToolkitPanelActive(UIDocument panel, bool active)
         {
             if (panel == null) return;
-            if (panel.rootVisualElement == null) return;
-
-            var panelElement = panel.rootVisualElement.Q<VisualElement>(className: "panel");
-            if (panelElement != null)
-            {
-                panelElement.style.display = active ? DisplayStyle.Flex : DisplayStyle.None;
-            }
-            else
-            {
-                panel.rootVisualElement.style.display = active ? DisplayStyle.Flex : DisplayStyle.None;
-            }
+            
+            // Enable/disable the entire GameObject, not just the visual element
+            // This prevents OnEnable() from firing on hidden panels and blocking input
+            panel.gameObject.SetActive(active);
         }
 
         private void OnDisable()
