@@ -167,6 +167,15 @@ namespace CriminalCase2.UI
         public void ShowStatusHUD()
         {
             if (_statusHUDUI == null) return;
+            
+            // Only show StatusHUD during Deduction or Results phase
+            if (GameManager.Instance != null && 
+                GameManager.Instance.CurrentState != GameState.Deduction &&
+                GameManager.Instance.CurrentState != GameState.Results)
+            {
+                return;
+            }
+            
             SetUIToolkitPanelActive(_statusHUD, true);
             _statusHUDUI.Initialize();
         }

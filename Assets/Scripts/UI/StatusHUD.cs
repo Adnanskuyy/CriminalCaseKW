@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using CriminalCase2.Data;
 using CriminalCase2.Managers;
 
 namespace CriminalCase2.UI
@@ -19,6 +20,27 @@ namespace CriminalCase2.UI
 
         private void OnEnable()
         {
+            // Only show StatusHUD during Deduction or Results phase
+            if (GameManager.Instance != null && 
+                GameManager.Instance.CurrentState != GameState.Deduction &&
+                GameManager.Instance.CurrentState != GameState.Results)
+            {
+                // Hide the panel if we're not in the correct state
+                if (_document != null && _document.rootVisualElement != null)
+                {
+                    var panelElement = _document.rootVisualElement.Q<VisualElement>(className: "panel");
+                    if (panelElement != null)
+                    {
+                        panelElement.style.display = DisplayStyle.None;
+                    }
+                    else
+                    {
+                        _document.rootVisualElement.style.display = DisplayStyle.None;
+                    }
+                }
+                return;
+            }
+
             if (_document != null && _document.rootVisualElement != null)
             {
                 BindUI();
