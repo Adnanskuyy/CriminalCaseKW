@@ -10,7 +10,6 @@ namespace CriminalCase2.Data
     public enum GameState
     {
         IntroVideo,
-        Tutorial,
         ClueSearch,
         Deduction,
         Results

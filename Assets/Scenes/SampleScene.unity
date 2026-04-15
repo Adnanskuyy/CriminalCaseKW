@@ -1851,7 +1851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edcf4778e0f27b49b42ea396ced4a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.UIManager
-  _videoPlayerPanel: {fileID: 755927283}
+  _videoPlayerPanel: {fileID: 0}
   _tutorialPanel: {fileID: 2137827712}
   _suspectDetailPanel: {fileID: 1422299053}
   _checkStatusPanel: {fileID: 1489806697}

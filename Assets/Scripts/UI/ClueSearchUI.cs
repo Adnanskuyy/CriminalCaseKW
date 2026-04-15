@@ -143,43 +143,119 @@ namespace CriminalCase2.UI
 
         private VisualElement CreateClueSlot(ClueData clue)
         {
+            Debug.Log($"[ClueSearchUI] Creating slot for clue: {clue?.ClueName}, Icon: {(clue?.ClueIcon != null ? "YES" : "NULL")}");
+
+            // Main slot container
             var slot = new VisualElement();
             slot.AddToClassList("clue-icon-slot");
-
-            var silhouette = new VisualElement();
-            silhouette.AddToClassList("clue-icon-silhouette");
-            slot.Add(silhouette);
-
-            var nameLabel = new Label("?");
-            nameLabel.AddToClassList("clue-icon-label");
-            slot.Add(nameLabel);
-
+            slot.style.display = DisplayStyle.Flex;
             slot.userData = clue;
+
+            // Content container for silhouette/icon and label
+            var content = new VisualElement();
+            content.AddToClassList("clue-slot-content");
+            content.style.display = DisplayStyle.Flex;
+            slot.Add(content);
+
+            // Silhouette background (distinguishable background)
+            var silhouetteBg = new VisualElement();
+            silhouetteBg.AddToClassList("clue-silhouette-bg");
+            silhouetteBg.style.display = DisplayStyle.Flex;
+            content.Add(silhouetteBg);
+
+            // Silhouette icon (darkened version of clue)
+            var silhouette = new VisualElement();
+            silhouette.AddToClassList("clue-silhouette");
+            silhouette.style.display = DisplayStyle.Flex;
+            silhouetteBg.Add(silhouette);
+
+            // Set the silhouette sprite if clue has an icon
+            if (clue.ClueIcon != null)
+            {
+                silhouette.style.backgroundImage = new StyleBackground(clue.ClueIcon);
+                Debug.Log($"[ClueSearchUI] Set silhouette image for: {clue.ClueName}");
+            }
+            else
+            {
+                Debug.LogWarning($"[ClueSearchUI] No ClueIcon for: {clue.ClueName}");
+            }
+
+            // Clue name label (shown as hint)
+            var nameLabel = new Label(clue.ClueName);
+            nameLabel.AddToClassList("clue-hint-label");
+            nameLabel.style.display = DisplayStyle.Flex;
+            content.Add(nameLabel);
+
+            Debug.Log($"[ClueSearchUI] Slot created successfully for: {clue.ClueName}");
+
             return slot;
         }
 
         private void UpdateIconSlot(ClueData foundClue)
         {
+            Debug.Log($"[ClueSearchUI] UpdateIconSlot called for: {foundClue?.ClueName}");
+
             foreach (var slot in _iconSlots)
             {
                 var clue = slot.userData as ClueData;
                 if (clue == foundClue)
                 {
+                    Debug.Log($"[ClueSearchUI] Found matching slot for: {foundClue.ClueName}");
+
+                    // Add found class for styling
                     slot.AddToClassList("found");
 
-                    slot.Clear();
-
-                    if (foundClue.ClueIcon != null)
+                    // Get the content container
+                    var content = slot.Q(className: "clue-slot-content");
+                    if (content == null)
                     {
-                        var iconImage = new VisualElement();
-                        iconImage.AddToClassList("clue-icon-image");
-                        iconImage.style.backgroundImage = new StyleBackground(foundClue.ClueIcon);
-                        slot.Add(iconImage);
+                        Debug.LogError("[ClueSearchUI] content container not found!");
+                        continue;
                     }
 
-                    var nameLabel = new Label(foundClue.ClueName);
-                    nameLabel.AddToClassList("clue-icon-label");
-                    slot.Add(nameLabel);
+                    // Clear the content
+                    content.Clear();
+
+                    // Create found state container
+                    var foundContainer = new VisualElement();
+                    foundContainer.AddToClassList("clue-found-container");
+                    foundContainer.style.display = DisplayStyle.Flex;
+                    content.Add(foundContainer);
+
+                    // Add the actual clue icon
+                    if (foundClue.ClueIcon != null)
+                    {
+                        var iconContainer = new VisualElement();
+                        iconContainer.AddToClassList("clue-icon-container");
+                        iconContainer.style.display = DisplayStyle.Flex;
+                        foundContainer.Add(iconContainer);
+
+                        var iconImage = new VisualElement();
+                        iconImage.AddToClassList("clue-icon-image");
+                        iconImage.style.display = DisplayStyle.Flex;
+                        iconImage.style.backgroundImage = new StyleBackground(foundClue.ClueIcon);
+                        iconContainer.Add(iconImage);
+
+                        Debug.Log($"[ClueSearchUI] Set found icon for: {foundClue.ClueName}");
+                    }
+
+                    // Add found label with actual clue name
+                    var foundLabel = new Label(foundClue.ClueName);
+                    foundLabel.AddToClassList("clue-found-label");
+                    foundLabel.style.display = DisplayStyle.Flex;
+                    foundContainer.Add(foundLabel);
+
+                    // Add found badge
+                    var foundBadge = new VisualElement();
+                    foundBadge.AddToClassList("clue-found-badge");
+                    foundBadge.style.display = DisplayStyle.Flex;
+                    var checkmark = new Label("✓");
+                    checkmark.AddToClassList("clue-found-checkmark");
+                    checkmark.style.display = DisplayStyle.Flex;
+                    foundBadge.Add(checkmark);
+                    slot.Add(foundBadge);
+
+                    Debug.Log($"[ClueSearchUI] Slot updated successfully for: {foundClue.ClueName}");
 
                     break;
                 }

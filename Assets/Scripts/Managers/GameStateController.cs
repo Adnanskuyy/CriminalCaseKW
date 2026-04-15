@@ -22,9 +22,6 @@ namespace CriminalCase2.Managers
                 case GameState.IntroVideo:
                     HandleIntroVideo();
                     break;
-                case GameState.Tutorial:
-                    HandleTutorial();
-                    break;
                 case GameState.ClueSearch:
                     HandleClueSearch();
                     break;
@@ -43,11 +40,6 @@ namespace CriminalCase2.Managers
             {
                 UIManager.Instance.ShowVideoPlayer();
             }
-        }
-
-        private void HandleTutorial()
-        {
-            GameManager.Instance.SetState(GameState.ClueSearch);
         }
 
         private void HandleClueSearch()
