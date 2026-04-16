@@ -59,12 +59,14 @@ namespace CriminalCase2.Services.Interfaces
 
         event Action OnEnterIntroVideo;
         event Action OnEnterClueSearch;
-        event Action OnEnterDeduction;
+        event Action OnEnterClueMatching;
+        event Action OnEnterRoleAssignment;
         event Action OnEnterResults;
 
         event Action OnExitIntroVideo;
         event Action OnExitClueSearch;
-        event Action OnExitDeduction;
+        event Action OnExitClueMatching;
+        event Action OnExitRoleAssignment;
         event Action OnExitResults;
 
         #endregion

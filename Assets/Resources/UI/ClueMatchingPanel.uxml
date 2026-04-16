@@ -1,0 +1,46 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Style src="project://database/Assets/Resources/UI/Common.uss" />
+    <ui:VisualElement name="clue-matching-panel" class="panel">
+        <ui:VisualElement name="clue-matching-content" class="clue-matching-content">
+            <ui:VisualElement name="clue-matching-header" class="clue-matching-header">
+                <ui:Label name="clue-matching-title" text="Cocokkan Petunjuk ke Tersangka" class="clue-matching-title" />
+                <ui:Label name="clue-matching-counter" text="Petunjuk Terpasang: 0/0" class="clue-matching-counter" />
+            </ui:VisualElement>
+            <ui:VisualElement name="suspect-cards-row" class="suspect-cards-row">
+                <ui:VisualElement name="suspect-card-0" class="suspect-card">
+                    <ui:VisualElement name="suspect-card-portrait-0" class="suspect-card-portrait">
+                        <ui:Label name="suspect-card-initial-0" text="?" class="suspect-card-initial" />
+                    </ui:VisualElement>
+                    <ui:Label name="suspect-card-name-0" text="Tersangka 1" class="suspect-card-name" />
+                    <ui:VisualElement name="suspect-card-clues-0" class="suspect-card-clues" />
+                </ui:VisualElement>
+                <ui:VisualElement name="suspect-card-1" class="suspect-card">
+                    <ui:VisualElement name="suspect-card-portrait-1" class="suspect-card-portrait">
+                        <ui:Label name="suspect-card-initial-1" text="?" class="suspect-card-initial" />
+                    </ui:VisualElement>
+                    <ui:Label name="suspect-card-name-1" text="Tersangka 2" class="suspect-card-name" />
+                    <ui:VisualElement name="suspect-card-clues-1" class="suspect-card-clues" />
+                </ui:VisualElement>
+                <ui:VisualElement name="suspect-card-2" class="suspect-card">
+                    <ui:VisualElement name="suspect-card-portrait-2" class="suspect-card-portrait">
+                        <ui:Label name="suspect-card-initial-2" text="?" class="suspect-card-initial" />
+                    </ui:VisualElement>
+                    <ui:Label name="suspect-card-name-2" text="Tersangka 3" class="suspect-card-name" />
+                    <ui:VisualElement name="suspect-card-clues-2" class="suspect-card-clues" />
+                </ui:VisualElement>
+                <ui:VisualElement name="suspect-card-3" class="suspect-card">
+                    <ui:VisualElement name="suspect-card-portrait-3" class="suspect-card-portrait">
+                        <ui:Label name="suspect-card-initial-3" text="?" class="suspect-card-initial" />
+                    </ui:VisualElement>
+                    <ui:Label name="suspect-card-name-3" text="Tersangka 4" class="suspect-card-name" />
+                    <ui:VisualElement name="suspect-card-clues-3" class="suspect-card-clues" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="clue-pool-section" class="clue-pool-section">
+                <ui:Label name="clue-pool-title" text="Kumpulan Petunjuk" class="clue-pool-title" />
+                <ui:VisualElement name="clue-pool" class="clue-pool" />
+            </ui:VisualElement>
+            <ui:Button name="confirm-matching-button" text="Konfirmasi Cocokkan Petunjuk" class="confirm-matching-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

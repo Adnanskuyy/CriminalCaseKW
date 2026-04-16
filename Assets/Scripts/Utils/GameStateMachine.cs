@@ -22,12 +22,14 @@ namespace CriminalCase2.Utils
         // Specific state events
         public event Action OnEnterIntroVideo;
         public event Action OnEnterClueSearch;
-        public event Action OnEnterDeduction;
+        public event Action OnEnterClueMatching;
+        public event Action OnEnterRoleAssignment;
         public event Action OnEnterResults;
 
         public event Action OnExitIntroVideo;
         public event Action OnExitClueSearch;
-        public event Action OnExitDeduction;
+        public event Action OnExitClueMatching;
+        public event Action OnExitRoleAssignment;
         public event Action OnExitResults;
 
         #endregion
@@ -130,8 +132,11 @@ namespace CriminalCase2.Utils
                 case GameState.ClueSearch:
                     OnEnterClueSearch?.Invoke();
                     break;
-                case GameState.Deduction:
-                    OnEnterDeduction?.Invoke();
+                case GameState.ClueMatching:
+                    OnEnterClueMatching?.Invoke();
+                    break;
+                case GameState.RoleAssignment:
+                    OnEnterRoleAssignment?.Invoke();
                     break;
                 case GameState.Results:
                     OnEnterResults?.Invoke();
@@ -151,8 +156,11 @@ namespace CriminalCase2.Utils
                 case GameState.ClueSearch:
                     OnExitClueSearch?.Invoke();
                     break;
-                case GameState.Deduction:
-                    OnExitDeduction?.Invoke();
+                case GameState.ClueMatching:
+                    OnExitClueMatching?.Invoke();
+                    break;
+                case GameState.RoleAssignment:
+                    OnExitRoleAssignment?.Invoke();
                     break;
                 case GameState.Results:
                     OnExitResults?.Invoke();

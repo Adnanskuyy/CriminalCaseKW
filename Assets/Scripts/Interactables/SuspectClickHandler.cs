@@ -35,7 +35,7 @@ namespace CriminalCase2.Interactables
                 return;
             }
 
-            if (GameManager.Instance == null || GameManager.Instance.CurrentState != GameState.Deduction)
+            if (GameManager.Instance == null || GameManager.Instance.CurrentState != GameState.RoleAssignment)
             {
                 return;
             }

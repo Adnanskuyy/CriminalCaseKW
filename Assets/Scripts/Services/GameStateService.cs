@@ -24,12 +24,14 @@ namespace CriminalCase2.Services
             
             _stateMachine.OnEnterIntroVideo += () => OnEnterIntroVideo?.Invoke();
             _stateMachine.OnEnterClueSearch += () => OnEnterClueSearch?.Invoke();
-            _stateMachine.OnEnterDeduction += () => OnEnterDeduction?.Invoke();
+            _stateMachine.OnEnterClueMatching += () => OnEnterClueMatching?.Invoke();
+            _stateMachine.OnEnterRoleAssignment += () => OnEnterRoleAssignment?.Invoke();
             _stateMachine.OnEnterResults += () => OnEnterResults?.Invoke();
             
             _stateMachine.OnExitIntroVideo += () => OnExitIntroVideo?.Invoke();
             _stateMachine.OnExitClueSearch += () => OnExitClueSearch?.Invoke();
-            _stateMachine.OnExitDeduction += () => OnExitDeduction?.Invoke();
+            _stateMachine.OnExitClueMatching += () => OnExitClueMatching?.Invoke();
+            _stateMachine.OnExitRoleAssignment += () => OnExitRoleAssignment?.Invoke();
             _stateMachine.OnExitResults += () => OnExitResults?.Invoke();
         }
 
@@ -69,12 +71,14 @@ namespace CriminalCase2.Services
 
         public event Action OnEnterIntroVideo;
         public event Action OnEnterClueSearch;
-        public event Action OnEnterDeduction;
+        public event Action OnEnterClueMatching;
+        public event Action OnEnterRoleAssignment;
         public event Action OnEnterResults;
 
         public event Action OnExitIntroVideo;
         public event Action OnExitClueSearch;
-        public event Action OnExitDeduction;
+        public event Action OnExitClueMatching;
+        public event Action OnExitRoleAssignment;
         public event Action OnExitResults;
 
         #endregion

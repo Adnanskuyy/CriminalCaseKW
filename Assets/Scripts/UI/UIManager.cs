@@ -21,6 +21,7 @@ namespace CriminalCase2.UI
         [SerializeField] private UIDocument _resultPanel;
         [SerializeField] private UIDocument _statusHUD;
         [SerializeField] private UIDocument _clueSearchPanel;
+        [SerializeField] private UIDocument _clueMatchingPanel;
 
         private VideoPlayerUI _videoPlayerUI;
         private SuspectDetailUI _suspectDetailUI;
@@ -28,6 +29,7 @@ namespace CriminalCase2.UI
         private ResultUI _resultUI;
         private StatusHUD _statusHUDUI;
         private ClueSearchUI _clueSearchUI;
+        private ClueMatchingUI _clueMatchingUI;
 
         private void Awake()
         {
@@ -72,7 +74,11 @@ namespace CriminalCase2.UI
                     HideAllPanels();
                     ShowClueSearch();
                     break;
-                case GameState.Deduction:
+                case GameState.ClueMatching:
+                    HideAllPanels();
+                    ShowClueMatching();
+                    break;
+                case GameState.RoleAssignment:
                     HideAllPanels();
                     ShowStatusHUD();
                     break;
@@ -134,6 +140,7 @@ namespace CriminalCase2.UI
             if (_resultPanel == null && documents.Length > 2) _resultPanel = documents[2];
             if (_statusHUD == null && documents.Length > 3) _statusHUD = documents[3];
             if (_clueSearchPanel == null && documents.Length > 4) _clueSearchPanel = documents[4];
+            if (_clueMatchingPanel == null && documents.Length > 5) _clueMatchingPanel = documents[5];
         }
 
         private void InitializePanels()
@@ -145,6 +152,7 @@ namespace CriminalCase2.UI
             InitializeUIToolkitPanel(_resultPanel, "UI/ResultPanel", commonStyle);
             InitializeUIToolkitPanel(_statusHUD, "UI/StatusHUD", commonStyle);
             InitializeUIToolkitPanel(_clueSearchPanel, "UI/ClueSearchPanel", commonStyle);
+            InitializeUIToolkitPanel(_clueMatchingPanel, "UI/ClueMatchingPanel", commonStyle);
 
             if (_videoPlayerUI == null && _videoPlayerPanel != null)
                 _videoPlayerUI = _videoPlayerPanel.GetComponent<VideoPlayerUI>();
@@ -163,6 +171,9 @@ namespace CriminalCase2.UI
 
             if (_clueSearchUI == null && _clueSearchPanel != null)
                 _clueSearchUI = _clueSearchPanel.GetComponent<ClueSearchUI>();
+
+            if (_clueMatchingUI == null && _clueMatchingPanel != null)
+                _clueMatchingUI = _clueMatchingPanel.GetComponent<ClueMatchingUI>();
         }
 
         private void InitializeUIToolkitPanel(UIDocument panel, string resourcePath, StyleSheet commonStyle)
@@ -235,9 +246,9 @@ namespace CriminalCase2.UI
         {
             if (_statusHUDUI == null) return;
             
-            // Only show StatusHUD during Deduction or Results phase
+            // Only show StatusHUD during RoleAssignment or Results phase
             if (GameManager.Instance != null && 
-                GameManager.Instance.CurrentState != GameState.Deduction &&
+                GameManager.Instance.CurrentState != GameState.RoleAssignment &&
                 GameManager.Instance.CurrentState != GameState.Results)
             {
                 return;
@@ -280,6 +291,24 @@ namespace CriminalCase2.UI
             SetUIToolkitPanelActive(_clueSearchPanel, false);
         }
 
+        public void ShowClueMatching()
+        {
+            LoggingUtility.LogUI("ShowClueMatching() called.");
+
+            SetUIToolkitPanelActive(_clueMatchingPanel, true);
+
+            if (GameManager.Instance?.CurrentLevel != null)
+            {
+                var level = GameManager.Instance.CurrentLevel;
+                _clueMatchingUI?.Initialize(level.Clues, level.Suspects);
+            }
+        }
+
+        public void HideClueMatching()
+        {
+            SetUIToolkitPanelActive(_clueMatchingPanel, false);
+        }
+
         public void HideAllPanels()
         {
             if (_videoPlayerPanel != null)
@@ -288,6 +317,7 @@ namespace CriminalCase2.UI
             SetUIToolkitPanelActive(_checkStatusPanel, false);
             SetUIToolkitPanelActive(_resultPanel, false);
             SetUIToolkitPanelActive(_clueSearchPanel, false);
+            SetUIToolkitPanelActive(_clueMatchingPanel, false);
         }
 
         private void SetUIToolkitPanelActive(UIDocument panel, bool active)
@@ -307,6 +337,7 @@ namespace CriminalCase2.UI
             _resultUI = null;
             _statusHUDUI = null;
             _clueSearchUI = null;
+            _clueMatchingUI = null;
         }
     }
 }

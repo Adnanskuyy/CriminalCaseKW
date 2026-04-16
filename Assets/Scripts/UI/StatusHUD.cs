@@ -20,9 +20,9 @@ namespace CriminalCase2.UI
 
         private void OnEnable()
         {
-            // Only show StatusHUD during Deduction or Results phase
+            // Only show StatusHUD during RoleAssignment or Results phase
             if (GameManager.Instance != null && 
-                GameManager.Instance.CurrentState != GameState.Deduction &&
+                GameManager.Instance.CurrentState != GameState.RoleAssignment &&
                 GameManager.Instance.CurrentState != GameState.Results)
             {
                 // Hide the panel if we're not in the correct state

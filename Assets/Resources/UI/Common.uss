@@ -289,6 +289,46 @@
     white-space: normal;
 }
 
+.result-score-header {
+    flex-direction: column;
+    padding: 20px;
+    background-color: rgb(35, 35, 55);
+    border-radius: 10px;
+    gap: 8px;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.result-matching-score {
+    color: rgb(100, 180, 255);
+    font-size: 22px;
+    -unity-text-align: middle-center;
+}
+
+.result-verdict-score {
+    color: rgb(255, 180, 60);
+    font-size: 22px;
+    -unity-text-align: middle-center;
+}
+
+.result-overall-score {
+    color: rgb(255, 210, 60);
+    font-size: 28px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.result-suspect-name {
+    color: rgb(255, 210, 60);
+    font-size: 24px;
+    -unity-font-style: bold;
+}
+
+.result-clue-matches {
+    color: rgb(140, 200, 255);
+    font-size: 18px;
+}
+
 .next-level-button {
     width: 300px;
     height: 64px;
@@ -639,4 +679,182 @@
 
 .proceed-button.visible {
     display: flex;
+}
+
+/* ===== Clue Matching Panel ===== */
+.clue-matching-content {
+    width: 1100px;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.clue-matching-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: rgb(30, 30, 45);
+    border-radius: 12px;
+}
+
+.clue-matching-title {
+    color: rgb(255, 210, 60);
+    font-size: 28px;
+    -unity-font-style: bold;
+}
+
+.clue-matching-counter {
+    color: rgb(180, 180, 200);
+    font-size: 20px;
+}
+
+.suspect-cards-row {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.suspect-card {
+    flex: 1;
+    background-color: rgb(40, 40, 60);
+    border-radius: 12px;
+    padding: 16px;
+    align-items: center;
+    cursor: link;
+    border-width: 2px;
+    border-color: rgb(60, 60, 80);
+}
+
+.suspect-card.selected-target {
+    border-color: rgb(255, 210, 60);
+    background-color: rgb(50, 50, 70);
+}
+
+.suspect-card:hover {
+    border-color: rgb(100, 100, 140);
+    background-color: rgb(50, 50, 70);
+}
+
+.suspect-card-portrait {
+    width: 80px;
+    height: 80px;
+    background-color: rgb(60, 60, 80);
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.suspect-card-initial {
+    color: rgb(180, 180, 200);
+    font-size: 32px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.suspect-card-name {
+    color: rgb(220, 220, 240);
+    font-size: 16px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-bottom: 8px;
+}
+
+.suspect-card-clues {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    min-height: 36px;
+}
+
+.suspect-card-clue-icon {
+    width: 32px;
+    height: 32px;
+    background-color: rgb(80, 80, 100);
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    cursor: link;
+}
+
+.suspect-card-clue-icon:hover {
+    background-color: rgb(100, 60, 60);
+}
+
+.suspect-card-clue-icon-image {
+    width: 24px;
+    height: 24px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.clue-pool-section {
+    background-color: rgb(30, 30, 45);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.clue-pool-title {
+    color: rgb(180, 180, 200);
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin-bottom: 12px;
+}
+
+.clue-pool {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.clue-pool-item {
+    width: 64px;
+    height: 64px;
+    background-color: rgb(60, 60, 80);
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    cursor: link;
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    padding: 4px;
+}
+
+.clue-pool-item:hover {
+    border-color: rgb(100, 100, 140);
+    background-color: rgb(70, 70, 90);
+}
+
+.clue-pool-item.selected {
+    border-color: rgb(255, 210, 60);
+    background-color: rgb(80, 70, 40);
+}
+
+.clue-pool-item-image {
+    width: 48px;
+    height: 48px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.clue-pool-item-label {
+    color: rgb(200, 200, 220);
+    font-size: 9px;
+    -unity-text-align: middle-center;
+    margin-top: 2px;
+}
+
+.confirm-matching-button {
+    width: 100%;
+    height: 56px;
+    background-color: rgb(40, 100, 160);
+    color: rgb(255, 255, 255);
+    font-size: 22px;
+    border-radius: 10px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+}
+
+.confirm-matching-button:disabled {
+    background-color: rgb(50, 50, 60);
+    color: rgb(120, 120, 130);
 }

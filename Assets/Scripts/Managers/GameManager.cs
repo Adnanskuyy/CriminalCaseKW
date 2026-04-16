@@ -38,6 +38,23 @@ namespace CriminalCase2.Managers
         public string IntroVideoFileName => _introVideoFileName;
         public bool IsTransitioning => _isTransitioning;
 
+        public float ClueMatchingAccuracy
+        {
+            get
+            {
+                var matchingService = ServiceLocator.Get<IClueMatchingService>();
+                return matchingService?.MatchingAccuracy ?? 0f;
+            }
+        }
+        public int CorrectClueMatches
+        {
+            get
+            {
+                var matchingService = ServiceLocator.Get<IClueMatchingService>();
+                return matchingService?.CorrectMatchCount ?? 0;
+            }
+        }
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -146,6 +163,9 @@ namespace CriminalCase2.Managers
         {
             _isTransitioning = true;
             _verdictRecords.Clear();
+
+            var matchingService = ServiceLocator.Get<IClueMatchingService>();
+            matchingService?.Clear();
 
             if (_fadeTransition != null)
             {

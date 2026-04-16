@@ -2,6 +2,10 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
 using CriminalCase2.Managers;
+using CriminalCase2.Services;
+using CriminalCase2.Services.Interfaces;
+using CriminalCase2.Utils;
+using System.Collections.Generic;
 
 namespace CriminalCase2.UI
 {
@@ -104,7 +108,6 @@ namespace CriminalCase2.UI
 
             if (_suspectNameLabel != null) _suspectNameLabel.text = _currentSuspect.SuspectName;
             if (_descriptionLabel != null) _descriptionLabel.text = _currentSuspect.Description;
-            if (_evidenceTextLabel != null) _evidenceTextLabel.text = _currentSuspect.EvidenceText;
             if (_drugTestResultLabel != null)
             {
                 if (LevelManager.Instance != null && LevelManager.Instance.HasDrugTestResult(_currentSuspect))
@@ -117,6 +120,8 @@ namespace CriminalCase2.UI
                 }
             }
 
+            UpdateEvidenceSection();
+
             if (_drugTestButton != null)
             {
                 bool alreadyTested = LevelManager.Instance != null && LevelManager.Instance.HasDrugTestResult(_currentSuspect);
@@ -125,6 +130,33 @@ namespace CriminalCase2.UI
             }
 
             UpdateVerdictButtons();
+        }
+
+        private void UpdateEvidenceSection()
+        {
+            if (_evidenceTextLabel == null) return;
+
+            var matchingService = ServiceLocator.Get<IClueMatchingService>();
+            if (matchingService != null && matchingService.IsConfirmed)
+            {
+                var matchedClues = matchingService.GetCluesForSuspect(_currentSuspect);
+                if (matchedClues != null && matchedClues.Count > 0)
+                {
+                    var clueNames = new List<string>();
+                    foreach (var clue in matchedClues)
+                        clueNames.Add(clue.ClueName);
+
+                    _evidenceTextLabel.text = string.Join("\n", clueNames);
+                }
+                else
+                {
+                    _evidenceTextLabel.text = _currentSuspect.EvidenceText;
+                }
+            }
+            else
+            {
+                _evidenceTextLabel.text = _currentSuspect.EvidenceText;
+            }
         }
 
         private void OnDrugTestClicked()

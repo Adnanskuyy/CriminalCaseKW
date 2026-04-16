@@ -1,6 +1,8 @@
 using UnityEngine;
 using CriminalCase2.Data;
 using CriminalCase2.Interactables;
+using CriminalCase2.Services;
+using CriminalCase2.Services.Interfaces;
 using System.Collections.Generic;
 
 namespace CriminalCase2.Managers

@@ -226,7 +226,7 @@ namespace CriminalCase2.UI
         {
             if (_clueService?.AllCluesFound == true)
             {
-                GameManager.Instance?.SetState(GameState.Deduction);
+                GameManager.Instance?.SetState(GameState.ClueMatching);
             }
         }
 

@@ -1027,6 +1027,75 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.ResultUI
   _document: {fileID: 663030570}
+--- !u!1 &695221530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 695221531}
+  - component: {fileID: 695221533}
+  - component: {fileID: 695221532}
+  m_Layer: 0
+  m_Name: ClueMatchingPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &695221531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695221530}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1774677760}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &695221532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695221530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8530fc10a0088ab488971f2a3e773c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.ClueMatchingUI
+  _document: {fileID: 695221533}
+--- !u!114 &695221533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695221530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 90b2b16a15f64e24fb9411fd6895869c, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
 --- !u!1 &755927283
 GameObject:
   m_ObjectHideFlags: 0
@@ -1946,6 +2015,7 @@ MonoBehaviour:
   _resultPanel: {fileID: 663030570}
   _statusHUD: {fileID: 1960888862}
   _clueSearchPanel: {fileID: 4175044}
+  _clueMatchingPanel: {fileID: 695221533}
 --- !u!4 &1774677760
 Transform:
   m_ObjectHideFlags: 0
@@ -1961,6 +2031,7 @@ Transform:
   m_Children:
   - {fileID: 755927284}
   - {fileID: 4175042}
+  - {fileID: 695221531}
   - {fileID: 1422299052}
   - {fileID: 663030569}
   - {fileID: 1960888864}

@@ -11,7 +11,8 @@ namespace CriminalCase2.Data
     {
         IntroVideo,
         ClueSearch,
-        Deduction,
+        ClueMatching,
+        RoleAssignment,
         Results
     }
 

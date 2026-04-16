@@ -52,7 +52,8 @@ namespace CriminalCase2.Managers
             // Subscribe to state entry events
             _stateService.OnEnterIntroVideo += HandleIntroVideo;
             _stateService.OnEnterClueSearch += HandleClueSearch;
-            _stateService.OnEnterDeduction += HandleDeduction;
+            _stateService.OnEnterClueMatching += HandleClueMatching;
+            _stateService.OnEnterRoleAssignment += HandleRoleAssignment;
             _stateService.OnEnterResults += HandleResults;
 
             // Subscribe to state transition events
@@ -68,7 +69,8 @@ namespace CriminalCase2.Managers
 
             _stateService.OnEnterIntroVideo -= HandleIntroVideo;
             _stateService.OnEnterClueSearch -= HandleClueSearch;
-            _stateService.OnEnterDeduction -= HandleDeduction;
+            _stateService.OnEnterClueMatching -= HandleClueMatching;
+            _stateService.OnEnterRoleAssignment -= HandleRoleAssignment;
             _stateService.OnEnterResults -= HandleResults;
 
             _stateService.OnStateChanged -= OnStateChanged;
@@ -99,10 +101,25 @@ namespace CriminalCase2.Managers
             }
         }
 
-        private void HandleDeduction()
+        private void HandleClueMatching()
         {
-            LoggingUtility.LogState("Handling Deduction state entry");
+            LoggingUtility.LogState("Handling ClueMatching state entry");
             
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowClueMatching();
+            }
+        }
+
+        private void HandleRoleAssignment()
+        {
+            LoggingUtility.LogState("Handling RoleAssignment state entry");
+            
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.RevealSuspects();
+            }
+
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowStatusHUD();
