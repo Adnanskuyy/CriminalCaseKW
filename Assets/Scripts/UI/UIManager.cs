@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
 using CriminalCase2.Managers;
+using CriminalCase2.Services;
+using CriminalCase2.Services.Interfaces;
+using CriminalCase2.Utils;
 
 namespace CriminalCase2.UI
 {
@@ -41,19 +44,91 @@ namespace CriminalCase2.UI
         private void Start()
         {
             InitializePanels();
-            HideAllPanels();
+            
+            // Ensure services are available
+            EnsureServicesInitialized();
+            
+            // Show correct panel based on current game state
+            ShowCorrectPanelForCurrentState();
+        }
+
+        private void ShowCorrectPanelForCurrentState()
+        {
+            if (GameManager.Instance == null)
+            {
+                LoggingUtility.Warning("UIManager", "GameManager.Instance is null, cannot determine initial state");
+                return;
+            }
+
+            GameState currentState = GameManager.Instance.CurrentState;
+            LoggingUtility.LogUI($"Initializing UI for state: {currentState}");
+
+            switch (currentState)
+            {
+                case GameState.IntroVideo:
+                    ShowVideoPlayer();
+                    break;
+                case GameState.ClueSearch:
+                    HideAllPanels();
+                    ShowClueSearch();
+                    break;
+                case GameState.Deduction:
+                    HideAllPanels();
+                    ShowStatusHUD();
+                    break;
+                case GameState.Results:
+                    HideAllPanels();
+                    ShowResults();
+                    break;
+                default:
+                    HideAllPanels();
+                    break;
+            }
+        }
+
+        private void EnsureServicesInitialized()
+        {
+            // Ensure ClueService is registered
+            if (!ServiceLocator.IsRegistered<IClueService>())
+            {
+                var clueService = new ClueService();
+                ServiceLocator.Register<IClueService>(clueService);
+                LoggingUtility.LogDebug("UIManager", "ClueService registered");
+            }
+
+            // Ensure GameStateService is registered
+            if (!ServiceLocator.IsRegistered<IGameStateService>())
+            {
+                var gameStateService = new GameStateService();
+                ServiceLocator.Register<IGameStateService>(gameStateService);
+                LoggingUtility.LogDebug("UIManager", "GameStateService registered");
+            }
+
+            // Ensure VideoPlayerService is registered
+            if (!ServiceLocator.IsRegistered<IVideoPlayerService>())
+            {
+                var videoService = FindFirstObjectByType<VideoPlayerService>();
+                if (videoService == null)
+                {
+                    var go = new GameObject("VideoPlayerService");
+                    videoService = go.AddComponent<VideoPlayerService>();
+                    DontDestroyOnLoad(go);
+                }
+                ServiceLocator.Register<IVideoPlayerService>(videoService);
+                LoggingUtility.LogDebug("UIManager", "VideoPlayerService registered");
+            }
         }
 
         private void AutoFindPanels()
         {
             if (_videoPlayerPanel == null)
             {
-                var vui = GetComponentInChildren<VideoPlayerUI>();
+                var vui = GetComponentInChildren<VideoPlayerUI>(true);
                 if (vui != null)
                     _videoPlayerPanel = vui.gameObject;
             }
 
-            var documents = GetComponentsInChildren<UIDocument>();
+            var documents = GetComponentsInChildren<UIDocument>(true);
             if (_suspectDetailPanel == null && documents.Length > 0) _suspectDetailPanel = documents[0];
             if (_checkStatusPanel == null && documents.Length > 1) _checkStatusPanel = documents[1];
             if (_resultPanel == null && documents.Length > 2) _resultPanel = documents[2];
@@ -99,7 +174,7 @@ namespace CriminalCase2.UI
                 var uxml = Resources.Load<VisualTreeAsset>(resourcePath);
                 if (uxml == null)
                 {
-                    Debug.LogWarning($"[UIManager] Failed to load UXML from Resources/{resourcePath}.uxml");
+                    LoggingUtility.Warning("UIManager", $"Failed to load UXML from Resources/{resourcePath}.uxml");
                     return;
                 }
                 panel.visualTreeAsset = uxml;
@@ -121,6 +196,11 @@ namespace CriminalCase2.UI
             {
                 _videoPlayerPanel.SetActive(true);
                 _videoPlayerUI?.ShowPlayScreen();
+                LoggingUtility.LogUI("VideoPlayerPanel shown");
+            }
+            else
+            {
+                LoggingUtility.Error("UIManager", "VideoPlayerPanel reference is null!");
             }
         }
 
@@ -179,13 +259,17 @@ namespace CriminalCase2.UI
 
         public void ShowClueSearch()
         {
-            Debug.Log("[UIManager] ShowClueSearch() called.");
-            if (ClueManager.Instance != null && GameManager.Instance.CurrentLevel != null)
+            LoggingUtility.LogUI("ShowClueSearch() called.");
+            
+            var clueService = ServiceLocator.Get<IClueService>();
+            if (clueService != null && GameManager.Instance?.CurrentLevel != null)
             {
-                Debug.Log("[UIManager] Initializing ClueSearchUI...");
+                LoggingUtility.LogUI("Initializing ClueSearchUI...");
+                clueService.Initialize(GameManager.Instance.CurrentLevel.Clues);
                 _clueSearchUI?.Initialize(GameManager.Instance.CurrentLevel.Clues);
             }
-            Debug.Log("[UIManager] Activating ClueSearchPanel GameObject...");
+            
+            LoggingUtility.LogUI("Activating ClueSearchPanel GameObject...");
             SetUIToolkitPanelActive(_clueSearchPanel, true);
         }
 

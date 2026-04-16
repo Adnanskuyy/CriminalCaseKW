@@ -3,114 +3,44 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
 using CriminalCase2.Managers;
+using CriminalCase2.Services.Interfaces;
+using CriminalCase2.Utils;
 
 namespace CriminalCase2.UI
 {
+    /// <summary>
+    /// UI Toolkit-based clue search interface.
+    /// Displays found clues and manages clue inventory UI.
+    /// </summary>
     public class ClueSearchUI : MonoBehaviour
     {
         [SerializeField] private UIDocument _document;
 
+        private IClueService _clueService;
         private Label _counterLabel;
         private VisualElement _inventory;
         private Button _proceedButton;
         private bool _isBound;
-        private bool _isSubscribed;
 
         private readonly List<VisualElement> _iconSlots = new List<VisualElement>();
 
-        public void Initialize(ClueData[] clues)
-        {
-            if (!_isBound) BindUI();
-            if (_inventory == null) return;
-
-            _inventory.Clear();
-            _iconSlots.Clear();
-
-            if (clues == null) return;
-
-            for (int i = 0; i < clues.Length; i++)
-            {
-                var slot = CreateClueSlot(clues[i]);
-                _inventory.Add(slot);
-                _iconSlots.Add(slot);
-            }
-
-            UpdateCounter(0, clues.Length);
-
-            if (_proceedButton != null)
-            {
-                _proceedButton.style.display = DisplayStyle.None;
-            }
-        }
-
-        public void OnClueFound(ClueData clue)
-        {
-            Debug.Log($"[ClueSearchUI] OnClueFound() called for clue: {(clue != null ? clue.ClueName : "NULL")}");
-
-            if (!_isBound) BindUI();
-
-            int foundCount = ClueManager.Instance != null ? ClueManager.Instance.FoundCount : 0;
-            int totalCount = ClueManager.Instance != null ? ClueManager.Instance.TotalClueCount : 0;
-
-            Debug.Log($"[ClueSearchUI] Updating counter to: {foundCount}/{totalCount}");
-            UpdateCounter(foundCount, totalCount);
-            UpdateIconSlot(clue);
-
-            if (ClueManager.Instance != null && ClueManager.Instance.AllCluesFound)
-            {
-                ShowProceedButton();
-            }
-        }
+        #region Unity Lifecycle
 
         private void OnEnable()
         {
-            Debug.Log("[ClueSearchUI] OnEnable() called.");
             BindUI();
-            SubscribeToEvents();
-            Debug.Log($"[ClueSearchUI] OnEnable complete. _isSubscribed={_isSubscribed}, ClueManager.Instance={(ClueManager.Instance != null ? "exists" : "null")}");
-        }
-
-        private void Update()
-        {
-            // Retry subscription if ClueManager became available after OnEnable
-            if (!_isSubscribed && ClueManager.Instance != null)
-            {
-                Debug.Log("[ClueSearchUI] Update() - Retrying event subscription...");
-                SubscribeToEvents();
-            }
-        }
-
-        private void SubscribeToEvents()
-        {
-            if (ClueManager.Instance == null)
-            {
-                Debug.Log("[ClueSearchUI] SubscribeToEvents() - ClueManager.Instance is null, cannot subscribe.");
-                return;
-            }
-            if (_isSubscribed)
-            {
-                Debug.Log("[ClueSearchUI] SubscribeToEvents() - Already subscribed.");
-                return;
-            }
-
-            Debug.Log("[ClueSearchUI] SubscribeToEvents() - Subscribing to ClueManager events...");
-            ClueManager.Instance.OnClueFoundEvent += OnClueFound;
-            ClueManager.Instance.OnAllCluesFoundEvent += OnAllCluesFound;
-            _isSubscribed = true;
-            Debug.Log("[ClueSearchUI] SubscribeToEvents() - Subscription complete!");
+            SubscribeToClueService();
         }
 
         private void OnDisable()
         {
-            Debug.Log("[ClueSearchUI] OnDisable() called - unsubscribing from events.");
-            if (ClueManager.Instance != null)
-            {
-                ClueManager.Instance.OnClueFoundEvent -= OnClueFound;
-                ClueManager.Instance.OnAllCluesFoundEvent -= OnAllCluesFound;
-            }
-            _isSubscribed = false;
+            UnsubscribeFromClueService();
             UnbindUI();
         }
+
+        #endregion
+
+        #region UI Binding
 
         private void BindUI()
         {
@@ -126,9 +56,11 @@ namespace CriminalCase2.UI
             if (_proceedButton != null)
             {
                 _proceedButton.clicked += OnProceedClicked;
+                _proceedButton.style.display = DisplayStyle.None;
             }
 
             _isBound = true;
+            LoggingUtility.LogUI("ClueSearchUI bound successfully", LogLevel.Debug);
         }
 
         private void UnbindUI()
@@ -138,124 +70,232 @@ namespace CriminalCase2.UI
                 _proceedButton.clicked -= OnProceedClicked;
             }
             _isBound = false;
-            _isSubscribed = false;
+        }
+
+        #endregion
+
+        #region Service Integration
+
+        private void SubscribeToClueService()
+        {
+            // Get service from ServiceLocator
+            _clueService = ServiceLocator.Get<IClueService>();
+
+            // If not available yet, wait for it
+            if (_clueService == null)
+            {
+                ServiceLocator.WhenAvailable<IClueService>(service =>
+                {
+                    _clueService = service;
+                    RegisterClueEvents();
+                    RefreshUI();
+                });
+            }
+            else
+            {
+                RegisterClueEvents();
+                RefreshUI();
+            }
+        }
+
+        private void RegisterClueEvents()
+        {
+            if (_clueService == null) return;
+
+            _clueService.OnClueFound += OnClueFound;
+            _clueService.OnAllCluesFound += OnAllCluesFound;
+            _clueService.OnCluesInitialized += OnCluesInitialized;
+
+            LoggingUtility.LogUI("Subscribed to ClueService events", LogLevel.Debug);
+        }
+
+        private void UnsubscribeFromClueService()
+        {
+            if (_clueService == null) return;
+
+            _clueService.OnClueFound -= OnClueFound;
+            _clueService.OnAllCluesFound -= OnAllCluesFound;
+            _clueService.OnCluesInitialized -= OnCluesInitialized;
+        }
+
+        #endregion
+
+        #region Initialization
+
+        /// <summary>
+        /// Initialize the UI with level clues.
+        /// Called by UIManager when showing the clue search panel.
+        /// </summary>
+        public void Initialize(ClueData[] clues)
+        {
+            if (!_isBound) BindUI();
+            if (_inventory == null) return;
+
+            // Clear existing slots
+            _inventory.Clear();
+            _iconSlots.Clear();
+
+            if (clues == null) return;
+
+            // Create slots for each clue
+            for (int i = 0; i < clues.Length; i++)
+            {
+                var slot = CreateClueSlot(clues[i]);
+                _inventory.Add(slot);
+                _iconSlots.Add(slot);
+            }
+
+            UpdateCounter(0, clues.Length);
+
+            // Hide proceed button initially
+            if (_proceedButton != null)
+            {
+                _proceedButton.style.display = DisplayStyle.None;
+            }
+
+            LoggingUtility.LogUI($"Initialized with {clues.Length} clue slots");
         }
 
         private VisualElement CreateClueSlot(ClueData clue)
         {
-            Debug.Log($"[ClueSearchUI] Creating slot for clue: {clue?.ClueName}, Icon: {(clue?.ClueIcon != null ? "YES" : "NULL")}");
-
             // Main slot container
             var slot = new VisualElement();
             slot.AddToClassList("clue-icon-slot");
-            slot.style.display = DisplayStyle.Flex;
             slot.userData = clue;
 
-            // Content container for silhouette/icon and label
+            // Content container
             var content = new VisualElement();
             content.AddToClassList("clue-slot-content");
-            content.style.display = DisplayStyle.Flex;
             slot.Add(content);
 
-            // Silhouette background (distinguishable background)
+            // Silhouette background
             var silhouetteBg = new VisualElement();
             silhouetteBg.AddToClassList("clue-silhouette-bg");
-            silhouetteBg.style.display = DisplayStyle.Flex;
             content.Add(silhouetteBg);
 
-            // Silhouette icon (darkened version of clue)
+            // Silhouette icon
             var silhouette = new VisualElement();
             silhouette.AddToClassList("clue-silhouette");
-            silhouette.style.display = DisplayStyle.Flex;
             silhouetteBg.Add(silhouette);
 
-            // Set the silhouette sprite if clue has an icon
+            // Set silhouette sprite
             if (clue.ClueIcon != null)
             {
                 silhouette.style.backgroundImage = new StyleBackground(clue.ClueIcon);
-                Debug.Log($"[ClueSearchUI] Set silhouette image for: {clue.ClueName}");
-            }
-            else
-            {
-                Debug.LogWarning($"[ClueSearchUI] No ClueIcon for: {clue.ClueName}");
             }
 
-            // Clue name label (shown as hint)
+            // Clue name label
             var nameLabel = new Label(clue.ClueName);
             nameLabel.AddToClassList("clue-hint-label");
-            nameLabel.style.display = DisplayStyle.Flex;
             content.Add(nameLabel);
-
-            Debug.Log($"[ClueSearchUI] Slot created successfully for: {clue.ClueName}");
 
             return slot;
         }
 
+        #endregion
+
+        #region Event Handlers
+
+        private void OnCluesInitialized(ClueData[] clues)
+        {
+            Initialize(clues);
+        }
+
+        private void OnClueFound(ClueData clue)
+        {
+            LoggingUtility.LogClue($"UI received clue found event: {clue?.ClueName}");
+
+            if (clue == null) return;
+
+            RefreshUI();
+            UpdateIconSlot(clue);
+        }
+
+        private void OnAllCluesFound()
+        {
+            LoggingUtility.LogClue("All clues found - showing proceed button");
+            ShowProceedButton();
+        }
+
+        private void OnProceedClicked()
+        {
+            if (_clueService?.AllCluesFound == true)
+            {
+                GameManager.Instance?.SetState(GameState.Deduction);
+            }
+        }
+
+        #endregion
+
+        #region UI Updates
+
+        private void RefreshUI()
+        {
+            if (_clueService == null) return;
+
+            UpdateCounter(_clueService.FoundCount, _clueService.TotalCount);
+
+            // Update all found clue slots
+            foreach (var clue in _clueService.FoundClues)
+            {
+                UpdateIconSlot(clue);
+            }
+
+            // Show proceed button if all clues found
+            if (_clueService.AllCluesFound)
+            {
+                ShowProceedButton();
+            }
+        }
+
         private void UpdateIconSlot(ClueData foundClue)
         {
-            Debug.Log($"[ClueSearchUI] UpdateIconSlot called for: {foundClue?.ClueName}");
+            if (foundClue == null) return;
 
             foreach (var slot in _iconSlots)
             {
                 var clue = slot.userData as ClueData;
                 if (clue == foundClue)
                 {
-                    Debug.Log($"[ClueSearchUI] Found matching slot for: {foundClue.ClueName}");
-
-                    // Add found class for styling
+                    // Mark as found
                     slot.AddToClassList("found");
 
-                    // Get the content container
+                    // Get content container
                     var content = slot.Q(className: "clue-slot-content");
-                    if (content == null)
-                    {
-                        Debug.LogError("[ClueSearchUI] content container not found!");
-                        continue;
-                    }
+                    if (content == null) continue;
 
-                    // Clear the content
+                    // Clear and rebuild as found state
                     content.Clear();
 
-                    // Create found state container
                     var foundContainer = new VisualElement();
                     foundContainer.AddToClassList("clue-found-container");
-                    foundContainer.style.display = DisplayStyle.Flex;
                     content.Add(foundContainer);
 
-                    // Add the actual clue icon
+                    // Add icon
                     if (foundClue.ClueIcon != null)
                     {
                         var iconContainer = new VisualElement();
                         iconContainer.AddToClassList("clue-icon-container");
-                        iconContainer.style.display = DisplayStyle.Flex;
                         foundContainer.Add(iconContainer);
 
                         var iconImage = new VisualElement();
                         iconImage.AddToClassList("clue-icon-image");
-                        iconImage.style.display = DisplayStyle.Flex;
                         iconImage.style.backgroundImage = new StyleBackground(foundClue.ClueIcon);
                         iconContainer.Add(iconImage);
-
-                        Debug.Log($"[ClueSearchUI] Set found icon for: {foundClue.ClueName}");
                     }
 
-                    // Add found label with actual clue name
+                    // Add label
                     var foundLabel = new Label(foundClue.ClueName);
                     foundLabel.AddToClassList("clue-found-label");
-                    foundLabel.style.display = DisplayStyle.Flex;
                     foundContainer.Add(foundLabel);
 
-                    // Add found badge
+                    // Add checkmark badge
                     var foundBadge = new VisualElement();
                     foundBadge.AddToClassList("clue-found-badge");
-                    foundBadge.style.display = DisplayStyle.Flex;
                     var checkmark = new Label("✓");
                     checkmark.AddToClassList("clue-found-checkmark");
-                    checkmark.style.display = DisplayStyle.Flex;
                     foundBadge.Add(checkmark);
                     slot.Add(foundBadge);
-
-                    Debug.Log($"[ClueSearchUI] Slot updated successfully for: {foundClue.ClueName}");
 
                     break;
                 }
@@ -278,17 +318,6 @@ namespace CriminalCase2.UI
             }
         }
 
-        private void OnAllCluesFound()
-        {
-            ShowProceedButton();
-        }
-
-        private void OnProceedClicked()
-        {
-            if (ClueManager.Instance != null && ClueManager.Instance.AllCluesFound)
-            {
-                GameManager.Instance?.SetState(GameState.Deduction);
-            }
-        }
+        #endregion
     }
 }

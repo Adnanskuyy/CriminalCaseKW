@@ -4,6 +4,9 @@ using CriminalCase2.Data;
 using CriminalCase2.UI;
 using System.Collections.Generic;
 using System;
+using CriminalCase2.Services;
+using CriminalCase2.Services.Interfaces;
+using CriminalCase2.Utils;
 
 namespace CriminalCase2.Managers
 {
@@ -22,11 +25,11 @@ namespace CriminalCase2.Managers
         [Header("Transition")]
         [SerializeField] private FadeTransition _fadeTransition;
 
-        private GameState _currentState;
+        private IGameStateService _stateService;
         private List<VerdictRecord> _verdictRecords = new List<VerdictRecord>();
         private bool _isTransitioning;
 
-        public GameState CurrentState => _currentState;
+        public GameState CurrentState => _stateService?.CurrentState ?? GameState.IntroVideo;
         public LevelConfig CurrentLevel => _currentLevelIndex < _levels.Count ? _levels[_currentLevelIndex] : null;
         public int CurrentLevelIndex => _currentLevelIndex;
         public IReadOnlyList<VerdictRecord> VerdictRecords => _verdictRecords.AsReadOnly();
@@ -45,17 +48,31 @@ namespace CriminalCase2.Managers
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            InitializeStateService();
         }
 
         private void Start()
         {
-            SetState(GameState.IntroVideo);
+            // Initialize state machine with IntroVideo state
+            _stateService?.Initialize(GameState.IntroVideo);
+        }
+
+        private void InitializeStateService()
+        {
+            // Get or create GameStateService
+            _stateService = ServiceLocator.Get<IGameStateService>();
+            if (_stateService == null)
+            {
+                _stateService = new GameStateService();
+                ServiceLocator.Register<IGameStateService>(_stateService);
+            }
         }
 
         public void SetState(GameState newState)
         {
-            _currentState = newState;
-            Debug.Log($"[GameManager] State changed to: {newState}");
+            _stateService?.TransitionTo(newState);
+            LoggingUtility.LogState($"Requested state transition to: {newState}");
         }
 
         public void RecordVerdict(SuspectData suspect, SuspectRole playerChoice)
@@ -72,7 +89,7 @@ namespace CriminalCase2.Managers
         {
             if (_isTransitioning)
             {
-                Debug.LogWarning("[GameManager] Already transitioning levels!");
+                LoggingUtility.Warning("GameManager", "Already transitioning levels!");
                 return;
             }
 
@@ -80,7 +97,7 @@ namespace CriminalCase2.Managers
 
             if (_currentLevelIndex >= _levels.Count)
             {
-                Debug.Log("[GameManager] All levels completed!");
+                LoggingUtility.LogState("All levels completed!");
                 _currentLevelIndex = _levels.Count - 1;
                 onComplete?.Invoke();
                 return;
@@ -97,7 +114,7 @@ namespace CriminalCase2.Managers
         {
             if (_isTransitioning)
             {
-                Debug.LogWarning("[GameManager] Already transitioning!");
+                LoggingUtility.Warning("GameManager", "Already transitioning!");
                 return;
             }
 
@@ -111,13 +128,13 @@ namespace CriminalCase2.Managers
         {
             if (_isTransitioning)
             {
-                Debug.LogWarning("[GameManager] Already transitioning!");
+                LoggingUtility.Warning("GameManager", "Already transitioning!");
                 return;
             }
 
             if (levelIndex < 0 || levelIndex >= _levels.Count)
             {
-                Debug.LogError($"[GameManager] Invalid level index: {levelIndex}");
+                LoggingUtility.Error("GameManager", $"Invalid level index: {levelIndex}");
                 return;
             }
 
@@ -151,7 +168,7 @@ namespace CriminalCase2.Managers
                     {
                         _isTransitioning = false;
                         onComplete?.Invoke();
-                        Debug.Log($"[GameManager] Transition to Level {_currentLevelIndex + 1} complete!");
+                        LoggingUtility.LogState($"Transition to Level {_currentLevelIndex + 1} complete!");
                     }
                 );
             }
@@ -191,7 +208,7 @@ namespace CriminalCase2.Managers
             }
             else
             {
-                Debug.Log("[GameManager] Game Complete! All levels finished.");
+                LoggingUtility.LogState("Game Complete! All levels finished.");
                 // TODO: Show game complete screen
             }
         }
@@ -200,7 +217,7 @@ namespace CriminalCase2.Managers
         {
             if (_levels == null || _levels.Count == 0)
             {
-                Debug.LogWarning("[GameManager] No levels assigned in inspector.");
+                LoggingUtility.Warning("GameManager", "No levels assigned in inspector.");
             }
         }
     }

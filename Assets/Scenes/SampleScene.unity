@@ -188,6 +188,55 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+--- !u!1 &8986637
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8986639}
+  - component: {fileID: 8986638}
+  m_Layer: 0
+  m_Name: Bootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &8986638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8986637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35714e1e790729a409082479cc6471d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Utils.Bootstrap
+  _initialLogLevel: 1
+  _enableTimestamp: 1
+  _registerGameStateService: 1
+  _registerClueService: 1
+  _registerVideoPlayerService: 1
+--- !u!4 &8986639
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8986637}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &61519285
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,13 +1082,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.VideoPlayerUI
   _videoPlayer: {fileID: 755927287}
-  _playScreen: {fileID: 0}
-  _videoScreen: {fileID: 0}
-  _videoRawImage: {fileID: 0}
-  _playButton: {fileID: 0}
-  _skipButton: {fileID: 0}
-  _titleLabel: {fileID: 0}
-  _subtitleLabel: {fileID: 0}
+  _playScreen: {fileID: 1783626581}
+  _videoScreen: {fileID: 414536747}
+  _videoRawImage: {fileID: 175838872}
+  _playButton: {fileID: 1670500083}
+  _skipButton: {fileID: 1338875916}
+  _titleLabel: {fileID: 61519287}
+  _subtitleLabel: {fileID: 822913973}
   _titleText: Criminal Case 2
   _subtitleText: Klik di bawah untuk memulai investigasi
   _playButtonText: Putar Intro
@@ -1061,7 +1110,7 @@ VideoPlayer:
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
-  m_RenderMode: 3
+  m_RenderMode: 4
   m_AspectRatio: 3
   m_DataSource: 0
   m_TimeUpdateMode: 2
@@ -1851,8 +1900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edcf4778e0f27b49b42ea396ced4a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.UIManager
-  _videoPlayerPanel: {fileID: 0}
-  _tutorialPanel: {fileID: 2137827712}
+  _videoPlayerPanel: {fileID: 755927283}
   _suspectDetailPanel: {fileID: 1422299053}
   _checkStatusPanel: {fileID: 1489806697}
   _resultPanel: {fileID: 663030570}
@@ -1872,7 +1920,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 755927284}
-  - {fileID: 2137827711}
   - {fileID: 4175042}
   - {fileID: 1422299052}
   - {fileID: 663030569}
@@ -2126,75 +2173,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1774677760}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2137827710
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2137827711}
-  - component: {fileID: 2137827712}
-  - component: {fileID: 2137827713}
-  m_Layer: 0
-  m_Name: TutorialPanel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2137827711
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137827710}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1774677760}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2137827712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137827710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: b3608ca492064904ca937cba467f7fcd, type: 3}
-  m_SortingOrder: 0
-  m_Position: 0
-  m_WorldSpaceSizeMode: 0
-  m_WorldSpaceWidth: 1920
-  m_WorldSpaceHeight: 1080
-  m_PivotReferenceSize: 0
-  m_Pivot: 0
-  m_WorldSpaceCollider: {fileID: 0}
---- !u!114 &2137827713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137827710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 852c30a667340e346bd29cd443d50d2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.TutorialUI
-  _document: {fileID: 2137827712}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2207,3 +2185,4 @@ SceneRoots:
   - {fileID: 1632665487}
   - {fileID: 907467684}
   - {fileID: 131479886}
+  - {fileID: 8986639}
