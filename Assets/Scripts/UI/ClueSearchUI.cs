@@ -129,7 +129,12 @@ namespace CriminalCase2.UI
         public void Initialize(ClueData[] clues)
         {
             if (!_isBound) BindUI();
-            if (_inventory == null) return;
+            if (_inventory == null) BindUI(); // Retry binding once
+            if (_inventory == null)
+            {
+                LoggingUtility.Error("ClueSearchUI", "Failed to find clue-inventory after retry. UI not initialized.");
+                return;
+            }
 
             // Clear existing slots
             _inventory.Clear();
@@ -179,9 +184,9 @@ namespace CriminalCase2.UI
             silhouetteBg.Add(silhouette);
 
             // Set silhouette sprite
-            if (clue.ClueIcon != null)
+            if (clue.ClueSprite != null)
             {
-                silhouette.style.backgroundImage = new StyleBackground(clue.ClueIcon);
+                silhouette.style.backgroundImage = new StyleBackground(clue.ClueSprite);
             }
 
             // Clue name label
@@ -272,7 +277,7 @@ namespace CriminalCase2.UI
                     content.Add(foundContainer);
 
                     // Add icon
-                    if (foundClue.ClueIcon != null)
+                    if (foundClue.ClueSprite != null)
                     {
                         var iconContainer = new VisualElement();
                         iconContainer.AddToClassList("clue-icon-container");
@@ -280,7 +285,7 @@ namespace CriminalCase2.UI
 
                         var iconImage = new VisualElement();
                         iconImage.AddToClassList("clue-icon-image");
-                        iconImage.style.backgroundImage = new StyleBackground(foundClue.ClueIcon);
+                        iconImage.style.backgroundImage = new StyleBackground(foundClue.ClueSprite);
                         iconContainer.Add(iconImage);
                     }
 

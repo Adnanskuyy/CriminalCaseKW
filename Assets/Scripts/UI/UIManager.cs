@@ -260,7 +260,12 @@ namespace CriminalCase2.UI
         public void ShowClueSearch()
         {
             LoggingUtility.LogUI("ShowClueSearch() called.");
-            
+
+            // Activate panel FIRST so VisualTree is ready before Initialize
+            LoggingUtility.LogUI("Activating ClueSearchPanel GameObject...");
+            SetUIToolkitPanelActive(_clueSearchPanel, true);
+
+            // THEN initialize after panel is active
             var clueService = ServiceLocator.Get<IClueService>();
             if (clueService != null && GameManager.Instance?.CurrentLevel != null)
             {
@@ -268,9 +273,6 @@ namespace CriminalCase2.UI
                 clueService.Initialize(GameManager.Instance.CurrentLevel.Clues);
                 _clueSearchUI?.Initialize(GameManager.Instance.CurrentLevel.Clues);
             }
-            
-            LoggingUtility.LogUI("Activating ClueSearchPanel GameObject...");
-            SetUIToolkitPanelActive(_clueSearchPanel, true);
         }
 
         public void HideClueSearch()

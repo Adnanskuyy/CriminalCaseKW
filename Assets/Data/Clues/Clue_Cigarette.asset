@@ -16,6 +16,6 @@ MonoBehaviour:
   _description: Sebuah puntung rokok yang ditemukan di lokasi kejadian. Rokok ini
     mungkin meninggalkan jejak DNA.
   _clueSprite: {fileID: 5348037993738455246, guid: 89d750c6f76267a42ab825ff1371dea5, type: 3}
-  _clueIcon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  _clueIcon: {fileID: 5348037993738455246, guid: 89d750c6f76267a42ab825ff1371dea5, type: 3}
   _linkedSuspectIndex: 0
   _isDrugTestClue: 0

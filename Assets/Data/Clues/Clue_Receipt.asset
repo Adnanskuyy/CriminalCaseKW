@@ -16,6 +16,6 @@ MonoBehaviour:
   _description: Struk pembelian dari toko yang mencurigakan, ditemukan tersembunyi
     di bawah meja.
   _clueSprite: {fileID: 7075882791079392868, guid: 4b06231f8a51077488cd1cac18a5a32c, type: 3}
-  _clueIcon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  _clueIcon: {fileID: 7075882791079392868, guid: 4b06231f8a51077488cd1cac18a5a32c, type: 3}
   _linkedSuspectIndex: 3
   _isDrugTestClue: 0

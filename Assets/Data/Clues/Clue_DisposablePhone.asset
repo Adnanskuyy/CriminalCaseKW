@@ -15,6 +15,6 @@ MonoBehaviour:
   _clueName: Telepon Sekali Pakai
   _description: Sebuah telepon sekali pakai yang berisi pesan-pesan mencurigakan.
   _clueSprite: {fileID: 6143238754363881454, guid: 3a15eb67fbc3bff4b920a7a6c1fce759, type: 3}
-  _clueIcon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  _clueIcon: {fileID: 6143238754363881454, guid: 3a15eb67fbc3bff4b920a7a6c1fce759, type: 3}
   _linkedSuspectIndex: 2
   _isDrugTestClue: 0
