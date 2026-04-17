@@ -4,6 +4,7 @@
         <ui:VisualElement name="check-status-content" class="check-status-content">
             <ui:VisualElement name="check-status-header" class="check-status-header">
                 <ui:Label name="check-status-title" text="Deduksi Saat Ini" class="check-status-title" />
+                <ui:Label name="drug-test-global-counter" text="Tes Narkoba Tersisa: 2/2" class="drug-test-global-counter" />
                 <ui:Button name="check-status-close-button" text="X" class="close-button" />
             </ui:VisualElement>
             <ui:ScrollView name="check-status-scroll" class="check-status-scroll">

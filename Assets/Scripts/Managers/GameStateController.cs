@@ -7,10 +7,6 @@ using CriminalCase2.Utils;
 
 namespace CriminalCase2.Managers
 {
-    /// <summary>
-    /// Controller that manages game state transitions and UI responses.
-    /// Uses event-driven architecture via GameStateMachine.
-    /// </summary>
     public class GameStateController : MonoBehaviour
     {
         private IGameStateService _stateService;
@@ -33,7 +29,6 @@ namespace CriminalCase2.Managers
 
         private void InitializeStateService()
         {
-            // Get or create GameStateService
             _stateService = ServiceLocator.Get<IGameStateService>();
             if (_stateService == null)
             {
@@ -49,14 +44,12 @@ namespace CriminalCase2.Managers
         {
             if (_stateService == null) return;
 
-            // Subscribe to state entry events
             _stateService.OnEnterIntroVideo += HandleIntroVideo;
             _stateService.OnEnterClueSearch += HandleClueSearch;
             _stateService.OnEnterClueMatching += HandleClueMatching;
             _stateService.OnEnterRoleAssignment += HandleRoleAssignment;
             _stateService.OnEnterResults += HandleResults;
 
-            // Subscribe to state transition events
             _stateService.OnStateChanged += OnStateChanged;
             _stateService.OnStateTransitionComplete += OnStateTransitionComplete;
 
@@ -84,7 +77,7 @@ namespace CriminalCase2.Managers
         private void HandleIntroVideo()
         {
             LoggingUtility.LogState("Handling IntroVideo state entry");
-            
+
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowVideoPlayer();
@@ -94,7 +87,7 @@ namespace CriminalCase2.Managers
         private void HandleClueSearch()
         {
             LoggingUtility.LogState("Handling ClueSearch state entry");
-            
+
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowClueSearch();
@@ -104,7 +97,7 @@ namespace CriminalCase2.Managers
         private void HandleClueMatching()
         {
             LoggingUtility.LogState("Handling ClueMatching state entry");
-            
+
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowClueMatching();
@@ -114,22 +107,38 @@ namespace CriminalCase2.Managers
         private void HandleRoleAssignment()
         {
             LoggingUtility.LogState("Handling RoleAssignment state entry");
-            
+
             if (LevelManager.Instance != null)
             {
                 LevelManager.Instance.RevealSuspects();
             }
 
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            if (roleService != null && !roleService.IsInitialized)
+            {
+                if (GameManager.Instance?.CurrentLevel != null)
+                {
+                    var level = GameManager.Instance.CurrentLevel;
+                    roleService.Initialize(level.Suspects, level.MaxDrugTestsPerLevel);
+                    LoggingUtility.LogState("RoleAssignmentService initialized in HandleRoleAssignment");
+                }
+            }
+
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowStatusHUD();
+                UIManager.Instance.ShowRoleAssignment();
             }
         }
 
         private void HandleResults()
         {
             LoggingUtility.LogState("Handling Results state entry");
-            
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.RebuildVerdictRecordsFromService();
+            }
+
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowResults();

@@ -47,10 +47,8 @@ namespace CriminalCase2.UI
         {
             InitializePanels();
             
-            // Ensure services are available
             EnsureServicesInitialized();
             
-            // Show correct panel based on current game state
             ShowCorrectPanelForCurrentState();
         }
 
@@ -80,7 +78,7 @@ namespace CriminalCase2.UI
                     break;
                 case GameState.RoleAssignment:
                     HideAllPanels();
-                    ShowStatusHUD();
+                    ShowRoleAssignment();
                     break;
                 case GameState.Results:
                     HideAllPanels();
@@ -94,7 +92,6 @@ namespace CriminalCase2.UI
 
         private void EnsureServicesInitialized()
         {
-            // Ensure ClueService is registered
             if (!ServiceLocator.IsRegistered<IClueService>())
             {
                 var clueService = new ClueService();
@@ -102,7 +99,6 @@ namespace CriminalCase2.UI
                 LoggingUtility.LogDebug("UIManager", "ClueService registered");
             }
 
-            // Ensure GameStateService is registered
             if (!ServiceLocator.IsRegistered<IGameStateService>())
             {
                 var gameStateService = new GameStateService();
@@ -110,7 +106,20 @@ namespace CriminalCase2.UI
                 LoggingUtility.LogDebug("UIManager", "GameStateService registered");
             }
 
-            // Ensure VideoPlayerService is registered
+            if (!ServiceLocator.IsRegistered<IClueMatchingService>())
+            {
+                var matchingService = new ClueMatchingService();
+                ServiceLocator.Register<IClueMatchingService>(matchingService);
+                LoggingUtility.LogDebug("UIManager", "ClueMatchingService registered");
+            }
+
+            if (!ServiceLocator.IsRegistered<IRoleAssignmentService>())
+            {
+                var roleService = new RoleAssignmentService();
+                ServiceLocator.Register<IRoleAssignmentService>(roleService);
+                LoggingUtility.LogDebug("UIManager", "RoleAssignmentService registered");
+            }
+
             if (!ServiceLocator.IsRegistered<IVideoPlayerService>())
             {
                 var videoService = FindFirstObjectByType<VideoPlayerService>();
@@ -226,12 +235,13 @@ namespace CriminalCase2.UI
         {
             HideAllPanels();
             SetUIToolkitPanelActive(_checkStatusPanel, true);
-            _checkStatusUI?.Populate(GameManager.Instance.VerdictRecords);
+            _checkStatusUI?.Refresh();
         }
 
         public void HideCheckStatus()
         {
             SetUIToolkitPanelActive(_checkStatusPanel, false);
+            ShowStatusHUD();
         }
 
         public void ShowResults()
@@ -246,7 +256,6 @@ namespace CriminalCase2.UI
         {
             if (_statusHUDUI == null) return;
             
-            // Only show StatusHUD during RoleAssignment or Results phase
             if (GameManager.Instance != null && 
                 GameManager.Instance.CurrentState != GameState.RoleAssignment &&
                 GameManager.Instance.CurrentState != GameState.Results)
@@ -268,15 +277,19 @@ namespace CriminalCase2.UI
             _statusHUDUI?.UpdateButtonText();
         }
 
+        public void ShowRoleAssignment()
+        {
+            HideAllPanels();
+            ShowStatusHUD();
+            LoggingUtility.LogUI("RoleAssignment phase: showing StatusHUD");
+        }
+
         public void ShowClueSearch()
         {
             LoggingUtility.LogUI("ShowClueSearch() called.");
 
-            // Activate panel FIRST so VisualTree is ready before Initialize
-            LoggingUtility.LogUI("Activating ClueSearchPanel GameObject...");
             SetUIToolkitPanelActive(_clueSearchPanel, true);
 
-            // THEN initialize after panel is active
             var clueService = ServiceLocator.Get<IClueService>();
             if (clueService != null && GameManager.Instance?.CurrentLevel != null)
             {
@@ -316,6 +329,7 @@ namespace CriminalCase2.UI
             SetUIToolkitPanelActive(_suspectDetailPanel, false);
             SetUIToolkitPanelActive(_checkStatusPanel, false);
             SetUIToolkitPanelActive(_resultPanel, false);
+            SetUIToolkitPanelActive(_statusHUD, false);
             SetUIToolkitPanelActive(_clueSearchPanel, false);
             SetUIToolkitPanelActive(_clueMatchingPanel, false);
         }
@@ -323,9 +337,6 @@ namespace CriminalCase2.UI
         private void SetUIToolkitPanelActive(UIDocument panel, bool active)
         {
             if (panel == null) return;
-            
-            // Enable/disable the entire GameObject, not just the visual element
-            // This prevents OnEnable() from firing on hidden panels and blocking input
             panel.gameObject.SetActive(active);
         }
 

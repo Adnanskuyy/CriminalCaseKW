@@ -5,10 +5,6 @@ using CriminalCase2.Utils;
 
 namespace CriminalCase2.Utils
 {
-    /// <summary>
-    /// Bootstrap component that initializes all core services at game start.
-    /// Attach this to a GameObject in your initial scene.
-    /// </summary>
     public class Bootstrap : MonoBehaviour
     {
         [Header("Logging")]
@@ -19,6 +15,7 @@ namespace CriminalCase2.Utils
         [SerializeField] private bool _registerGameStateService = true;
         [SerializeField] private bool _registerClueService = true;
         [SerializeField] private bool _registerVideoPlayerService = true;
+        [SerializeField] private bool _registerRoleAssignmentService = true;
 
         private void Awake()
         {
@@ -38,7 +35,6 @@ namespace CriminalCase2.Utils
 
         private void InitializeServices()
         {
-            // Register GameStateService
             if (_registerGameStateService && !ServiceLocator.IsRegistered<IGameStateService>())
             {
                 var gameStateService = new GameStateService();
@@ -46,7 +42,6 @@ namespace CriminalCase2.Utils
                 LoggingUtility.LogDebug("Bootstrap", "GameStateService registered");
             }
 
-            // Register ClueService
             if (_registerClueService && !ServiceLocator.IsRegistered<IClueService>())
             {
                 var clueService = new ClueService();
@@ -54,7 +49,13 @@ namespace CriminalCase2.Utils
                 LoggingUtility.LogDebug("Bootstrap", "ClueService registered");
             }
 
-            // Register VideoPlayerService (requires MonoBehaviour, so we create a GameObject)
+            if (_registerRoleAssignmentService && !ServiceLocator.IsRegistered<IRoleAssignmentService>())
+            {
+                var roleService = new RoleAssignmentService();
+                ServiceLocator.Register<IRoleAssignmentService>(roleService);
+                LoggingUtility.LogDebug("Bootstrap", "RoleAssignmentService registered");
+            }
+
             if (_registerVideoPlayerService && !ServiceLocator.IsRegistered<IVideoPlayerService>())
             {
                 var videoService = FindFirstObjectByType<VideoPlayerService>();

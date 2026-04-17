@@ -3,6 +3,7 @@ using CriminalCase2.Data;
 using CriminalCase2.Interactables;
 using CriminalCase2.Services;
 using CriminalCase2.Services.Interfaces;
+using CriminalCase2.Utils;
 using System.Collections.Generic;
 
 namespace CriminalCase2.Managers
@@ -16,32 +17,44 @@ namespace CriminalCase2.Managers
         
         private LevelConfig _currentLevelConfig;
         private GameObject _currentLevelInstance;
-        private List<SuspectData> _judgedSuspects = new List<SuspectData>();
-        private Dictionary<SuspectData, DrugTestResult> _drugTestResults = new Dictionary<SuspectData, DrugTestResult>();
-        private int _drugTestsRemaining;
 
         public LevelConfig CurrentLevelConfig => _currentLevelConfig;
         public GameObject CurrentLevelInstance => _currentLevelInstance;
-        public int DrugTestsRemaining => _drugTestsRemaining;
-        public bool AllSuspectsJudged => _judgedSuspects.Count >= (_currentLevelConfig?.Suspects.Length ?? 0);
-        public int JudgedCount => _judgedSuspects.Count;
-        public int TotalSuspects => _currentLevelConfig?.Suspects.Length ?? 0;
 
-        public bool IsSuspectJudged(SuspectData suspect)
+        public int DrugTestsRemaining
         {
-            return _judgedSuspects.Contains(suspect);
+            get
+            {
+                var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+                return roleService?.DrugTestsRemaining ?? 0;
+            }
         }
 
-        public SuspectRole GetSuspectVerdict(SuspectData suspect)
+        public bool AllSuspectsJudged
         {
-            foreach (var record in GameManager.Instance.VerdictRecords)
+            get
             {
-                if (record.Suspect == suspect)
-                {
-                    return record.PlayerChoice;
-                }
+                var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+                return roleService?.AllRolesAssigned ?? false;
             }
-            return SuspectRole.Normal;
+        }
+
+        public int JudgedCount
+        {
+            get
+            {
+                var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+                return roleService?.AssignedCount ?? 0;
+            }
+        }
+
+        public int TotalSuspects
+        {
+            get
+            {
+                var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+                return roleService?.TotalSuspects ?? (_currentLevelConfig?.Suspects.Length ?? 0);
+            }
         }
 
         private void Awake()
@@ -57,16 +70,12 @@ namespace CriminalCase2.Managers
 
         private void Start()
         {
-            // Load initial level from GameManager
             if (GameManager.Instance != null && GameManager.Instance.CurrentLevel != null)
             {
                 LoadLevel(GameManager.Instance.CurrentLevel);
             }
         }
 
-        /// <summary>
-        /// Load a level by its config
-        /// </summary>
         public void LoadLevel(LevelConfig config)
         {
             if (config == null)
@@ -75,12 +84,10 @@ namespace CriminalCase2.Managers
                 return;
             }
 
-            // Unload current level if any
             UnloadCurrentLevel();
 
             _currentLevelConfig = config;
             
-            // Spawn level prefab
             if (config.LevelPrefab != null)
             {
                 Vector3 spawnPosition = _levelSpawnPoint != null ? _levelSpawnPoint.position : Vector3.zero;
@@ -93,15 +100,11 @@ namespace CriminalCase2.Managers
                 Debug.LogWarning($"[LevelManager] No prefab assigned for level: {config.LevelName}");
             }
 
-            // Initialize level data
             Initialize(config);
             
             Debug.Log($"[LevelManager] Loaded level: {config.LevelName}");
         }
 
-        /// <summary>
-        /// Unload the current level
-        /// </summary>
         public void UnloadCurrentLevel()
         {
             if (_currentLevelInstance != null)
@@ -111,16 +114,18 @@ namespace CriminalCase2.Managers
                 _currentLevelInstance = null;
             }
 
-            _judgedSuspects.Clear();
-            _drugTestResults.Clear();
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            roleService?.Clear();
             _currentLevelConfig = null;
         }
 
         public void Initialize(LevelConfig config)
         {
-            _judgedSuspects.Clear();
-            _drugTestResults.Clear();
-            _drugTestsRemaining = config.MaxDrugTestsPerLevel;
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            if (roleService != null && config.Suspects != null)
+            {
+                roleService.Initialize(config.Suspects, config.MaxDrugTestsPerLevel);
+            }
 
             if (ClueManager.Instance != null && config.Clues != null)
             {
@@ -134,8 +139,11 @@ namespace CriminalCase2.Managers
 
         public void AddBonusDrugTest()
         {
-            _drugTestsRemaining++;
-            Debug.Log($"[LevelManager] Bonus drug test added! Total remaining: {_drugTestsRemaining}");
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            if (roleService != null)
+            {
+                Debug.LogWarning("[LevelManager] AddBonusDrugTest: Feature not directly supported by IRoleAssignmentService. Use ClueData._isDrugTestClue flow instead.");
+            }
         }
 
         private void DeactivateSuspects()
@@ -162,60 +170,54 @@ namespace CriminalCase2.Managers
 
         public void RecordJudgedSuspect(SuspectData suspect, SuspectRole playerChoice)
         {
-            bool isNew = !_judgedSuspects.Contains(suspect);
-            if (isNew)
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            if (roleService != null)
             {
-                _judgedSuspects.Add(suspect);
+                roleService.AssignRole(suspect, playerChoice);
             }
-            GameManager.Instance.RecordVerdict(suspect, playerChoice);
 
-            if (AllSuspectsJudged)
-            {
-                OnAllSuspectsJudged();
-            }
+            GameManager.Instance?.RecordVerdict(suspect, playerChoice);
+        }
+
+        public bool IsSuspectJudged(SuspectData suspect)
+        {
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            return roleService?.IsSuspectAssigned(suspect) ?? false;
+        }
+
+        public SuspectRole GetSuspectVerdict(SuspectData suspect)
+        {
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            var role = roleService?.GetAssignedRole(suspect);
+            return role ?? SuspectRole.Normal;
         }
 
         public bool UseDrugTest()
         {
-            if (_drugTestsRemaining > 0)
-            {
-                _drugTestsRemaining--;
-                return true;
-            }
-
-            Debug.Log("[LevelManager] No drug tests remaining.");
-            return false;
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            return roleService?.DrugTestsRemaining > 0;
         }
 
         public void RecordDrugTest(SuspectData suspect, DrugTestResult result)
         {
-            if (suspect == null) return;
-            _drugTestResults[suspect] = result;
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            roleService?.UseDrugTest(suspect);
         }
 
         public bool HasDrugTestResult(SuspectData suspect)
         {
-            return suspect != null && _drugTestResults.ContainsKey(suspect);
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            return roleService?.HasDrugTestResult(suspect) ?? false;
         }
 
         public DrugTestResult GetDrugTestResult(SuspectData suspect)
         {
-            if (suspect != null && _drugTestResults.TryGetValue(suspect, out var result))
-                return result;
-            return DrugTestResult.Negative;
-        }
-
-        private void OnAllSuspectsJudged()
-        {
-            Debug.Log("[LevelManager] All suspects judged. Waiting for player to check results.");
+            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
+            return roleService?.GetDrugTestResult(suspect) ?? DrugTestResult.Negative;
         }
 
         private void OnValidate()
         {
-            if (_currentLevelConfig == null && GameManager.Instance != null)
-            {
-                // This is just for validation in editor
-            }
         }
     }
 }

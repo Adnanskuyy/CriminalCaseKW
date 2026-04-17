@@ -2,5 +2,6 @@
     <ui:Style src="project://database/Assets/Resources/UI/Common.uss" />
     <ui:VisualElement name="status-hud-panel" class="hud-panel" picking-mode="Ignore">
         <ui:Button name="status-hud-button" text="Cek Status (0/4)" class="status-hud-button" />
+        <ui:Label name="hud-drug-counter" text="Tes Narkoba: 2/2" class="hud-drug-counter" />
     </ui:VisualElement>
 </ui:UXML>

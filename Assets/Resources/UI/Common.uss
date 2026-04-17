@@ -84,6 +84,74 @@
     color: rgb(255, 210, 60);
     font-size: 34px;
     -unity-font-style: bold;
+    flex: 1;
+}
+
+.drug-test-counter-label {
+    color: rgb(100, 200, 255);
+    font-size: 18px;
+    -unity-text-align: middle-center;
+    margin-right: 12px;
+}
+
+.portrait-image {
+    width: 200px;
+    height: 260px;
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.evidence-clue-icons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.evidence-clue-icon {
+    width: 36px;
+    height: 36px;
+    background-color: rgb(50, 80, 60);
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: rgb(80, 140, 100);
+}
+
+.evidence-clue-icon-image {
+    width: 28px;
+    height: 28px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.verdict-button.selected {
+    border-width: 3px;
+    border-color: rgb(255, 255, 255);
+}
+
+.verdict-user.selected {
+    background-color: rgb(220, 60, 60);
+    border-color: rgb(255, 255, 255);
+}
+
+.verdict-dealer.selected {
+    background-color: rgb(220, 170, 40);
+    border-color: rgb(255, 255, 255);
+}
+
+.verdict-normal.selected {
+    background-color: rgb(40, 180, 100);
+    border-color: rgb(255, 255, 255);
+}
+
+.drug-test-result-label.positive {
+    color: rgb(255, 80, 80);
+}
+
+.drug-test-result-label.negative {
+    color: rgb(80, 220, 120);
 }
 
 .close-button {
@@ -351,7 +419,9 @@
     bottom: 24px;
     width: auto;
     height: auto;
-    }
+    flex-direction: column;
+    gap: 8px;
+}
 
 .status-hud-button {
     background-color: rgb(40, 140, 80);
@@ -361,10 +431,19 @@
     -unity-text-align: middle-center;
     padding: 18px 36px;
     border-radius: 30px;
-    }
+}
 
 .status-hud-button:hover {
     background-color: rgb(60, 170, 100);
+}
+
+.hud-drug-counter {
+    color: rgb(100, 200, 255);
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    background-color: rgba(30, 30, 45, 0.95);
+    padding: 8px 16px;
+    border-radius: 16px;
 }
 
 /* ===== Check Status Panel ===== */
@@ -383,6 +462,12 @@
     background-color: rgb(30, 30, 45);
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
+}
+
+.drug-test-global-counter {
+    color: rgb(100, 200, 255);
+    font-size: 18px;
+    -unity-text-align: middle-center;
 }
 
 .check-status-header .close-button {
@@ -426,9 +511,52 @@
 .check-status-entry {
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding: 20px 28px;
     background-color: rgb(50, 50, 70);
     border-radius: 10px;
+    cursor: link;
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.check-status-entry:hover {
+    background-color: rgb(60, 60, 80);
+    border-color: rgb(100, 100, 140);
+}
+
+.check-status-entry-left {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.check-status-portrait {
+    width: 56px;
+    height: 56px;
+    background-color: rgb(60, 60, 80);
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.check-status-portrait-image {
+    width: 56px;
+    height: 56px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.check-status-portrait-initial {
+    color: rgb(180, 180, 200);
+    font-size: 22px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.check-status-entry-info {
+    flex-direction: column;
+    gap: 4px;
 }
 
 .check-status-name {
@@ -437,9 +565,27 @@
     -unity-font-style: bold;
 }
 
+.check-status-drug-result {
+    font-size: 16px;
+}
+
+.check-status-drug-result.positive {
+    color: rgb(255, 80, 80);
+}
+
+.check-status-drug-result.negative {
+    color: rgb(80, 220, 120);
+}
+
 .check-status-verdict {
     color: rgb(215, 215, 215);
     font-size: 22px;
+}
+
+.check-status-verdict.unassigned {
+    color: rgb(140, 140, 160);
+    font-size: 20px;
+    -unity-font-style: italic;
 }
 
 .check-status-empty {

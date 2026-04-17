@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Suspect_EmilyRoss
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
   _suspectName: Emily Ross
-  _portrait: {fileID: 0}
+  _portrait: {fileID: 2800000, guid: 54e5f495cff39fa42b861ea27e71e165, type: 3}
   _description: Bekerja di kafe lokal. Baru pindah ke daerah ini dan masih mengenal
     orang-orang.
   _evidenceText: Tidak ada bukti yang menghubungkan dengan aktivitas ilegal.

@@ -13,12 +13,18 @@ namespace CriminalCase2.UI
     {
         [SerializeField] private UIDocument _document;
 
+        private IRoleAssignmentService _roleService;
+        private IClueMatchingService _matchingService;
         private SuspectData _currentSuspect;
 
         private Label _suspectNameLabel;
+        private Label _drugTestCounterLabel;
         private Label _descriptionLabel;
         private Label _evidenceTextLabel;
+        private VisualElement _evidenceClueIcons;
         private Label _drugTestResultLabel;
+        private VisualElement _portraitImage;
+        private Label _portraitPlaceholder;
         private Button _drugTestButton;
         private Button _verdictUserButton;
         private Button _verdictDealerButton;
@@ -27,26 +33,72 @@ namespace CriminalCase2.UI
 
         private bool _isBound;
 
+        #region Unity Lifecycle
+
+        private void OnEnable()
+        {
+            if (_document != null && _document.rootVisualElement != null)
+                BindUI();
+
+            SubscribeToServices();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromServices();
+            UnbindUI();
+        }
+
+        #endregion
+
+        #region Service Integration
+
+        private void EnsureServices()
+        {
+            if (_roleService == null)
+                _roleService = ServiceLocator.Get<IRoleAssignmentService>();
+
+            if (_matchingService == null)
+                _matchingService = ServiceLocator.Get<IClueMatchingService>();
+        }
+
+        private void SubscribeToServices()
+        {
+            EnsureServices();
+            if (_roleService != null)
+            {
+                _roleService.OnRoleAssigned += OnRoleAssigned;
+                _roleService.OnRoleChanged += OnRoleChanged;
+                _roleService.OnDrugTestUsed += OnDrugTestUsed;
+            }
+        }
+
+        private void UnsubscribeFromServices()
+        {
+            if (_roleService != null)
+            {
+                _roleService.OnRoleAssigned -= OnRoleAssigned;
+                _roleService.OnRoleChanged -= OnRoleChanged;
+                _roleService.OnDrugTestUsed -= OnDrugTestUsed;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
         public void Populate(SuspectData suspect)
         {
             if (!_isBound) BindUI();
+            EnsureServices();
 
             _currentSuspect = suspect;
             UpdateUI();
         }
 
-        private void OnEnable()
-        {
-            if (_document != null && _document.rootVisualElement != null)
-            {
-                BindUI();
-            }
-        }
+        #endregion
 
-        private void OnDisable()
-        {
-            UnbindUI();
-        }
+        #region UI Binding
 
         private void BindUI()
         {
@@ -57,42 +109,35 @@ namespace CriminalCase2.UI
             if (root == null) return;
 
             _suspectNameLabel = root.Q<Label>("suspect-name-label");
+            _drugTestCounterLabel = root.Q<Label>("drug-test-counter-label");
             _descriptionLabel = root.Q<Label>("description-label");
             _evidenceTextLabel = root.Q<Label>("evidence-text-label");
+            _evidenceClueIcons = root.Q<VisualElement>("evidence-clue-icons");
             _drugTestResultLabel = root.Q<Label>("drug-test-result-label");
-
+            _portraitImage = root.Q<VisualElement>("portrait-image");
+            _portraitPlaceholder = root.Q<Label>("portrait-placeholder");
             _drugTestButton = root.Q<Button>("drug-test-button");
+
             if (_drugTestButton != null)
-            {
                 _drugTestButton.clicked += OnDrugTestClicked;
-            }
 
             _verdictUserButton = root.Q<Button>("verdict-user-button");
             if (_verdictUserButton != null)
-            {
                 _verdictUserButton.clicked += () => OnVerdictClicked(SuspectRole.User);
-            }
 
             _verdictDealerButton = root.Q<Button>("verdict-dealer-button");
             if (_verdictDealerButton != null)
-            {
                 _verdictDealerButton.clicked += () => OnVerdictClicked(SuspectRole.Dealer);
-            }
 
             _verdictNormalButton = root.Q<Button>("verdict-normal-button");
             if (_verdictNormalButton != null)
-            {
                 _verdictNormalButton.clicked += () => OnVerdictClicked(SuspectRole.Normal);
-            }
 
             _closeButton = root.Q<Button>("detail-close-button");
             if (_closeButton != null)
-            {
                 _closeButton.clicked += OnCloseClicked;
-            }
 
             _isBound = true;
-            UpdateUI();
         }
 
         private void UnbindUI()
@@ -102,95 +147,136 @@ namespace CriminalCase2.UI
             _isBound = false;
         }
 
+        #endregion
+
+        #region UI Updates
+
         private void UpdateUI()
         {
             if (_currentSuspect == null) return;
+            EnsureServices();
 
-            if (_suspectNameLabel != null) _suspectNameLabel.text = _currentSuspect.SuspectName;
-            if (_descriptionLabel != null) _descriptionLabel.text = _currentSuspect.Description;
+            UpdateSuspectInfo();
+            UpdatePortrait();
+            UpdateDrugTestSection();
+            UpdateEvidenceSection();
+            UpdateVerdictButtons();
+            UpdateDrugTestCounter();
+        }
+
+        private void UpdateSuspectInfo()
+        {
+            if (_suspectNameLabel != null)
+                _suspectNameLabel.text = _currentSuspect.SuspectName;
+
+            if (_descriptionLabel != null)
+                _descriptionLabel.text = _currentSuspect.Description;
+        }
+
+        private void UpdatePortrait()
+        {
+            if (_portraitImage != null)
+            {
+                if (_currentSuspect.Portrait != null)
+                {
+                    _portraitImage.style.backgroundImage = new StyleBackground(_currentSuspect.Portrait);
+                    _portraitImage.style.display = DisplayStyle.Flex;
+                }
+                else
+                {
+                    _portraitImage.style.display = DisplayStyle.None;
+                }
+            }
+
+            if (_portraitPlaceholder != null)
+            {
+                _portraitPlaceholder.style.display = _currentSuspect.Portrait != null
+                    ? DisplayStyle.None
+                    : DisplayStyle.Flex;
+            }
+        }
+
+        private void UpdateDrugTestSection()
+        {
+            bool alreadyTested = _roleService != null && _roleService.HasDrugTestResult(_currentSuspect);
+            bool hasTestsRemaining = _roleService != null && _roleService.DrugTestsRemaining > 0;
+
+            if (_drugTestButton != null)
+                _drugTestButton.SetEnabled(!alreadyTested && hasTestsRemaining);
+
             if (_drugTestResultLabel != null)
             {
-                if (LevelManager.Instance != null && LevelManager.Instance.HasDrugTestResult(_currentSuspect))
+                if (alreadyTested)
                 {
-                    _drugTestResultLabel.text = LevelManager.Instance.GetDrugTestResult(_currentSuspect).ToDisplayName();
+                    var result = _roleService.GetDrugTestResult(_currentSuspect);
+                    _drugTestResultLabel.text = $"Hasil: {result.ToDisplayName()}";
+                    _drugTestResultLabel.RemoveFromClassList("positive");
+                    _drugTestResultLabel.RemoveFromClassList("negative");
+                    _drugTestResultLabel.AddToClassList(result == DrugTestResult.Positive ? "positive" : "negative");
                 }
                 else
                 {
                     _drugTestResultLabel.text = string.Empty;
+                    _drugTestResultLabel.RemoveFromClassList("positive");
+                    _drugTestResultLabel.RemoveFromClassList("negative");
                 }
             }
-
-            UpdateEvidenceSection();
-
-            if (_drugTestButton != null)
-            {
-                bool alreadyTested = LevelManager.Instance != null && LevelManager.Instance.HasDrugTestResult(_currentSuspect);
-                bool hasTestsRemaining = LevelManager.Instance != null && LevelManager.Instance.DrugTestsRemaining > 0;
-                _drugTestButton.SetEnabled(!alreadyTested && hasTestsRemaining);
-            }
-
-            UpdateVerdictButtons();
         }
 
         private void UpdateEvidenceSection()
         {
             if (_evidenceTextLabel == null) return;
 
-            var matchingService = ServiceLocator.Get<IClueMatchingService>();
-            if (matchingService != null && matchingService.IsConfirmed)
-            {
-                var matchedClues = matchingService.GetCluesForSuspect(_currentSuspect);
-                if (matchedClues != null && matchedClues.Count > 0)
-                {
-                    var clueNames = new List<string>();
-                    foreach (var clue in matchedClues)
-                        clueNames.Add(clue.ClueName);
+            var matchedClueNames = new List<string>();
+            var matchedClueIcons = new List<ClueData>();
 
-                    _evidenceTextLabel.text = string.Join("\n", clueNames);
-                }
-                else
+            if (_matchingService != null && _matchingService.IsConfirmed)
+            {
+                var clues = _matchingService.GetCluesForSuspect(_currentSuspect);
+                if (clues != null && clues.Count > 0)
                 {
-                    _evidenceTextLabel.text = _currentSuspect.EvidenceText;
+                    foreach (var clue in clues)
+                    {
+                        matchedClueNames.Add(clue.ClueName);
+                        matchedClueIcons.Add(clue);
+                    }
                 }
+            }
+
+            if (matchedClueNames.Count > 0)
+            {
+                _evidenceTextLabel.text = string.Join("\n", matchedClueNames);
             }
             else
             {
                 _evidenceTextLabel.text = _currentSuspect.EvidenceText;
             }
+
+            UpdateEvidenceClueIcons(matchedClueIcons);
         }
 
-        private void OnDrugTestClicked()
+        private void UpdateEvidenceClueIcons(List<ClueData> clues)
         {
-            if (LevelManager.Instance == null || _currentSuspect == null) return;
+            if (_evidenceClueIcons == null) return;
+            _evidenceClueIcons.Clear();
 
-            if (LevelManager.Instance.UseDrugTest())
+            if (clues == null || clues.Count == 0) return;
+
+            foreach (var clue in clues)
             {
-                var result = _currentSuspect.DrugTestResult;
-                LevelManager.Instance.RecordDrugTest(_currentSuspect, result);
-                if (_drugTestResultLabel != null)
+                var icon = new VisualElement();
+                icon.AddToClassList("evidence-clue-icon");
+
+                if (clue.ClueIcon != null)
                 {
-                    _drugTestResultLabel.text = result.ToDisplayName();
+                    var img = new VisualElement();
+                    img.AddToClassList("evidence-clue-icon-image");
+                    img.style.backgroundImage = new StyleBackground(clue.ClueIcon);
+                    icon.Add(img);
                 }
-                if (_drugTestButton != null)
-                {
-                    _drugTestButton.SetEnabled(false);
-                }
+
+                _evidenceClueIcons.Add(icon);
             }
-        }
-
-        private void OnVerdictClicked(SuspectRole role)
-        {
-            if (LevelManager.Instance == null || _currentSuspect == null) return;
-
-            LevelManager.Instance.RecordJudgedSuspect(_currentSuspect, role);
-            UIManager.Instance?.HideAllPanels();
-            UIManager.Instance?.ShowStatusHUD();
-            UIManager.Instance?.UpdateStatusHUD();
-        }
-
-        private void OnCloseClicked()
-        {
-            UIManager.Instance?.HideAllPanels();
         }
 
         private void UpdateVerdictButtons()
@@ -202,9 +288,78 @@ namespace CriminalCase2.UI
             _verdictDealerButton.text = SuspectRole.Dealer.ToDisplayName();
             _verdictNormalButton.text = SuspectRole.Normal.ToDisplayName();
 
-            _verdictUserButton.SetEnabled(true);
-            _verdictDealerButton.SetEnabled(true);
-            _verdictNormalButton.SetEnabled(true);
+            var currentRole = _roleService?.GetAssignedRole(_currentSuspect);
+
+            UpdateVerdictButtonStyle(_verdictUserButton, SuspectRole.User, currentRole);
+            UpdateVerdictButtonStyle(_verdictDealerButton, SuspectRole.Dealer, currentRole);
+            UpdateVerdictButtonStyle(_verdictNormalButton, SuspectRole.Normal, currentRole);
         }
+
+        private void UpdateVerdictButtonStyle(Button button, SuspectRole buttonRole, SuspectRole? currentRole)
+        {
+            bool isSelected = currentRole.HasValue && currentRole.Value == buttonRole;
+
+            if (isSelected)
+                button.AddToClassList("selected");
+            else
+                button.RemoveFromClassList("selected");
+
+            button.SetEnabled(true);
+        }
+
+        private void UpdateDrugTestCounter()
+        {
+            if (_drugTestCounterLabel == null || _roleService == null) return;
+            _drugTestCounterLabel.text = $"Tes Narkoba Tersisa: {_roleService.DrugTestsRemaining}/{_roleService.MaxDrugTests}";
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private void OnDrugTestClicked()
+        {
+            if (_roleService == null || _currentSuspect == null) return;
+            if (!_roleService.UseDrugTest(_currentSuspect)) return;
+            UpdateDrugTestSection();
+            UpdateDrugTestCounter();
+        }
+
+        private void OnVerdictClicked(SuspectRole role)
+        {
+            if (_roleService == null || _currentSuspect == null) return;
+
+            var currentRole = _roleService.GetAssignedRole(_currentSuspect);
+            if (currentRole.HasValue && currentRole.Value == role) return;
+
+            _roleService.AssignRole(_currentSuspect, role);
+            UpdateVerdictButtons();
+        }
+
+        private void OnCloseClicked()
+        {
+            UIManager.Instance?.ShowCheckStatus();
+        }
+
+        private void OnRoleAssigned(SuspectData suspect, SuspectRole role)
+        {
+            if (suspect == _currentSuspect)
+                UpdateVerdictButtons();
+        }
+
+        private void OnRoleChanged(SuspectData suspect, SuspectRole role)
+        {
+            if (suspect == _currentSuspect)
+                UpdateVerdictButtons();
+        }
+
+        private void OnDrugTestUsed(SuspectData suspect, DrugTestResult result)
+        {
+            UpdateDrugTestCounter();
+            if (suspect == _currentSuspect)
+                UpdateDrugTestSection();
+        }
+
+        #endregion
     }
 }

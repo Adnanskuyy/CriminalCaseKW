@@ -3,11 +3,13 @@
     <ui:VisualElement name="suspect-detail-panel" class="panel">
         <ui:VisualElement name="detail-header" class="detail-header">
             <ui:Label name="suspect-name-label" text="Nama Tersangka" class="suspect-name-label" />
+            <ui:Label name="drug-test-counter-label" text="Tes Narkoba Tersisa: 2/2" class="drug-test-counter-label" />
             <ui:Button name="detail-close-button" text="X" class="close-button" />
         </ui:VisualElement>
         <ui:VisualElement name="detail-body" class="detail-body">
             <ui:VisualElement name="detail-left" class="detail-left">
                 <ui:VisualElement name="portrait-container" class="portrait-container">
+                    <ui:VisualElement name="portrait-image" class="portrait-image" />
                     <ui:Label name="portrait-placeholder" text="[Potret]" class="portrait-placeholder" />
                 </ui:VisualElement>
                 <ui:Button name="drug-test-button" text="Gunakan Tes Narkoba" class="drug-test-button" />
@@ -17,6 +19,7 @@
                 <ui:Label name="description-label" text="Deskripsi..." class="description-label" />
                 <ui:VisualElement name="evidence-section" class="evidence-section">
                     <ui:Label name="evidence-title" text="Bukti:" class="evidence-title" />
+                    <ui:VisualElement name="evidence-clue-icons" class="evidence-clue-icons" />
                     <ui:Label name="evidence-text-label" text="Teks bukti..." class="evidence-text-label" />
                 </ui:VisualElement>
             </ui:VisualElement>
