@@ -16,6 +16,8 @@ MonoBehaviour:
   _portrait: {fileID: 2800000, guid: 3dbd5c63ab13d974faf4c37cf791a8a5, type: 3}
   _description: Pekerja konstruksi di proyek pembangunan pusat kota baru. Mulai pagi
     dan bekerja berjam-jam.
+  _clueHint: Pekerja konstruksi dengan shift panjang. Kelelahannya hanya karena kerja
+    keras, bukan hal lain.
   _evidenceText: Jadwal kerja menunjukkan shift 12 jam yang konsisten. Rekan kerja
     mengkonfirmasi kelelahannya karena kerja keras yang jujur.
   _evidenceImage: {fileID: 0}

@@ -16,6 +16,8 @@ MonoBehaviour:
   _portrait: {fileID: 2800000, guid: 57402f9fc8f559748a93db54979f458a, type: 3}
   _description: Seniman jalanan yang terkenal dengan mural surealisnya. Sering bekerja
     sepanjang malam, mengklaim energi kreatif yang membuatnya terus berjalan.
+  _clueHint: Seniman yang sering begadang untuk menggambar mural. Energinya mungkin
+    bukan semata-mata dari kreativitas...
   _evidenceText: Kantong kecil berisi sisa bubuk putih ditemukan di kotak perlengkapan
     seninya.
   _evidenceImage: {fileID: 0}

@@ -16,6 +16,8 @@ MonoBehaviour:
   _portrait: {fileID: 2800000, guid: e27f6d4002fe56e4d85ecfe9cdbdb9c0, type: 3}
   _description: Sering terlihat di sekitar area ini. Dikenal memiliki perilaku tidak
     menentu dan sering tampak bingung di malam hari.
+  _clueHint: Sering tampak gelisah dan bingung di malam hari. Mungkin ada jejak yang
+    ditinggalkannya...
   _evidenceText: Ditemukan alat-alat mencurigakan di kendaraannya.
   _evidenceImage: {fileID: 0}
   _drugTestResult: 1

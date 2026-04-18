@@ -16,6 +16,8 @@ MonoBehaviour:
   _portrait: {fileID: 2800000, guid: 54e5f495cff39fa42b861ea27e71e165, type: 3}
   _description: Bekerja di kafe lokal. Baru pindah ke daerah ini dan masih mengenal
     orang-orang.
+  _clueHint: Baru pindah dan bekerja di kafe lokal. Petunjuk yang ditemukan mungkin
+    terkait aktivitas tempat kerjanya.
   _evidenceText: Tidak ada bukti yang menghubungkan dengan aktivitas ilegal.
   _evidenceImage: {fileID: 0}
   _drugTestResult: 0

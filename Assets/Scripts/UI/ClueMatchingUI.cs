@@ -23,6 +23,7 @@ namespace CriminalCase2.UI
         private readonly VisualElement[] _suspectCards = new VisualElement[4];
         private readonly VisualElement[] _suspectCardClueContainers = new VisualElement[4];
         private readonly Label[] _suspectCardNames = new Label[4];
+        private readonly Label[] _suspectCardDescriptions = new Label[4];
         private readonly VisualElement[] _suspectCardPortraits = new VisualElement[4];
 
         private ClueData _selectedClue;
@@ -92,6 +93,7 @@ namespace CriminalCase2.UI
                 _suspectCards[i] = root.Q<VisualElement>($"suspect-card-{i}");
                 _suspectCardClueContainers[i] = root.Q<VisualElement>($"suspect-card-clues-{i}");
                 _suspectCardNames[i] = root.Q<Label>($"suspect-card-name-{i}");
+                _suspectCardDescriptions[i] = root.Q<Label>($"suspect-card-description-{i}");
                 _suspectCardPortraits[i] = root.Q<VisualElement>($"suspect-card-portrait-{i}");
 
                 if (_suspectCards[i] != null)
@@ -129,6 +131,9 @@ namespace CriminalCase2.UI
                 {
                     if (_suspectCardNames[i] != null)
                         _suspectCardNames[i].text = suspects[i].SuspectName;
+
+                    if (_suspectCardDescriptions[i] != null)
+                        _suspectCardDescriptions[i].text = suspects[i].ClueHint;
 
                     if (_suspectCardPortraits[i] != null)
                     {

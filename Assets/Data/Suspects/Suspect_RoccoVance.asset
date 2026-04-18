@@ -16,6 +16,8 @@ MonoBehaviour:
   _portrait: {fileID: 2800000, guid: 73077f3e91e6757429aded119e4ec9a5, type: 3}
   _description: Pemimpin klub motor lokal. Dikenal dengan kehadiran yang menakutkan
     dan koneksi ke berbagai lingkaran bawah tanah.
+  _clueHint: Pemimpin klub motor dengan koneksi bawah tanah. Punya akses dan jaringan
+    untuk menggerakkan barang tanpa terdeteksi.
   _evidenceText: Beberapa ponsel burner ditemukan di tas pelananya. Catatan keuangan
     menunjukkan setoran uang tunai yang tidak dapat dijelaskan.
   _evidenceImage: {fileID: 0}

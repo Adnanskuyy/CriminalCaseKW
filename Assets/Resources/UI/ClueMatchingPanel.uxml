@@ -12,6 +12,7 @@
                         <ui:Label name="suspect-card-initial-0" text="?" class="suspect-card-initial" />
                     </ui:VisualElement>
                     <ui:Label name="suspect-card-name-0" text="Tersangka 1" class="suspect-card-name" />
+                    <ui:Label name="suspect-card-description-0" text="" class="suspect-card-description" />
                     <ui:VisualElement name="suspect-card-clues-0" class="suspect-card-clues" />
                 </ui:VisualElement>
                 <ui:VisualElement name="suspect-card-1" class="suspect-card">
@@ -19,6 +20,7 @@
                         <ui:Label name="suspect-card-initial-1" text="?" class="suspect-card-initial" />
                     </ui:VisualElement>
                     <ui:Label name="suspect-card-name-1" text="Tersangka 2" class="suspect-card-name" />
+                    <ui:Label name="suspect-card-description-1" text="" class="suspect-card-description" />
                     <ui:VisualElement name="suspect-card-clues-1" class="suspect-card-clues" />
                 </ui:VisualElement>
                 <ui:VisualElement name="suspect-card-2" class="suspect-card">
@@ -26,6 +28,7 @@
                         <ui:Label name="suspect-card-initial-2" text="?" class="suspect-card-initial" />
                     </ui:VisualElement>
                     <ui:Label name="suspect-card-name-2" text="Tersangka 3" class="suspect-card-name" />
+                    <ui:Label name="suspect-card-description-2" text="" class="suspect-card-description" />
                     <ui:VisualElement name="suspect-card-clues-2" class="suspect-card-clues" />
                 </ui:VisualElement>
                 <ui:VisualElement name="suspect-card-3" class="suspect-card">
@@ -33,6 +36,7 @@
                         <ui:Label name="suspect-card-initial-3" text="?" class="suspect-card-initial" />
                     </ui:VisualElement>
                     <ui:Label name="suspect-card-name-3" text="Tersangka 4" class="suspect-card-name" />
+                    <ui:Label name="suspect-card-description-3" text="" class="suspect-card-description" />
                     <ui:VisualElement name="suspect-card-clues-3" class="suspect-card-clues" />
                 </ui:VisualElement>
             </ui:VisualElement>
