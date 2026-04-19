@@ -9,6 +9,7 @@
             <ui:VisualElement name="suspect-cards-row" class="suspect-cards-row">
                 <ui:VisualElement name="suspect-card-0" class="suspect-card">
                     <ui:VisualElement name="suspect-card-portrait-0" class="suspect-card-portrait">
+                        <ui:VisualElement name="suspect-card-portrait-image-0" class="suspect-card-portrait-image" />
                         <ui:Label name="suspect-card-initial-0" text="?" class="suspect-card-initial" />
                     </ui:VisualElement>
                     <ui:Label name="suspect-card-name-0" text="Tersangka 1" class="suspect-card-name" />
@@ -17,6 +18,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="suspect-card-1" class="suspect-card">
                     <ui:VisualElement name="suspect-card-portrait-1" class="suspect-card-portrait">
+                        <ui:VisualElement name="suspect-card-portrait-image-1" class="suspect-card-portrait-image" />
                         <ui:Label name="suspect-card-initial-1" text="?" class="suspect-card-initial" />
                     </ui:VisualElement>
                     <ui:Label name="suspect-card-name-1" text="Tersangka 2" class="suspect-card-name" />
@@ -25,6 +27,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="suspect-card-2" class="suspect-card">
                     <ui:VisualElement name="suspect-card-portrait-2" class="suspect-card-portrait">
+                        <ui:VisualElement name="suspect-card-portrait-image-2" class="suspect-card-portrait-image" />
                         <ui:Label name="suspect-card-initial-2" text="?" class="suspect-card-initial" />
                     </ui:VisualElement>
                     <ui:Label name="suspect-card-name-2" text="Tersangka 3" class="suspect-card-name" />
@@ -33,6 +36,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="suspect-card-3" class="suspect-card">
                     <ui:VisualElement name="suspect-card-portrait-3" class="suspect-card-portrait">
+                        <ui:VisualElement name="suspect-card-portrait-image-3" class="suspect-card-portrait-image" />
                         <ui:Label name="suspect-card-initial-3" text="?" class="suspect-card-initial" />
                     </ui:VisualElement>
                     <ui:Label name="suspect-card-name-3" text="Tersangka 4" class="suspect-card-name" />

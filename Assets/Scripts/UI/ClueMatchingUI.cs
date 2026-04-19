@@ -25,6 +25,7 @@ namespace CriminalCase2.UI
         private readonly Label[] _suspectCardNames = new Label[4];
         private readonly Label[] _suspectCardDescriptions = new Label[4];
         private readonly VisualElement[] _suspectCardPortraits = new VisualElement[4];
+        private readonly VisualElement[] _suspectCardPortraitImages = new VisualElement[4];
 
         private ClueData _selectedClue;
         private SuspectData[] _suspects;
@@ -95,6 +96,7 @@ namespace CriminalCase2.UI
                 _suspectCardNames[i] = root.Q<Label>($"suspect-card-name-{i}");
                 _suspectCardDescriptions[i] = root.Q<Label>($"suspect-card-description-{i}");
                 _suspectCardPortraits[i] = root.Q<VisualElement>($"suspect-card-portrait-{i}");
+                _suspectCardPortraitImages[i] = root.Q<VisualElement>($"suspect-card-portrait-image-{i}");
 
                 if (_suspectCards[i] != null)
                 {
@@ -138,8 +140,28 @@ namespace CriminalCase2.UI
                     if (_suspectCardPortraits[i] != null)
                     {
                         var initialLabel = _suspectCardPortraits[i].Q<Label>($"suspect-card-initial-{i}");
-                        if (initialLabel != null && suspects[i].SuspectName.Length > 0)
-                            initialLabel.text = suspects[i].SuspectName.Substring(0, 1).ToUpper();
+
+                        if (suspects[i].Portrait != null)
+                        {
+                            if (_suspectCardPortraitImages[i] != null)
+                            {
+                                _suspectCardPortraitImages[i].style.backgroundImage = new StyleBackground(suspects[i].Portrait);
+                                _suspectCardPortraitImages[i].style.display = DisplayStyle.Flex;
+                            }
+                            if (initialLabel != null)
+                                initialLabel.style.display = DisplayStyle.None;
+                        }
+                        else
+                        {
+                            if (_suspectCardPortraitImages[i] != null)
+                                _suspectCardPortraitImages[i].style.display = DisplayStyle.None;
+
+                            if (initialLabel != null && suspects[i].SuspectName.Length > 0)
+                            {
+                                initialLabel.text = suspects[i].SuspectName.Substring(0, 1).ToUpper();
+                                initialLabel.style.display = DisplayStyle.Flex;
+                            }
+                        }
                     }
                 }
 
