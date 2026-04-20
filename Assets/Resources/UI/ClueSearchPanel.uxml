@@ -4,7 +4,7 @@
         <ui:VisualElement name="clue-search-content" class="clue-search-content">
             <ui:VisualElement name="clue-search-header" class="clue-search-header">
                 <ui:Label name="clue-search-title" text="Temukan Petunjuk" class="clue-search-title" />
-                <ui:Label name="clue-counter-label" text="Petunjuk Ditemukan: 0/0" class="clue-counter-label" />
+                <ui:Label name="clue-counter-label" text="Petunjuk: 0 / 0" class="clue-counter-label" />
             </ui:VisualElement>
             <ui:VisualElement name="clue-inventory-container" style="background-color: rgba(20, 20, 30, 0.8); border-radius: 8px; padding: 12px;">
                 <ui:VisualElement name="clue-inventory" class="clue-inventory" />
