@@ -1,0 +1,71 @@
+# Alternative: Direct Unity CLI Build (No Docker)
+# Use this if GameCI Docker image for your Unity version is not yet available.
+# This runs Unity directly from your self-hosted runner's installation.
+
+name: Build & Deploy to GitHub Pages (Direct CLI)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build WebGL
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Build WebGL via Unity CLI
+        run: |
+          & "C:\Program Files\Unity\Hub\Editor\6000.3.8f1\Editor\Unity.exe" `
+            -batchmode `
+            -nographics `
+            -quit `
+            -projectPath "${{ github.workspace }}" `
+            -executeMethod BuildScript.BuildWebGL `
+            -logFile "${{ github.workspace }}\build.log"
+        shell: pwsh
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WebGL-Build
+          path: build/WebGL
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: WebGL-Build
+          path: ./build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
