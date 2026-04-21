@@ -34,7 +34,7 @@ jobs:
             -nographics `
             -quit `
             -projectPath "${{ github.workspace }}" `
-            -executeMethod BuildScript.BuildWebGL `
+            -executeMethod CriminalCase2.Editor.BuildScript.BuildWebGL `
             -logFile "${{ github.workspace }}\build.log"
         shell: pwsh
 
