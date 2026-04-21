@@ -17,6 +17,12 @@ jobs:
     name: Build WebGL
     runs-on: self-hosted
     steps:
+      - name: Kill orphaned MCP/Unity processes
+        run: |
+          Get-Process | Where-Object {$_.ProcessName -like "*mcp*" -or $_.ProcessName -eq "Unity"} | Stop-Process -Force -ErrorAction SilentlyContinue
+          Start-Sleep -Seconds 3
+        shell: pwsh
+
       - name: Checkout V2 branch
         uses: actions/checkout@v4
         with:
