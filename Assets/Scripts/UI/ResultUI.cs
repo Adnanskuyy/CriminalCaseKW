@@ -125,16 +125,7 @@ namespace CriminalCase2.UI
             var names = new List<string>();
             foreach (var clue in clues)
             {
-                int suspectIndex = -1;
-                var level = GameManager.Instance?.CurrentLevel;
-                if (level != null)
-                {
-                    for (int i = 0; i < level.Suspects.Length; i++)
-                    {
-                        if (level.Suspects[i] == suspect) { suspectIndex = i; break; }
-                    }
-                }
-                bool correct = suspectIndex >= 0 && clue.LinkedSuspectIndex == suspectIndex;
+                bool correct = clue.LinkedSuspect != null && clue.LinkedSuspect == suspect;
                 names.Add($"{clue.ClueName}{(correct ? " ✓" : " ✗")}");
             }
             return string.Join(", ", names);

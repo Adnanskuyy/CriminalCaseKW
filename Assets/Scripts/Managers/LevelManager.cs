@@ -137,15 +137,6 @@ namespace CriminalCase2.Managers
             Debug.Log($"[LevelManager] Initialized level: {config.LevelName}");
         }
 
-        public void AddBonusDrugTest()
-        {
-            var roleService = ServiceLocator.Get<IRoleAssignmentService>();
-            if (roleService != null)
-            {
-                Debug.LogWarning("[LevelManager] AddBonusDrugTest: Feature not directly supported by IRoleAssignmentService. Use ClueData._isDrugTestClue flow instead.");
-            }
-        }
-
         private void DeactivateSuspects()
         {
             if (_currentLevelInstance == null) return;

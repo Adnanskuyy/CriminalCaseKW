@@ -40,8 +40,7 @@ namespace CriminalCase2.Services
                 int correct = 0;
                 foreach (var kvp in _assignments)
                 {
-                    int suspectIndex = Array.IndexOf(_suspects, kvp.Value);
-                    if (suspectIndex >= 0 && kvp.Key.LinkedSuspectIndex == suspectIndex)
+                    if (kvp.Key.LinkedSuspect != null && kvp.Key.LinkedSuspect == kvp.Value)
                         correct++;
                 }
                 return correct;

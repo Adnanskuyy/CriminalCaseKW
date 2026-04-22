@@ -14,14 +14,12 @@ namespace CriminalCase2.Data
         [SerializeField] private Sprite _clueIcon;
 
         [Header("Gameplay")]
-        [SerializeField] private int _linkedSuspectIndex;
-        [SerializeField] private bool _isDrugTestClue;
+        [SerializeField] private SuspectData _linkedSuspect;
 
         public string ClueName => _clueName;
         public string Description => _description;
         public Sprite ClueSprite => _clueSprite;
         public Sprite ClueIcon => _clueIcon;
-        public int LinkedSuspectIndex => _linkedSuspectIndex;
-        public bool IsDrugTestClue => _isDrugTestClue;
+        public SuspectData LinkedSuspect => _linkedSuspect;
     }
 }

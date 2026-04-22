@@ -17,5 +17,4 @@ MonoBehaviour:
     sidik jari.
   _clueSprite: {fileID: -3641484800219557810, guid: 3fdc746cc71d1334caa6f132377f9984, type: 3}
   _clueIcon: {fileID: -3641484800219557810, guid: 3fdc746cc71d1334caa6f132377f9984, type: 3}
-  _linkedSuspectIndex: 1
-  _isDrugTestClue: 0
+  _linkedSuspect: {fileID: 11400000, guid: 6ea98bd02c1ff2a42aada0b8e50408db, type: 2}
