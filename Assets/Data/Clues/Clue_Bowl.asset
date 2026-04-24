@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 634a24430f34ef74a85a3af5cff1caf9, type: 3}
+  m_Name: Clue_Bowl
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.ClueData
+  _clueName: Mangkok
+  _description: 
+  _clueSprite: {fileID: 4851750565431800638, guid: 8d0ee4f7cbae5d74d96e807cb13cea3a, type: 3}
+  _clueIcon: {fileID: 4851750565431800638, guid: 8d0ee4f7cbae5d74d96e807cb13cea3a, type: 3}
+  _linkedSuspect: {fileID: 11400000, guid: f4583ccb8f69ffd45ae826c0d4278baa, type: 2}

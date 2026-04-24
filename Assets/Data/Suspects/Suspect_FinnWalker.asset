@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838f74f8986acb9408cd265ed3920252, type: 3}
   m_Name: Suspect_FinnWalker
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
-  _suspectName: Finn 'Cloud' Walker
-  _portrait: {fileID: 2800000, guid: 57402f9fc8f559748a93db54979f458a, type: 3}
+  _suspectName: Finn Walker
+  _portrait: {fileID: 0}
   _description: Seniman jalanan yang terkenal dengan mural surealisnya. Sering bekerja
     sepanjang malam, mengklaim energi kreatif yang membuatnya terus berjalan.
   _clueHint: Seniman yang sering begadang untuk menggambar mural. Energinya mungkin

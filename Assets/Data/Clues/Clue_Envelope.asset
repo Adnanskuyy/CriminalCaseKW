@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 634a24430f34ef74a85a3af5cff1caf9, type: 3}
+  m_Name: Clue_Envelope
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.ClueData
+  _clueName: Amplop
+  _description: 
+  _clueSprite: {fileID: 3088658754663721215, guid: 3eeb13b8492c7214fbe3887b40e2c0cc, type: 3}
+  _clueIcon: {fileID: 3088658754663721215, guid: 3eeb13b8492c7214fbe3887b40e2c0cc, type: 3}
+  _linkedSuspect: {fileID: 11400000, guid: 4912bdcc8b7cf264f97b6fe244a99bbf, type: 2}

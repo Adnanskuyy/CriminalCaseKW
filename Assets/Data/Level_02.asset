@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.LevelConfig
   _levelIndex: 2
   _levelName: Level 02 - Distrik Pusat Kota
-  _backgroundSprite: {fileID: 5948498617112210040, guid: af4c6c67bf763b441946ec6938788b40, type: 3}
+  _backgroundSprite: {fileID: -59576720006685504, guid: 604bb7294e0d3564b8339520d4b00bb6, type: 3}
   _levelPrefab: {fileID: 2564422756802905360, guid: b43531c2c12798c4387e40f19eae15e1, type: 3}
   _suspects:
   - {fileID: 11400000, guid: f4583ccb8f69ffd45ae826c0d4278baa, type: 2}
   - {fileID: 11400000, guid: 9178148e066b5c54d8750e0d641f7507, type: 2}
   - {fileID: 11400000, guid: 4cbc2112afc52db44a6feda65792d28f, type: 2}
   - {fileID: 11400000, guid: 4000364ba431daa44a7e2f6f5b40e5f0, type: 2}
+  _clues:
+  - {fileID: 11400000, guid: 094ac2ca6469e61429b1379e06dca045, type: 2}
+  - {fileID: 11400000, guid: a644fae431e154a42b5e12d5dc3c44d5, type: 2}
+  - {fileID: 11400000, guid: f11592978b4e9c0419b2d31d6289ca11, type: 2}
+  - {fileID: 11400000, guid: 8050b66e7c317bd49b349915466532f6, type: 2}
   _maxDrugTestsPerLevel: 2

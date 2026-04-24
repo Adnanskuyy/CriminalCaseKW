@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 634a24430f34ef74a85a3af5cff1caf9, type: 3}
+  m_Name: Clue_Pippette
+  m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.ClueData
+  _clueName: Sedotan
+  _description: 
+  _clueSprite: {fileID: -8153433464845265363, guid: 00d2a12c76998354dbc68f9ac4a61b9b, type: 3}
+  _clueIcon: {fileID: -8153433464845265363, guid: 00d2a12c76998354dbc68f9ac4a61b9b, type: 3}
+  _linkedSuspect: {fileID: 11400000, guid: 4cbc2112afc52db44a6feda65792d28f, type: 2}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Suspect_JaxMorrison
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.Data.SuspectData
   _suspectName: Jax Morrison
-  _portrait: {fileID: 2800000, guid: 3dbd5c63ab13d974faf4c37cf791a8a5, type: 3}
+  _portrait: {fileID: 0}
   _description: Pekerja konstruksi di proyek pembangunan pusat kota baru. Mulai pagi
     dan bekerja berjam-jam.
   _clueHint: Pekerja konstruksi dengan shift panjang. Kelelahannya hanya karena kerja
