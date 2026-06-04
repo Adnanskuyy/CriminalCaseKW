@@ -26,13 +26,13 @@ namespace CriminalCase2.UI
         {
             if (_document == null) return;
 
-            _closeButton = _document.rootVisualElement.Q<Button>("tutorial-close-button");
+            _closeButton = _document.rootVisualElement.Q<Button>(UIConstants.Tutorial.CloseButton);
             if (_closeButton != null)
             {
                 _closeButton.clicked += OnCloseClicked;
             }
 
-            _replayVideoButton = _document.rootVisualElement.Q<Button>("tutorial-replay-video-button");
+            _replayVideoButton = _document.rootVisualElement.Q<Button>(UIConstants.Tutorial.ReplayVideoButton);
             if (_replayVideoButton != null)
             {
                 _replayVideoButton.clicked += OnReplayVideoClicked;

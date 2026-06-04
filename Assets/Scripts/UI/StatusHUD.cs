@@ -38,7 +38,7 @@ namespace CriminalCase2.UI
             var root = _document.rootVisualElement;
             if (root == null) return;
 
-            _hudButton = root.Q<Button>("status-hud-button");
+            _hudButton = root.Q<Button>(UIConstants.StatusHud.Button);
             if (_hudButton != null)
             {
                 _hudButton.clicked += OnHudButtonClicked;

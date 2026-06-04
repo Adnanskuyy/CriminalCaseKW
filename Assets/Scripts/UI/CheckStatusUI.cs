@@ -33,10 +33,10 @@ namespace CriminalCase2.UI
             var root = _document.rootVisualElement;
             if (root == null) return;
 
-            _container = root.Q<VisualElement>("check-status-container");
-            _emptyState = root.Q<VisualElement>("check-status-empty");
-            _closeButton = root.Q<Button>("check-status-close-button");
-            _checkResultButton = root.Q<Button>("check-result-button");
+            _container = root.Q<VisualElement>(UIConstants.CheckStatus.Container);
+            _emptyState = root.Q<VisualElement>(UIConstants.CheckStatus.Empty);
+            _closeButton = root.Q<Button>(UIConstants.CheckStatus.CloseButton);
+            _checkResultButton = root.Q<Button>(UIConstants.CheckStatus.CheckResultButton);
 
             if (_closeButton != null)
             {

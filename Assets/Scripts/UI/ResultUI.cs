@@ -34,8 +34,8 @@ namespace CriminalCase2.UI
 
             var root = _document.rootVisualElement;
 
-            _resultsContainer = root.Q<VisualElement>("results-container");
-            _nextLevelButton = root.Q<Button>("next-level-button");
+            _resultsContainer = root.Q<VisualElement>(UIConstants.Result.ResultsContainer);
+            _nextLevelButton = root.Q<Button>(UIConstants.Result.NextLevelButton);
             if (_nextLevelButton != null)
             {
                 _nextLevelButton.clicked += OnNextLevelClicked;

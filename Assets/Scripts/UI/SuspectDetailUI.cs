@@ -52,36 +52,36 @@ namespace CriminalCase2.UI
             var root = _document.rootVisualElement;
             if (root == null) return;
 
-            _suspectNameLabel = root.Q<Label>("suspect-name-label");
-            _descriptionLabel = root.Q<Label>("description-label");
-            _evidenceTextLabel = root.Q<Label>("evidence-text-label");
-            _drugTestResultLabel = root.Q<Label>("drug-test-result-label");
+            _suspectNameLabel = root.Q<Label>(UIConstants.SuspectDetail.SuspectNameLabel);
+            _descriptionLabel = root.Q<Label>(UIConstants.SuspectDetail.DescriptionLabel);
+            _evidenceTextLabel = root.Q<Label>(UIConstants.SuspectDetail.EvidenceTextLabel);
+            _drugTestResultLabel = root.Q<Label>(UIConstants.SuspectDetail.DrugTestResultLabel);
 
-            _drugTestButton = root.Q<Button>("drug-test-button");
+            _drugTestButton = root.Q<Button>(UIConstants.SuspectDetail.DrugTestButton);
             if (_drugTestButton != null)
             {
                 _drugTestButton.clicked += OnDrugTestClicked;
             }
 
-            _verdictUserButton = root.Q<Button>("verdict-user-button");
+            _verdictUserButton = root.Q<Button>(UIConstants.SuspectDetail.VerdictUserButton);
             if (_verdictUserButton != null)
             {
                 _verdictUserButton.clicked += () => OnVerdictClicked(SuspectRole.User);
             }
 
-            _verdictDealerButton = root.Q<Button>("verdict-dealer-button");
+            _verdictDealerButton = root.Q<Button>(UIConstants.SuspectDetail.VerdictDealerButton);
             if (_verdictDealerButton != null)
             {
                 _verdictDealerButton.clicked += () => OnVerdictClicked(SuspectRole.Dealer);
             }
 
-            _verdictNormalButton = root.Q<Button>("verdict-normal-button");
+            _verdictNormalButton = root.Q<Button>(UIConstants.SuspectDetail.VerdictNormalButton);
             if (_verdictNormalButton != null)
             {
                 _verdictNormalButton.clicked += () => OnVerdictClicked(SuspectRole.Normal);
             }
 
-            _closeButton = root.Q<Button>("detail-close-button");
+            _closeButton = root.Q<Button>(UIConstants.SuspectDetail.CloseButton);
             if (_closeButton != null)
             {
                 _closeButton.clicked += OnCloseClicked;
