@@ -7,19 +7,27 @@ namespace CriminalCase2.Managers
 {
     public class GameStateController : MonoBehaviour
     {
-        private GameState? _lastHandledState = null;
-
-        private void Update()
+        private void OnEnable()
         {
-            var state = GameServices.GameState;
-            if (state == null) return;
+            var gs = GameServices.GameState;
+            if (gs != null)
+            {
+                gs.StateChanged += OnStateChanged;
+            }
+        }
 
-            GameState currentState = state.CurrentState;
+        private void OnDisable()
+        {
+            var gs = GameServices.GameState;
+            if (gs != null)
+            {
+                gs.StateChanged -= OnStateChanged;
+            }
+        }
 
-            if (_lastHandledState.HasValue && currentState == _lastHandledState.Value) return;
-            _lastHandledState = currentState;
-
-            switch (currentState)
+        private void OnStateChanged(GameState newState)
+        {
+            switch (newState)
             {
                 case GameState.IntroVideo:
                     HandleIntroVideo();

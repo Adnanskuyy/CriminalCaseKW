@@ -32,5 +32,13 @@ namespace CriminalCase2.Services
             Video = null;
             UI = null;
         }
+
+        /// <summary>
+        /// Test-only: clear all service slots. Do not call from runtime code.
+        /// </summary>
+        public static void ResetForTesting()
+        {
+            ResetOnLoad();
+        }
     }
 }
