@@ -10,10 +10,8 @@ namespace CriminalCase2.UI
     {
         public static UIManager Instance { get; private set; }
 
-        [Header("Video Panel (UGUI)")]
-        [SerializeField] private GameObject _videoPlayerPanel;
-
         [Header("UI Toolkit Panels")]
+        [SerializeField] private UIDocument _videoPlayerDocument;
         [SerializeField] private UIDocument _tutorialPanel;
         [SerializeField] private UIDocument _suspectDetailPanel;
         [SerializeField] private UIDocument _checkStatusPanel;
@@ -47,11 +45,11 @@ namespace CriminalCase2.UI
 
         private void AutoFindPanels()
         {
-            if (_videoPlayerPanel == null)
+            if (_videoPlayerDocument == null)
             {
                 var vui = GetComponentInChildren<VideoPlayerUI>();
                 if (vui != null)
-                    _videoPlayerPanel = vui.gameObject;
+                    _videoPlayerDocument = vui.GetComponent<UIDocument>();
             }
 
             var documents = GetComponentsInChildren<UIDocument>();
@@ -66,14 +64,15 @@ namespace CriminalCase2.UI
         {
             var commonStyle = Resources.Load<StyleSheet>("UI/Common");
 
+            InitializeUIToolkitPanel(_videoPlayerDocument, "UI/VideoPanel", commonStyle);
             InitializeUIToolkitPanel(_tutorialPanel, "UI/TutorialPanel", commonStyle);
             InitializeUIToolkitPanel(_suspectDetailPanel, "UI/SuspectDetailPanel", commonStyle);
             InitializeUIToolkitPanel(_checkStatusPanel, "UI/CheckStatusPanel", commonStyle);
             InitializeUIToolkitPanel(_resultPanel, "UI/ResultPanel", commonStyle);
             InitializeUIToolkitPanel(_statusHUD, "UI/StatusHUD", commonStyle);
 
-            if (_videoPlayerUI == null && _videoPlayerPanel != null)
-                _videoPlayerUI = _videoPlayerPanel.GetComponent<VideoPlayerUI>();
+            if (_videoPlayerUI == null && _videoPlayerDocument != null)
+                _videoPlayerUI = _videoPlayerDocument.GetComponent<VideoPlayerUI>();
 
             if (_tutorialUI == null && _tutorialPanel != null)
                 _tutorialUI = _tutorialPanel.GetComponent<TutorialUI>();
@@ -114,15 +113,12 @@ namespace CriminalCase2.UI
 
         public void ShowVideoPlayer()
         {
-            if (_videoPlayerPanel != null && _videoPlayerPanel.activeSelf)
+            if (_videoPlayerUI != null && _videoPlayerUI.IsPlayScreenVisible)
                 return;
 
             HideAllPanels();
-            if (_videoPlayerPanel != null)
-            {
-                _videoPlayerPanel.SetActive(true);
-                _videoPlayerUI?.ShowPlayScreen();
-            }
+            SetUIToolkitPanelActive(_videoPlayerDocument, true);
+            _videoPlayerUI?.ShowPlayScreen();
         }
 
         public void ShowTutorial()
@@ -177,8 +173,7 @@ namespace CriminalCase2.UI
 
         public void HideAllPanels()
         {
-            if (_videoPlayerPanel != null)
-                _videoPlayerPanel.SetActive(false);
+            SetUIToolkitPanelActive(_videoPlayerDocument, false);
             SetUIToolkitPanelActive(_tutorialPanel, false);
             SetUIToolkitPanelActive(_suspectDetailPanel, false);
             SetUIToolkitPanelActive(_checkStatusPanel, false);

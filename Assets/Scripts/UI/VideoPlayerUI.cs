@@ -226,6 +226,9 @@ namespace CriminalCase2.UI
             if (_videoContainer != null) _videoContainer.style.display = DisplayStyle.None;
         }
 
+        public bool IsPlayScreenVisible =>
+            _playContainer != null && _playContainer.resolvedStyle.display == DisplayStyle.Flex;
+
         private void ShowVideoScreen()
         {
             if (_playContainer != null) _playContainer.style.display = DisplayStyle.None;
