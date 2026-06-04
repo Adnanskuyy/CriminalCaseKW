@@ -1,7 +1,9 @@
+#nullable enable
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
 using CriminalCase2.Services;
+using CriminalCase2.ViewModels;
 
 namespace CriminalCase2.UI
 {
@@ -9,17 +11,17 @@ namespace CriminalCase2.UI
     {
         [SerializeField] private UIDocument _document;
 
-        private SuspectData _currentSuspect;
+        private SuspectDetailViewModel? _viewModel;
 
-        private Label _suspectNameLabel;
-        private Label _descriptionLabel;
-        private Label _evidenceTextLabel;
-        private Label _drugTestResultLabel;
-        private Button _drugTestButton;
-        private Button _verdictUserButton;
-        private Button _verdictDealerButton;
-        private Button _verdictNormalButton;
-        private Button _closeButton;
+        private Label _suspectNameLabel = null!;
+        private Label _descriptionLabel = null!;
+        private Label _evidenceTextLabel = null!;
+        private Label _drugTestResultLabel = null!;
+        private Button _drugTestButton = null!;
+        private Button _verdictUserButton = null!;
+        private Button _verdictDealerButton = null!;
+        private Button _verdictNormalButton = null!;
+        private Button _closeButton = null!;
 
         private bool _isBound;
 
@@ -27,8 +29,13 @@ namespace CriminalCase2.UI
         {
             if (!_isBound) BindUI();
 
-            _currentSuspect = suspect;
-            UpdateUI();
+            DisposeViewModel();
+
+            _viewModel = new SuspectDetailViewModel(suspect, GameServices.Levels!);
+            _viewModel.StateChanged += OnViewModelStateChanged;
+            _viewModel.VerdictRecorded += OnViewModelVerdictRecorded;
+            _viewModel.CloseRequested += OnViewModelCloseRequested;
+            OnViewModelStateChanged();
         }
 
         private void OnEnable()
@@ -42,6 +49,7 @@ namespace CriminalCase2.UI
         private void OnDisable()
         {
             UnbindUI();
+            DisposeViewModel();
         }
 
         private void BindUI()
@@ -66,19 +74,22 @@ namespace CriminalCase2.UI
             _verdictUserButton = root.Q<Button>(UIConstants.SuspectDetail.VerdictUserButton);
             if (_verdictUserButton != null)
             {
-                _verdictUserButton.clicked += () => OnVerdictClicked(SuspectRole.User);
+                _verdictUserButton.text = SuspectRole.User.ToDisplayName();
+                _verdictUserButton.clicked += OnVerdictUserClicked;
             }
 
             _verdictDealerButton = root.Q<Button>(UIConstants.SuspectDetail.VerdictDealerButton);
             if (_verdictDealerButton != null)
             {
-                _verdictDealerButton.clicked += () => OnVerdictClicked(SuspectRole.Dealer);
+                _verdictDealerButton.text = SuspectRole.Dealer.ToDisplayName();
+                _verdictDealerButton.clicked += OnVerdictDealerClicked;
             }
 
             _verdictNormalButton = root.Q<Button>(UIConstants.SuspectDetail.VerdictNormalButton);
             if (_verdictNormalButton != null)
             {
-                _verdictNormalButton.clicked += () => OnVerdictClicked(SuspectRole.Normal);
+                _verdictNormalButton.text = SuspectRole.Normal.ToDisplayName();
+                _verdictNormalButton.clicked += OnVerdictNormalClicked;
             }
 
             _closeButton = root.Q<Button>(UIConstants.SuspectDetail.CloseButton);
@@ -88,95 +99,63 @@ namespace CriminalCase2.UI
             }
 
             _isBound = true;
-            UpdateUI();
         }
 
         private void UnbindUI()
         {
             if (_drugTestButton != null) _drugTestButton.clicked -= OnDrugTestClicked;
+            if (_verdictUserButton != null) _verdictUserButton.clicked -= OnVerdictUserClicked;
+            if (_verdictDealerButton != null) _verdictDealerButton.clicked -= OnVerdictDealerClicked;
+            if (_verdictNormalButton != null) _verdictNormalButton.clicked -= OnVerdictNormalClicked;
             if (_closeButton != null) _closeButton.clicked -= OnCloseClicked;
             _isBound = false;
         }
 
-        private void UpdateUI()
+        private void DisposeViewModel()
         {
-            if (_currentSuspect == null) return;
-
-            if (_suspectNameLabel != null) _suspectNameLabel.text = _currentSuspect.SuspectName;
-            if (_descriptionLabel != null) _descriptionLabel.text = _currentSuspect.Description;
-            if (_evidenceTextLabel != null) _evidenceTextLabel.text = _currentSuspect.EvidenceText;
-            if (_drugTestResultLabel != null)
-            {
-                var levels = GameServices.Levels;
-                if (levels != null && levels.HasDrugTestResult(_currentSuspect))
-                {
-                    _drugTestResultLabel.text = levels.GetDrugTestResult(_currentSuspect).ToDisplayName();
-                }
-                else
-                {
-                    _drugTestResultLabel.text = string.Empty;
-                }
-            }
-
-            if (_drugTestButton != null)
-            {
-                var levels = GameServices.Levels;
-                bool alreadyTested = levels != null && levels.HasDrugTestResult(_currentSuspect);
-                bool hasTestsRemaining = levels != null && levels.DrugTestsRemaining > 0;
-                _drugTestButton.SetEnabled(!alreadyTested && hasTestsRemaining);
-            }
-
-            UpdateVerdictButtons();
+            if (_viewModel == null) return;
+            _viewModel.StateChanged -= OnViewModelStateChanged;
+            _viewModel.VerdictRecorded -= OnViewModelVerdictRecorded;
+            _viewModel.CloseRequested -= OnViewModelCloseRequested;
+            _viewModel.Dispose();
+            _viewModel = null;
         }
 
-        private void OnDrugTestClicked()
+        private void OnViewModelStateChanged()
         {
-            var levels = GameServices.Levels;
-            if (levels == null || _currentSuspect == null) return;
+            if (_viewModel == null) return;
 
-            if (levels.UseDrugTest())
-            {
-                var result = _currentSuspect.DrugTestResult;
-                levels.RecordDrugTest(_currentSuspect, result);
-                if (_drugTestResultLabel != null)
-                {
-                    _drugTestResultLabel.text = result.ToDisplayName();
-                }
-                if (_drugTestButton != null)
-                {
-                    _drugTestButton.SetEnabled(false);
-                }
-            }
+            _suspectNameLabel.text = _viewModel.SuspectName;
+            _descriptionLabel.text = _viewModel.Description;
+            _evidenceTextLabel.text = _viewModel.EvidenceText;
+            _drugTestResultLabel.text = _viewModel.DrugTestResultText;
+            _drugTestButton.SetEnabled(_viewModel.IsDrugTestButtonEnabled);
         }
 
-        private void OnVerdictClicked(SuspectRole role)
+        private void OnViewModelVerdictRecorded()
         {
-            var levels = GameServices.Levels;
-            if (levels == null || _currentSuspect == null) return;
-
-            levels.RecordJudgedSuspect(_currentSuspect, role);
             GameServices.UI?.HideAllPanels();
             GameServices.UI?.ShowStatusHUD();
             GameServices.UI?.UpdateStatusHUD();
         }
 
-        private void OnCloseClicked()
+        private void OnViewModelCloseRequested()
         {
             GameServices.UI?.HideAllPanels();
         }
 
-        private void UpdateVerdictButtons()
+        private void OnDrugTestClicked()
         {
-            if (_verdictUserButton == null || _verdictDealerButton == null || _verdictNormalButton == null)
-                return;
+            _viewModel?.RequestDrugTest();
+        }
 
-            _verdictUserButton.text = SuspectRole.User.ToDisplayName();
-            _verdictDealerButton.text = SuspectRole.Dealer.ToDisplayName();
-            _verdictNormalButton.text = SuspectRole.Normal.ToDisplayName();
+        private void OnVerdictUserClicked() => _viewModel?.SelectVerdict(SuspectRole.User);
+        private void OnVerdictDealerClicked() => _viewModel?.SelectVerdict(SuspectRole.Dealer);
+        private void OnVerdictNormalClicked() => _viewModel?.SelectVerdict(SuspectRole.Normal);
 
-            _verdictUserButton.SetEnabled(true);
-            _verdictDealerButton.SetEnabled(true);
-            _verdictNormalButton.SetEnabled(true);
+        private void OnCloseClicked()
+        {
+            _viewModel?.RequestClose();
         }
     }
 }
