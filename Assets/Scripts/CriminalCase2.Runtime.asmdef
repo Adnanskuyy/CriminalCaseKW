@@ -2,7 +2,6 @@
     "name": "CriminalCase2.Runtime",
     "rootNamespace": "CriminalCase2",
     "references": [
-        "UnityEngine.UI",
         "UnityEngine.UIElements",
         "UnityEngine.Video"
     ],

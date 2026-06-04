@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.Video;
 using CriminalCase2.Data;
 using CriminalCase2.Services;
@@ -12,14 +13,13 @@ namespace CriminalCase2.UI
         [Header("Video")]
         [SerializeField] private VideoPlayer _videoPlayer;
 
-        [Header("UGUI References")]
-        [SerializeField] private GameObject _playScreen;
-        [SerializeField] private GameObject _videoScreen;
-        [SerializeField] private UnityEngine.UI.RawImage _videoRawImage;
-        [SerializeField] private UnityEngine.UI.Button _playButton;
-        [SerializeField] private UnityEngine.UI.Button _skipButton;
-        [SerializeField] private UnityEngine.UI.Text _titleLabel;
-        [SerializeField] private UnityEngine.UI.Text _subtitleLabel;
+        [Header("UI Toolkit")]
+        [SerializeField] private UIDocument _document;
+        [SerializeField] private VisualTreeAsset _visualTreeAsset;
+        [SerializeField] private StyleSheet _styleSheet;
+
+        [Header("Render Texture")]
+        [SerializeField] private Vector2Int _renderTextureSize = new Vector2Int(1920, 1080);
 
         [Header("Play Screen Text")]
         [SerializeField] private string _titleText = "Criminal Case 2";
@@ -30,7 +30,15 @@ namespace CriminalCase2.UI
         [Header("Timeout")]
         [SerializeField] private float _prepareTimeoutSeconds = 10f;
 
-        private Texture2D _fallbackTexture;
+        private VisualElement _playContainer = null!;
+        private VisualElement _videoContainer = null!;
+        private VisualElement _videoFrame = null!;
+        private Label _titleLabel = null!;
+        private Label _subtitleLabel = null!;
+        private Button _playButton = null!;
+        private Button _skipButton = null!;
+
+        private RenderTexture _renderTexture = null!;
 
         private void Awake()
         {
@@ -38,124 +46,85 @@ namespace CriminalCase2.UI
 
             if (_videoPlayer == null)
                 _videoPlayer = GetComponent<VideoPlayer>();
-
-            AutoFindReferences();
-            LogReferences();
-        }
-
-        private void AutoFindReferences()
-        {
-            if (_playScreen == null)
-            {
-                var t = transform.Find("PlayScreen");
-                if (t != null) { _playScreen = t.gameObject; GameLogger.Info("[VideoPlayerUI] Auto-found PlayScreen"); }
-                else GameLogger.Warn("[VideoPlayerUI] Could not find child: PlayScreen");
-            }
-
-            if (_videoScreen == null)
-            {
-                var t = transform.Find("VideoScreen");
-                if (t != null) { _videoScreen = t.gameObject; GameLogger.Info("[VideoPlayerUI] Auto-found VideoScreen"); }
-                else GameLogger.Warn("[VideoPlayerUI] Could not find child: VideoScreen");
-            }
-
-            if (_videoRawImage == null)
-            {
-                var t = transform.Find("VideoScreen/VideoRawImage");
-                if (t != null) { _videoRawImage = t.GetComponent<UnityEngine.UI.RawImage>(); GameLogger.Info($"[VideoPlayerUI] Auto-found VideoRawImage: {_videoRawImage != null}"); }
-                else GameLogger.Warn("[VideoPlayerUI] Could not find child: VideoScreen/VideoRawImage");
-            }
-
-            if (_playButton == null)
-            {
-                var t = transform.Find("PlayScreen/PlayButton");
-                if (t != null) { _playButton = t.GetComponent<UnityEngine.UI.Button>(); GameLogger.Info($"[VideoPlayerUI] Auto-found PlayButton: {_playButton != null}"); }
-                else GameLogger.Warn("[VideoPlayerUI] Could not find child: PlayScreen/PlayButton");
-            }
-
-            if (_skipButton == null)
-            {
-                var t = transform.Find("VideoScreen/SkipButtonContainer/SkipButton");
-                if (t != null) { _skipButton = t.GetComponent<UnityEngine.UI.Button>(); GameLogger.Info($"[VideoPlayerUI] Auto-found SkipButton: {_skipButton != null}"); }
-                else GameLogger.Warn("[VideoPlayerUI] Could not find child: VideoScreen/SkipButtonContainer/SkipButton");
-            }
-
-            if (_titleLabel == null)
-            {
-                var t = transform.Find("PlayScreen/TitleLabel");
-                if (t != null) { _titleLabel = t.GetComponent<UnityEngine.UI.Text>(); }
-            }
-
-            if (_subtitleLabel == null)
-            {
-                var t = transform.Find("PlayScreen/SubtitleLabel");
-                if (t != null) { _subtitleLabel = t.GetComponent<UnityEngine.UI.Text>(); }
-            }
-        }
-
-        private void LogReferences()
-        {
-            GameLogger.Info($"[VideoPlayerUI] References: " +
-                $"VideoPlayer={_videoPlayer != null}, " +
-                $"PlayScreen={_playScreen != null}, " +
-                $"VideoScreen={_videoScreen != null}, " +
-                $"RawImage={_videoRawImage != null}, " +
-                $"PlayButton={_playButton != null}, " +
-                $"SkipButton={_skipButton != null}");
         }
 
         private void OnEnable()
         {
             GameLogger.Info("[VideoPlayerUI] OnEnable called");
+            EnsureDocument();
+            BindUI();
             SetupVideoPlayer();
-            SetupUI();
             ShowPlayScreen();
         }
 
         private void OnDisable()
         {
             GameLogger.Info("[VideoPlayerUI] OnDisable called");
+            UnbindUI();
             CleanupVideoPlayer();
-            UnbindButtons();
 
-            if (_videoRawImage != null)
-                _videoRawImage.texture = null;
+            if (_videoFrame != null)
+                _videoFrame.style.backgroundImage = StyleKeyword.Null;
         }
 
-        private void SetupUI()
+        private void OnDestroy()
         {
-            if (_titleLabel != null)
-                _titleLabel.text = _titleText;
-            if (_subtitleLabel != null)
-                _subtitleLabel.text = _subtitleText;
-            if (_playButton != null)
+            if (_renderTexture != null)
             {
-                var playBtnText = _playButton.GetComponentInChildren<UnityEngine.UI.Text>();
-                if (playBtnText != null) playBtnText.text = _playButtonText;
+                _renderTexture.Release();
+                Destroy(_renderTexture);
+                _renderTexture = null;
             }
-            if (_skipButton != null)
+        }
+
+        private void EnsureDocument()
+        {
+            if (_document == null) return;
+
+            if (_document.visualTreeAsset == null && _visualTreeAsset != null)
+                _document.visualTreeAsset = _visualTreeAsset;
+
+            if (_styleSheet != null && _document.rootVisualElement != null
+                && !_document.rootVisualElement.styleSheets.Contains(_styleSheet))
             {
-                var skipBtnText = _skipButton.GetComponentInChildren<UnityEngine.UI.Text>();
-                if (skipBtnText != null) skipBtnText.text = _skipButtonText;
+                _document.rootVisualElement.styleSheets.Add(_styleSheet);
             }
-
-            BindButtons();
         }
 
-        private void BindButtons()
+        private void BindUI()
         {
-            if (_playButton != null)
-                _playButton.onClick.AddListener(OnPlayClicked);
-            if (_skipButton != null)
-                _skipButton.onClick.AddListener(OnSkipClicked);
+            if (_document == null || _document.rootVisualElement == null) return;
+
+            var root = _document.rootVisualElement;
+            _playContainer = root.Q<VisualElement>(UIConstants.Video.PlayContainer);
+            _videoContainer = root.Q<VisualElement>(UIConstants.Video.VideoContainer);
+            _videoFrame = root.Q<VisualElement>(UIConstants.Video.VideoFrame);
+            _titleLabel = root.Q<Label>(UIConstants.Video.TitleLabel);
+            _subtitleLabel = root.Q<Label>(UIConstants.Video.SubtitleLabel);
+            _playButton = root.Q<Button>(UIConstants.Video.PlayButton);
+            _skipButton = root.Q<Button>(UIConstants.Video.SkipButton);
+
+            if (_titleLabel != null) _titleLabel.text = _titleText;
+            if (_subtitleLabel != null) _subtitleLabel.text = _subtitleText;
+            if (_playButton != null) _playButton.text = _playButtonText;
+            if (_skipButton != null) _skipButton.text = _skipButtonText;
+
+            if (_playButton != null) _playButton.clicked += OnPlayClicked;
+            if (_skipButton != null) _skipButton.clicked += OnSkipClicked;
         }
 
-        private void UnbindButtons()
+        private void UnbindUI()
         {
-            if (_playButton != null)
-                _playButton.onClick.RemoveListener(OnPlayClicked);
-            if (_skipButton != null)
-                _skipButton.onClick.RemoveListener(OnSkipClicked);
+            if (_playButton != null) _playButton.clicked -= OnPlayClicked;
+            if (_skipButton != null) _skipButton.clicked -= OnSkipClicked;
+
+            _playContainer = null;
+            _videoContainer = null;
+            _videoFrame = null;
+            _titleLabel = null;
+            _subtitleLabel = null;
+            _playButton = null;
+            _skipButton = null;
         }
 
         private void SetupVideoPlayer()
@@ -166,7 +135,10 @@ namespace CriminalCase2.UI
                 return;
             }
 
-            _videoPlayer.renderMode = VideoRenderMode.APIOnly;
+            EnsureRenderTexture();
+
+            _videoPlayer.renderMode = VideoRenderMode.RenderTexture;
+            _videoPlayer.targetTexture = _renderTexture;
             _videoPlayer.aspectRatio = VideoAspectRatio.FitInside;
             _videoPlayer.audioOutputMode = VideoAudioOutputMode.Direct;
             _videoPlayer.skipOnDrop = true;
@@ -185,16 +157,26 @@ namespace CriminalCase2.UI
 #endif
         }
 
+        private void EnsureRenderTexture()
+        {
+            if (_renderTexture != null) return;
+
+            _renderTexture = new RenderTexture(_renderTextureSize.x, _renderTextureSize.y, 0, RenderTextureFormat.ARGB32)
+            {
+                name = "VideoPlayerUI_RT",
+                antiAliasing = 1,
+                useMipMap = false,
+                autoGenerateMips = false
+            };
+            _renderTexture.Create();
+        }
+
         private void OnVideoPrepared(VideoPlayer vp)
         {
             GameLogger.Info("[VideoPlayerUI] prepareCompleted: binding video texture");
-            if (_videoRawImage == null || _videoPlayer == null) return;
+            if (_videoFrame == null || _renderTexture == null) return;
 
-            var tex = _videoPlayer.texture;
-            if (tex == null) return;
-
-            _videoRawImage.color = Color.white;
-            _videoRawImage.texture = tex;
+            _videoFrame.style.backgroundImage = new StyleBackground(Background.FromRenderTexture(_renderTexture));
         }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -240,18 +222,17 @@ namespace CriminalCase2.UI
 
         public void ShowPlayScreen()
         {
-            if (_playScreen != null)
-                _playScreen.SetActive(true);
-            if (_videoScreen != null)
-                _videoScreen.SetActive(false);
+            if (_playContainer != null) _playContainer.style.display = DisplayStyle.Flex;
+            if (_videoContainer != null) _videoContainer.style.display = DisplayStyle.None;
         }
+
+        public bool IsPlayScreenVisible =>
+            _playContainer != null && _playContainer.resolvedStyle.display == DisplayStyle.Flex;
 
         private void ShowVideoScreen()
         {
-            if (_playScreen != null)
-                _playScreen.SetActive(false);
-            if (_videoScreen != null)
-                _videoScreen.SetActive(true);
+            if (_playContainer != null) _playContainer.style.display = DisplayStyle.None;
+            if (_videoContainer != null) _videoContainer.style.display = DisplayStyle.Flex;
         }
 
         private void OnPlayClicked()
@@ -281,22 +262,6 @@ namespace CriminalCase2.UI
                 $"URL={(_videoPlayer.url ?? "null")}");
 
             ShowVideoScreen();
-
-            if (_fallbackTexture == null)
-            {
-                _fallbackTexture = new Texture2D(2, 2, TextureFormat.RGB24, false);
-                var pixels = new Color32[4];
-                for (int i = 0; i < pixels.Length; i++) pixels[i] = new Color32(0, 0, 0, 255);
-                _fallbackTexture.SetPixels32(pixels);
-                _fallbackTexture.Apply();
-            }
-
-            if (_videoRawImage != null && _videoPlayer.texture == null)
-            {
-                _videoRawImage.color = Color.white;
-                _videoRawImage.texture = _fallbackTexture;
-            }
-
             StartCoroutine(PrepareAndPlay());
         }
 
@@ -335,8 +300,6 @@ namespace CriminalCase2.UI
                 GameLogger.Info($"[VideoPlayerUI] Prepare completed in {elapsed:F2}s, isPrepared={_videoPlayer.isPrepared}");
             }
 
-            // Texture binding is handled by OnVideoPrepared (prepareCompleted event).
-            // Play() triggers playback; the frame data is written into the already-bound texture.
             _videoPlayer.Play();
             GameLogger.Info("[VideoPlayerUI] Play() called");
         }
@@ -366,8 +329,8 @@ namespace CriminalCase2.UI
             if (_videoPlayer != null)
                 _videoPlayer.Stop();
 
-            if (_videoRawImage != null)
-                _videoRawImage.texture = null;
+            if (_videoFrame != null)
+                _videoFrame.style.backgroundImage = StyleKeyword.Null;
 
             OnVideoFinishedOrSkipped();
         }
@@ -377,15 +340,6 @@ namespace CriminalCase2.UI
             ShowPlayScreen();
             GameServices.UI?.HideAllPanels();
             GameServices.GameState?.SetState(GameState.Investigation);
-        }
-
-        private void OnDestroy()
-        {
-            if (_fallbackTexture != null)
-            {
-                Destroy(_fallbackTexture);
-                _fallbackTexture = null;
-            }
         }
     }
 }

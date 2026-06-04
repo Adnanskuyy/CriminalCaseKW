@@ -45,5 +45,16 @@ namespace CriminalCase2.UI
             public const string CloseButton = "check-status-close-button";
             public const string CheckResultButton = "check-result-button";
         }
+
+        public static class Video
+        {
+            public const string PlayContainer = "play-container";
+            public const string VideoContainer = "video-container";
+            public const string VideoFrame = "video-frame";
+            public const string TitleLabel = "title-label";
+            public const string SubtitleLabel = "subtitle-label";
+            public const string PlayButton = "play-button";
+            public const string SkipButton = "skip-button";
+        }
     }
 }
