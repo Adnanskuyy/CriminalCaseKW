@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using CriminalCase2.Data;
 using CriminalCase2.UI;
+using CriminalCase2.Utils;
 using System.Collections.Generic;
 using System;
 
@@ -55,7 +56,7 @@ namespace CriminalCase2.Managers
         public void SetState(GameState newState)
         {
             _currentState = newState;
-            Debug.Log($"[GameManager] State changed to: {newState}");
+            GameLogger.Info($"[GameManager] State changed to: {newState}");
         }
 
         public void RecordVerdict(SuspectData suspect, SuspectRole playerChoice)
@@ -72,7 +73,7 @@ namespace CriminalCase2.Managers
         {
             if (_isTransitioning)
             {
-                Debug.LogWarning("[GameManager] Already transitioning levels!");
+                GameLogger.Warn("[GameManager] Already transitioning levels!");
                 return;
             }
 
@@ -80,7 +81,7 @@ namespace CriminalCase2.Managers
 
             if (_currentLevelIndex >= _levels.Count)
             {
-                Debug.Log("[GameManager] All levels completed!");
+                GameLogger.Info("[GameManager] All levels completed!");
                 _currentLevelIndex = _levels.Count - 1;
                 onComplete?.Invoke();
                 return;
@@ -97,7 +98,7 @@ namespace CriminalCase2.Managers
         {
             if (_isTransitioning)
             {
-                Debug.LogWarning("[GameManager] Already transitioning!");
+                GameLogger.Warn("[GameManager] Already transitioning!");
                 return;
             }
 
@@ -111,13 +112,13 @@ namespace CriminalCase2.Managers
         {
             if (_isTransitioning)
             {
-                Debug.LogWarning("[GameManager] Already transitioning!");
+                GameLogger.Warn("[GameManager] Already transitioning!");
                 return;
             }
 
             if (levelIndex < 0 || levelIndex >= _levels.Count)
             {
-                Debug.LogError($"[GameManager] Invalid level index: {levelIndex}");
+                GameLogger.Error($"[GameManager] Invalid level index: {levelIndex}");
                 return;
             }
 
@@ -151,7 +152,7 @@ namespace CriminalCase2.Managers
                     {
                         _isTransitioning = false;
                         onComplete?.Invoke();
-                        Debug.Log($"[GameManager] Transition to Level {_currentLevelIndex + 1} complete!");
+                        GameLogger.Info($"[GameManager] Transition to Level {_currentLevelIndex + 1} complete!");
                     }
                 );
             }
@@ -191,7 +192,7 @@ namespace CriminalCase2.Managers
             }
             else
             {
-                Debug.Log("[GameManager] Game Complete! All levels finished.");
+                GameLogger.Info("[GameManager] Game Complete! All levels finished.");
                 // TODO: Show game complete screen
             }
         }
@@ -200,7 +201,7 @@ namespace CriminalCase2.Managers
         {
             if (_levels == null || _levels.Count == 0)
             {
-                Debug.LogWarning("[GameManager] No levels assigned in inspector.");
+                GameLogger.Warn("[GameManager] No levels assigned in inspector.");
             }
         }
     }

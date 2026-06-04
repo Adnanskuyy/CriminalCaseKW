@@ -1,5 +1,6 @@
 using UnityEngine;
 using CriminalCase2.Data;
+using CriminalCase2.Utils;
 
 namespace CriminalCase2.Data
 {
@@ -34,7 +35,7 @@ namespace CriminalCase2.Data
         {
             if (_suspects != null && _suspects.Length != 4)
             {
-                Debug.LogWarning($"LevelConfig '{name}' should have exactly 4 suspects, found {_suspects.Length}.");
+                GameLogger.Warn($"LevelConfig '{name}' should have exactly 4 suspects, found {_suspects.Length}.");
             }
         }
     }

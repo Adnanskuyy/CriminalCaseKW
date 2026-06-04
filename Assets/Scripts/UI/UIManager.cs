@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
 using CriminalCase2.Managers;
+using CriminalCase2.Utils;
 
 namespace CriminalCase2.UI
 {
@@ -99,7 +100,7 @@ namespace CriminalCase2.UI
                 var uxml = Resources.Load<VisualTreeAsset>(resourcePath);
                 if (uxml == null)
                 {
-                    Debug.LogWarning($"[UIManager] Failed to load UXML from Resources/{resourcePath}.uxml");
+                    GameLogger.Warn($"[UIManager] Failed to load UXML from Resources/{resourcePath}.uxml");
                     return;
                 }
                 panel.visualTreeAsset = uxml;

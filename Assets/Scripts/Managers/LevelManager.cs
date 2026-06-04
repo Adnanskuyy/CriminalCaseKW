@@ -1,5 +1,6 @@
 using UnityEngine;
 using CriminalCase2.Data;
+using CriminalCase2.Utils;
 using System.Collections.Generic;
 
 namespace CriminalCase2.Managers
@@ -68,7 +69,7 @@ namespace CriminalCase2.Managers
         {
             if (config == null)
             {
-                Debug.LogError("[LevelManager] Cannot load null level config!");
+                GameLogger.Error("[LevelManager] Cannot load null level config!");
                 return;
             }
 
@@ -83,17 +84,17 @@ namespace CriminalCase2.Managers
                 Vector3 spawnPosition = _levelSpawnPoint != null ? _levelSpawnPoint.position : Vector3.zero;
                 _currentLevelInstance = Instantiate(config.LevelPrefab, spawnPosition, Quaternion.identity);
                 _currentLevelInstance.name = $"Level_{config.LevelIndex:D2}_Instance";
-                Debug.Log($"[LevelManager] Spawned level prefab: {_currentLevelInstance.name}");
+                GameLogger.Info($"[LevelManager] Spawned level prefab: {_currentLevelInstance.name}");
             }
             else
             {
-                Debug.LogWarning($"[LevelManager] No prefab assigned for level: {config.LevelName}");
+                GameLogger.Warn($"[LevelManager] No prefab assigned for level: {config.LevelName}");
             }
 
             // Initialize level data
             Initialize(config);
-            
-            Debug.Log($"[LevelManager] Loaded level: {config.LevelName}");
+
+            GameLogger.Info($"[LevelManager] Loaded level: {config.LevelName}");
         }
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace CriminalCase2.Managers
         {
             if (_currentLevelInstance != null)
             {
-                Debug.Log($"[LevelManager] Unloading level: {_currentLevelInstance.name}");
+                GameLogger.Info($"[LevelManager] Unloading level: {_currentLevelInstance.name}");
                 Destroy(_currentLevelInstance);
                 _currentLevelInstance = null;
             }
@@ -118,7 +119,7 @@ namespace CriminalCase2.Managers
             _judgedSuspects.Clear();
             _drugTestResults.Clear();
             _drugTestsRemaining = config.MaxDrugTestsPerLevel;
-            Debug.Log($"[LevelManager] Initialized level: {config.LevelName}");
+            GameLogger.Info($"[LevelManager] Initialized level: {config.LevelName}");
         }
 
         public void RecordJudgedSuspect(SuspectData suspect, SuspectRole playerChoice)
@@ -144,7 +145,7 @@ namespace CriminalCase2.Managers
                 return true;
             }
 
-            Debug.Log("[LevelManager] No drug tests remaining.");
+            GameLogger.Info("[LevelManager] No drug tests remaining.");
             return false;
         }
 
@@ -168,7 +169,7 @@ namespace CriminalCase2.Managers
 
         private void OnAllSuspectsJudged()
         {
-            Debug.Log("[LevelManager] All suspects judged. Waiting for player to check results.");
+            GameLogger.Info("[LevelManager] All suspects judged. Waiting for player to check results.");
         }
 
         private void OnValidate()

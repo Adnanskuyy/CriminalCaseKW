@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using CriminalCase2.Data;
 using CriminalCase2.Managers;
 using CriminalCase2.UI;
+using CriminalCase2.Utils;
 
 namespace CriminalCase2.Interactables
 {
@@ -62,7 +63,7 @@ namespace CriminalCase2.Interactables
         {
             if (_suspectData == null)
             {
-                Debug.LogWarning($"[SuspectClickHandler] No SuspectData assigned on {gameObject.name}.");
+                GameLogger.Warn($"[SuspectClickHandler] No SuspectData assigned on {gameObject.name}.");
             }
         }
     }
