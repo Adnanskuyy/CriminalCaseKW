@@ -31,7 +31,6 @@ namespace CriminalCase2.UI
         [SerializeField] private float _prepareTimeoutSeconds = 10f;
 
         private Texture2D _fallbackTexture;
-        private bool _isPlaying;
 
         private void Awake()
         {
@@ -118,21 +117,9 @@ namespace CriminalCase2.UI
             GameLogger.Info("[VideoPlayerUI] OnDisable called");
             CleanupVideoPlayer();
             UnbindButtons();
-            _isPlaying = false;
 
             if (_videoRawImage != null)
                 _videoRawImage.texture = null;
-        }
-
-        private void LateUpdate()
-        {
-            if (_isPlaying && _videoPlayer != null && _videoRawImage != null)
-            {
-                _videoRawImage.color = Color.white;
-                var tex = _videoPlayer.texture;
-                if (tex != null && _videoRawImage.texture != tex)
-                    _videoRawImage.texture = tex;
-            }
         }
 
         private void SetupUI()
@@ -187,6 +174,7 @@ namespace CriminalCase2.UI
 
             _videoPlayer.errorReceived += OnVideoError;
             _videoPlayer.loopPointReached += OnVideoFinished;
+            _videoPlayer.prepareCompleted += OnVideoPrepared;
 
             GameLogger.Info($"[VideoPlayerUI] SetupVideoPlayer: renderMode={_videoPlayer.renderMode}, audioOutputMode={_videoPlayer.audioOutputMode}");
 
@@ -195,6 +183,18 @@ namespace CriminalCase2.UI
 #else
             SetupEditorSource();
 #endif
+        }
+
+        private void OnVideoPrepared(VideoPlayer vp)
+        {
+            GameLogger.Info("[VideoPlayerUI] prepareCompleted: binding video texture");
+            if (_videoRawImage == null || _videoPlayer == null) return;
+
+            var tex = _videoPlayer.texture;
+            if (tex == null) return;
+
+            _videoRawImage.color = Color.white;
+            _videoRawImage.texture = tex;
         }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -233,6 +233,7 @@ namespace CriminalCase2.UI
             {
                 _videoPlayer.errorReceived -= OnVideoError;
                 _videoPlayer.loopPointReached -= OnVideoFinished;
+                _videoPlayer.prepareCompleted -= OnVideoPrepared;
                 _videoPlayer.Stop();
             }
         }
@@ -334,13 +335,8 @@ namespace CriminalCase2.UI
                 GameLogger.Info($"[VideoPlayerUI] Prepare completed in {elapsed:F2}s, isPrepared={_videoPlayer.isPrepared}");
             }
 
-            if (_videoRawImage != null && _videoPlayer.texture != null)
-            {
-                _videoRawImage.color = Color.white;
-                _videoRawImage.texture = _videoPlayer.texture;
-            }
-
-            _isPlaying = true;
+            // Texture binding is handled by OnVideoPrepared (prepareCompleted event).
+            // Play() triggers playback; the frame data is written into the already-bound texture.
             _videoPlayer.Play();
             GameLogger.Info("[VideoPlayerUI] Play() called");
         }
@@ -354,21 +350,18 @@ namespace CriminalCase2.UI
         private void OnVideoFinished(VideoPlayer vp)
         {
             GameLogger.Info("[VideoPlayerUI] Video finished playing");
-            _isPlaying = false;
             OnVideoFinishedOrSkipped();
         }
 
         private void OnVideoError(VideoPlayer vp, string message)
         {
             GameLogger.Error($"[VideoPlayerUI] Video error: {message}");
-            _isPlaying = false;
             OnVideoFinishedOrSkipped();
         }
 
         private void StopVideo()
         {
             StopAllCoroutines();
-            _isPlaying = false;
 
             if (_videoPlayer != null)
                 _videoPlayer.Stop();
