@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
-using CriminalCase2.Managers;
+using CriminalCase2.Services;
 using System.Collections.Generic;
 
 namespace CriminalCase2.UI
@@ -79,8 +79,8 @@ namespace CriminalCase2.UI
 
         private void OnNextLevelClicked()
         {
-            GameManager.Instance?.AdvanceToNextLevel();
-            UIManager.Instance?.HideAllPanels();
+            GameServices.GameState?.AdvanceToNextLevel();
+            GameServices.UI?.HideAllPanels();
         }
     }
 }

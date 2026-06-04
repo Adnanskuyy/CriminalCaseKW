@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
-using CriminalCase2.Managers;
+using CriminalCase2.Services;
 
 namespace CriminalCase2.UI
 {
@@ -56,14 +56,14 @@ namespace CriminalCase2.UI
 
         private void OnCloseClicked()
         {
-            UIManager.Instance?.HideAllPanels();
-            UIManager.Instance?.ShowStatusHUD();
-            GameManager.Instance?.SetState(GameState.Investigation);
+            GameServices.UI?.HideAllPanels();
+            GameServices.UI?.ShowStatusHUD();
+            GameServices.GameState?.SetState(GameState.Investigation);
         }
 
         private void OnReplayVideoClicked()
         {
-            UIManager.Instance?.ShowVideoPlayer();
+            GameServices.UI?.ShowVideoPlayer();
         }
     }
 }

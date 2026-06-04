@@ -8,5 +8,8 @@ namespace CriminalCase2.Domain
         GameState CurrentState { get; }
         LevelConfig? CurrentLevel { get; }
         event Action<GameState>? StateChanged;
+
+        void SetState(GameState newState);
+        void AdvanceToNextLevel(Action? onComplete = null);
     }
 }

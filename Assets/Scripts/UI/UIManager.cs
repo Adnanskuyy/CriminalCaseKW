@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
-using CriminalCase2.Managers;
+using CriminalCase2.Services;
 using CriminalCase2.Utils;
 
 namespace CriminalCase2.UI
@@ -142,7 +142,7 @@ namespace CriminalCase2.UI
         {
             HideAllPanels();
             SetUIToolkitPanelActive(_checkStatusPanel, true);
-            _checkStatusUI?.Populate(GameManager.Instance.VerdictRecords);
+            _checkStatusUI?.Populate(GameServices.Verdicts?.Records);
         }
 
         public void HideCheckStatus()
@@ -155,7 +155,7 @@ namespace CriminalCase2.UI
             HideAllPanels();
             HideStatusHUD();
             SetUIToolkitPanelActive(_resultPanel, true);
-            _resultUI?.Populate(GameManager.Instance.VerdictRecords);
+            _resultUI?.Populate(GameServices.Verdicts?.Records);
         }
 
         public void ShowStatusHUD()

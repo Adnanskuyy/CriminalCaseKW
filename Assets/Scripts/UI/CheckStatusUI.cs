@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
-using CriminalCase2.Managers;
+using CriminalCase2.Services;
 using System.Collections.Generic;
 
 namespace CriminalCase2.UI
@@ -90,14 +90,15 @@ namespace CriminalCase2.UI
             }
 
             // Update check result button state
-            if (_checkResultButton != null && LevelManager.Instance != null)
+            var levels = GameServices.Levels;
+            if (_checkResultButton != null && levels != null)
             {
-                bool allJudged = LevelManager.Instance.AllSuspectsJudged;
+                bool allJudged = levels.AllSuspectsJudged;
                 _checkResultButton.SetEnabled(allJudged);
-                
+
                 if (!allJudged)
                 {
-                    int remaining = LevelManager.Instance.TotalSuspects - LevelManager.Instance.JudgedCount;
+                    int remaining = levels.TotalSuspects - levels.JudgedCount;
                     _checkResultButton.text = $"Kirim Vonis Akhir ({remaining} tersisa)";
                 }
                 else
@@ -126,14 +127,15 @@ namespace CriminalCase2.UI
 
         private void OnCloseClicked()
         {
-            UIManager.Instance?.HideCheckStatus();
+            GameServices.UI?.HideCheckStatus();
         }
 
         private void OnCheckResultClicked()
         {
-            if (LevelManager.Instance != null && LevelManager.Instance.AllSuspectsJudged)
+            var levels = GameServices.Levels;
+            if (levels != null && levels.AllSuspectsJudged)
             {
-                GameManager.Instance?.SetState(GameState.Results);
+                GameServices.GameState?.SetState(GameState.Results);
             }
         }
     }

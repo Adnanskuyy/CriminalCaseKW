@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using CriminalCase2.Data;
 using CriminalCase2.Domain;
+using CriminalCase2.Services;
 using CriminalCase2.UI;
 using CriminalCase2.Utils;
 using System;
@@ -150,12 +151,12 @@ namespace CriminalCase2.Managers
                     onMiddle: () =>
                     {
                         // Hide all UI panels when screen is fully black
-                        UIManager.Instance?.HideAllPanels();
+                        GameServices.UI?.HideAllPanels();
 
                         // Switch level here (while screen is black)
-                        if (LevelManager.Instance != null && CurrentLevel != null)
+                        if (GameServices.Levels != null && CurrentLevel != null)
                         {
-                            LevelManager.Instance.LoadLevel(CurrentLevel);
+                            GameServices.Levels.LoadLevel(CurrentLevel);
                         }
                         // Skip video on level transition, go directly to investigation
                         SetState(GameState.Investigation);
@@ -172,11 +173,11 @@ namespace CriminalCase2.Managers
             {
                 // No fade transition available, just switch immediately
                 // Hide all panels before switching
-                UIManager.Instance?.HideAllPanels();
+                GameServices.UI?.HideAllPanels();
 
-                if (LevelManager.Instance != null && CurrentLevel != null)
+                if (GameServices.Levels != null && CurrentLevel != null)
                 {
-                    LevelManager.Instance.LoadLevel(CurrentLevel);
+                    GameServices.Levels.LoadLevel(CurrentLevel);
                 }
                 // Skip video on level transition, go directly to investigation
                 SetState(GameState.Investigation);

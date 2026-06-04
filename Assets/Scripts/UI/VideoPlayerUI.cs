@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Video;
-using CriminalCase2.Managers;
 using CriminalCase2.Data;
+using CriminalCase2.Services;
 using CriminalCase2.Utils;
 using System.Collections;
 
@@ -200,9 +200,7 @@ namespace CriminalCase2.UI
 #if UNITY_WEBGL && !UNITY_EDITOR
         private void SetupWebGLSource()
         {
-            string fileName = GameManager.Instance != null
-                ? GameManager.Instance.IntroVideoFileName
-                : "Videos/Intro.webm";
+            string fileName = GameServices.Video?.IntroVideoFileName ?? "Videos/Intro.webm";
             string url = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
             _videoPlayer.source = VideoSource.Url;
             _videoPlayer.url = url;
@@ -211,17 +209,16 @@ namespace CriminalCase2.UI
 #else
         private void SetupEditorSource()
         {
-            if (GameManager.Instance != null && GameManager.Instance.GlobalIntroVideo != null)
+            var globalClip = GameServices.Video?.GlobalIntroVideo;
+            if (globalClip != null)
             {
                 _videoPlayer.source = VideoSource.VideoClip;
-                _videoPlayer.clip = GameManager.Instance.GlobalIntroVideo;
+                _videoPlayer.clip = globalClip;
                 GameLogger.Info($"[VideoPlayerUI] Editor mode: VideoClip={_videoPlayer.clip.name}");
             }
             else
             {
-                string fileName = GameManager.Instance != null
-                    ? GameManager.Instance.IntroVideoFileName
-                    : "Videos/Intro.webm";
+                string fileName = GameServices.Video?.IntroVideoFileName ?? "Videos/Intro.webm";
                 string url = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
                 _videoPlayer.source = VideoSource.Url;
                 _videoPlayer.url = url;
@@ -385,8 +382,8 @@ namespace CriminalCase2.UI
         private void OnVideoFinishedOrSkipped()
         {
             ShowPlayScreen();
-            UIManager.Instance?.HideAllPanels();
-            GameManager.Instance?.SetState(GameState.Investigation);
+            GameServices.UI?.HideAllPanels();
+            GameServices.GameState?.SetState(GameState.Investigation);
         }
 
         private void OnDestroy()

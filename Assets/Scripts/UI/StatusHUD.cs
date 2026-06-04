@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using CriminalCase2.Managers;
+using CriminalCase2.Services;
 
 namespace CriminalCase2.UI
 {
@@ -60,10 +60,11 @@ namespace CriminalCase2.UI
 
         public void UpdateButtonText()
         {
-            if (_hudButton == null || LevelManager.Instance == null) return;
+            var levels = GameServices.Levels;
+            if (_hudButton == null || levels == null) return;
 
-            var judged = LevelManager.Instance.JudgedCount;
-            var total = LevelManager.Instance.TotalSuspects;
+            var judged = levels.JudgedCount;
+            var total = levels.TotalSuspects;
 
             if (judged >= total)
             {
@@ -81,7 +82,7 @@ namespace CriminalCase2.UI
 
         private void OnHudButtonClicked()
         {
-            UIManager.Instance?.ShowCheckStatus();
+            GameServices.UI?.ShowCheckStatus();
         }
     }
 }

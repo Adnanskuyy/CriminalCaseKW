@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using CriminalCase2.Data;
-using CriminalCase2.Managers;
+using CriminalCase2.Services;
 using CriminalCase2.UI;
 using CriminalCase2.Utils;
 
@@ -44,9 +44,10 @@ namespace CriminalCase2.Interactables
         {
             if (_suspectData == null) return;
 
-            if (GameManager.Instance == null || GameManager.Instance.CurrentState != GameState.Investigation) return;
+            var state = GameServices.GameState;
+            if (state == null || state.CurrentState != GameState.Investigation) return;
 
-            UIManager.Instance?.ShowSuspectDetail(_suspectData);
+            GameServices.UI?.ShowSuspectDetail(_suspectData);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
