@@ -445,3 +445,89 @@
     background-color: rgb(60, 60, 70);
     color: rgb(160, 160, 170);
 }
+
+/* ===== Video Player Panel ===== */
+.play-container {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-container {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    position: relative;
+}
+
+.video-frame {
+    position: absolute;
+    left: 10%;
+    top: 20%;
+    width: 80%;
+    height: 60%;
+    background-color: rgb(0, 0, 0);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.title-label {
+    color: rgb(255, 210, 60);
+    font-size: 48px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    margin-bottom: 20px;
+}
+
+.subtitle-label {
+    color: rgb(210, 210, 210);
+    font-size: 28px;
+    -unity-text-align: middle-center;
+    margin-bottom: 40px;
+}
+
+.play-button {
+    width: 260px;
+    height: 72px;
+    background-color: rgb(40, 140, 80);
+    color: rgb(255, 255, 255);
+    font-size: 28px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    border-radius: 8px;
+}
+
+.play-button:hover {
+    background-color: rgb(60, 170, 100);
+}
+
+.play-button:disabled {
+    background-color: rgb(60, 60, 70);
+    color: rgb(160, 160, 170);
+}
+
+.skip-button-container {
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    width: 150px;
+    height: 52px;
+}
+
+.skip-button {
+    width: 150px;
+    height: 52px;
+    background-color: rgba(40, 40, 40, 0.8);
+    color: rgb(220, 220, 220);
+    font-size: 22px;
+    -unity-text-align: middle-center;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.skip-button:hover {
+    background-color: rgba(60, 60, 60, 0.9);
+}
