@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
-using CriminalCase2.Managers;
+using CriminalCase2.Services;
 
 namespace CriminalCase2.UI
 {
@@ -52,36 +52,36 @@ namespace CriminalCase2.UI
             var root = _document.rootVisualElement;
             if (root == null) return;
 
-            _suspectNameLabel = root.Q<Label>("suspect-name-label");
-            _descriptionLabel = root.Q<Label>("description-label");
-            _evidenceTextLabel = root.Q<Label>("evidence-text-label");
-            _drugTestResultLabel = root.Q<Label>("drug-test-result-label");
+            _suspectNameLabel = root.Q<Label>(UIConstants.SuspectDetail.SuspectNameLabel);
+            _descriptionLabel = root.Q<Label>(UIConstants.SuspectDetail.DescriptionLabel);
+            _evidenceTextLabel = root.Q<Label>(UIConstants.SuspectDetail.EvidenceTextLabel);
+            _drugTestResultLabel = root.Q<Label>(UIConstants.SuspectDetail.DrugTestResultLabel);
 
-            _drugTestButton = root.Q<Button>("drug-test-button");
+            _drugTestButton = root.Q<Button>(UIConstants.SuspectDetail.DrugTestButton);
             if (_drugTestButton != null)
             {
                 _drugTestButton.clicked += OnDrugTestClicked;
             }
 
-            _verdictUserButton = root.Q<Button>("verdict-user-button");
+            _verdictUserButton = root.Q<Button>(UIConstants.SuspectDetail.VerdictUserButton);
             if (_verdictUserButton != null)
             {
                 _verdictUserButton.clicked += () => OnVerdictClicked(SuspectRole.User);
             }
 
-            _verdictDealerButton = root.Q<Button>("verdict-dealer-button");
+            _verdictDealerButton = root.Q<Button>(UIConstants.SuspectDetail.VerdictDealerButton);
             if (_verdictDealerButton != null)
             {
                 _verdictDealerButton.clicked += () => OnVerdictClicked(SuspectRole.Dealer);
             }
 
-            _verdictNormalButton = root.Q<Button>("verdict-normal-button");
+            _verdictNormalButton = root.Q<Button>(UIConstants.SuspectDetail.VerdictNormalButton);
             if (_verdictNormalButton != null)
             {
                 _verdictNormalButton.clicked += () => OnVerdictClicked(SuspectRole.Normal);
             }
 
-            _closeButton = root.Q<Button>("detail-close-button");
+            _closeButton = root.Q<Button>(UIConstants.SuspectDetail.CloseButton);
             if (_closeButton != null)
             {
                 _closeButton.clicked += OnCloseClicked;
@@ -107,9 +107,10 @@ namespace CriminalCase2.UI
             if (_evidenceTextLabel != null) _evidenceTextLabel.text = _currentSuspect.EvidenceText;
             if (_drugTestResultLabel != null)
             {
-                if (LevelManager.Instance != null && LevelManager.Instance.HasDrugTestResult(_currentSuspect))
+                var levels = GameServices.Levels;
+                if (levels != null && levels.HasDrugTestResult(_currentSuspect))
                 {
-                    _drugTestResultLabel.text = LevelManager.Instance.GetDrugTestResult(_currentSuspect).ToDisplayName();
+                    _drugTestResultLabel.text = levels.GetDrugTestResult(_currentSuspect).ToDisplayName();
                 }
                 else
                 {
@@ -119,8 +120,9 @@ namespace CriminalCase2.UI
 
             if (_drugTestButton != null)
             {
-                bool alreadyTested = LevelManager.Instance != null && LevelManager.Instance.HasDrugTestResult(_currentSuspect);
-                bool hasTestsRemaining = LevelManager.Instance != null && LevelManager.Instance.DrugTestsRemaining > 0;
+                var levels = GameServices.Levels;
+                bool alreadyTested = levels != null && levels.HasDrugTestResult(_currentSuspect);
+                bool hasTestsRemaining = levels != null && levels.DrugTestsRemaining > 0;
                 _drugTestButton.SetEnabled(!alreadyTested && hasTestsRemaining);
             }
 
@@ -129,12 +131,13 @@ namespace CriminalCase2.UI
 
         private void OnDrugTestClicked()
         {
-            if (LevelManager.Instance == null || _currentSuspect == null) return;
+            var levels = GameServices.Levels;
+            if (levels == null || _currentSuspect == null) return;
 
-            if (LevelManager.Instance.UseDrugTest())
+            if (levels.UseDrugTest())
             {
                 var result = _currentSuspect.DrugTestResult;
-                LevelManager.Instance.RecordDrugTest(_currentSuspect, result);
+                levels.RecordDrugTest(_currentSuspect, result);
                 if (_drugTestResultLabel != null)
                 {
                     _drugTestResultLabel.text = result.ToDisplayName();
@@ -148,17 +151,18 @@ namespace CriminalCase2.UI
 
         private void OnVerdictClicked(SuspectRole role)
         {
-            if (LevelManager.Instance == null || _currentSuspect == null) return;
+            var levels = GameServices.Levels;
+            if (levels == null || _currentSuspect == null) return;
 
-            LevelManager.Instance.RecordJudgedSuspect(_currentSuspect, role);
-            UIManager.Instance?.HideAllPanels();
-            UIManager.Instance?.ShowStatusHUD();
-            UIManager.Instance?.UpdateStatusHUD();
+            levels.RecordJudgedSuspect(_currentSuspect, role);
+            GameServices.UI?.HideAllPanels();
+            GameServices.UI?.ShowStatusHUD();
+            GameServices.UI?.UpdateStatusHUD();
         }
 
         private void OnCloseClicked()
         {
-            UIManager.Instance?.HideAllPanels();
+            GameServices.UI?.HideAllPanels();
         }
 
         private void UpdateVerdictButtons()

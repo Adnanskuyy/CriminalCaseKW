@@ -1,4 +1,5 @@
 ﻿<Solution>
+  <Project Path="CriminalCase2.Runtime.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="CriminalCase2.Tests.EditMode.csproj" />
 </Solution>

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
-using CriminalCase2.Managers;
+using CriminalCase2.Services;
 
 namespace CriminalCase2.UI
 {
@@ -26,13 +26,13 @@ namespace CriminalCase2.UI
         {
             if (_document == null) return;
 
-            _closeButton = _document.rootVisualElement.Q<Button>("tutorial-close-button");
+            _closeButton = _document.rootVisualElement.Q<Button>(UIConstants.Tutorial.CloseButton);
             if (_closeButton != null)
             {
                 _closeButton.clicked += OnCloseClicked;
             }
 
-            _replayVideoButton = _document.rootVisualElement.Q<Button>("tutorial-replay-video-button");
+            _replayVideoButton = _document.rootVisualElement.Q<Button>(UIConstants.Tutorial.ReplayVideoButton);
             if (_replayVideoButton != null)
             {
                 _replayVideoButton.clicked += OnReplayVideoClicked;
@@ -56,14 +56,14 @@ namespace CriminalCase2.UI
 
         private void OnCloseClicked()
         {
-            UIManager.Instance?.HideAllPanels();
-            UIManager.Instance?.ShowStatusHUD();
-            GameManager.Instance?.SetState(GameState.Investigation);
+            GameServices.UI?.HideAllPanels();
+            GameServices.UI?.ShowStatusHUD();
+            GameServices.GameState?.SetState(GameState.Investigation);
         }
 
         private void OnReplayVideoClicked()
         {
-            UIManager.Instance?.ShowVideoPlayer();
+            GameServices.UI?.ShowVideoPlayer();
         }
     }
 }

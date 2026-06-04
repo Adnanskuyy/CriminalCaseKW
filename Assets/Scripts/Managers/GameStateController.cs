@@ -1,5 +1,6 @@
 using UnityEngine;
 using CriminalCase2.Data;
+using CriminalCase2.Services;
 using CriminalCase2.UI;
 
 namespace CriminalCase2.Managers
@@ -10,9 +11,10 @@ namespace CriminalCase2.Managers
 
         private void Update()
         {
-            if (GameManager.Instance == null) return;
+            var state = GameServices.GameState;
+            if (state == null) return;
 
-            GameState currentState = GameManager.Instance.CurrentState;
+            GameState currentState = state.CurrentState;
 
             if (_lastHandledState.HasValue && currentState == _lastHandledState.Value) return;
             _lastHandledState = currentState;
@@ -39,23 +41,17 @@ namespace CriminalCase2.Managers
 
         private void HandleIntroVideo()
         {
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowVideoPlayer();
-            }
+            GameServices.UI?.ShowVideoPlayer();
         }
 
         private void HandleTutorial()
         {
-            GameManager.Instance.SetState(GameState.Investigation);
+            GameServices.GameState?.SetState(GameState.Investigation);
         }
 
         private void HandleInvestigation()
         {
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowStatusHUD();
-            }
+            GameServices.UI?.ShowStatusHUD();
         }
 
         private void HandleVerdict()
@@ -64,10 +60,7 @@ namespace CriminalCase2.Managers
 
         private void HandleResults()
         {
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowResults();
-            }
+            GameServices.UI?.ShowResults();
         }
     }
 }

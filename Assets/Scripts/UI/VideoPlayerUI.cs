@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.Video;
-using CriminalCase2.Managers;
 using CriminalCase2.Data;
+using CriminalCase2.Services;
+using CriminalCase2.Utils;
 using System.Collections;
 
 namespace CriminalCase2.UI
@@ -34,7 +35,7 @@ namespace CriminalCase2.UI
 
         private void Awake()
         {
-            Debug.Log("[VideoPlayerUI] Awake called");
+            GameLogger.Info("[VideoPlayerUI] Awake called");
 
             if (_videoPlayer == null)
                 _videoPlayer = GetComponent<VideoPlayer>();
@@ -48,36 +49,36 @@ namespace CriminalCase2.UI
             if (_playScreen == null)
             {
                 var t = transform.Find("PlayScreen");
-                if (t != null) { _playScreen = t.gameObject; Debug.Log("[VideoPlayerUI] Auto-found PlayScreen"); }
-                else Debug.LogWarning("[VideoPlayerUI] Could not find child: PlayScreen");
+                if (t != null) { _playScreen = t.gameObject; GameLogger.Info("[VideoPlayerUI] Auto-found PlayScreen"); }
+                else GameLogger.Warn("[VideoPlayerUI] Could not find child: PlayScreen");
             }
 
             if (_videoScreen == null)
             {
                 var t = transform.Find("VideoScreen");
-                if (t != null) { _videoScreen = t.gameObject; Debug.Log("[VideoPlayerUI] Auto-found VideoScreen"); }
-                else Debug.LogWarning("[VideoPlayerUI] Could not find child: VideoScreen");
+                if (t != null) { _videoScreen = t.gameObject; GameLogger.Info("[VideoPlayerUI] Auto-found VideoScreen"); }
+                else GameLogger.Warn("[VideoPlayerUI] Could not find child: VideoScreen");
             }
 
             if (_videoRawImage == null)
             {
                 var t = transform.Find("VideoScreen/VideoRawImage");
-                if (t != null) { _videoRawImage = t.GetComponent<UnityEngine.UI.RawImage>(); Debug.Log($"[VideoPlayerUI] Auto-found VideoRawImage: {_videoRawImage != null}"); }
-                else Debug.LogWarning("[VideoPlayerUI] Could not find child: VideoScreen/VideoRawImage");
+                if (t != null) { _videoRawImage = t.GetComponent<UnityEngine.UI.RawImage>(); GameLogger.Info($"[VideoPlayerUI] Auto-found VideoRawImage: {_videoRawImage != null}"); }
+                else GameLogger.Warn("[VideoPlayerUI] Could not find child: VideoScreen/VideoRawImage");
             }
 
             if (_playButton == null)
             {
                 var t = transform.Find("PlayScreen/PlayButton");
-                if (t != null) { _playButton = t.GetComponent<UnityEngine.UI.Button>(); Debug.Log($"[VideoPlayerUI] Auto-found PlayButton: {_playButton != null}"); }
-                else Debug.LogWarning("[VideoPlayerUI] Could not find child: PlayScreen/PlayButton");
+                if (t != null) { _playButton = t.GetComponent<UnityEngine.UI.Button>(); GameLogger.Info($"[VideoPlayerUI] Auto-found PlayButton: {_playButton != null}"); }
+                else GameLogger.Warn("[VideoPlayerUI] Could not find child: PlayScreen/PlayButton");
             }
 
             if (_skipButton == null)
             {
                 var t = transform.Find("VideoScreen/SkipButtonContainer/SkipButton");
-                if (t != null) { _skipButton = t.GetComponent<UnityEngine.UI.Button>(); Debug.Log($"[VideoPlayerUI] Auto-found SkipButton: {_skipButton != null}"); }
-                else Debug.LogWarning("[VideoPlayerUI] Could not find child: VideoScreen/SkipButtonContainer/SkipButton");
+                if (t != null) { _skipButton = t.GetComponent<UnityEngine.UI.Button>(); GameLogger.Info($"[VideoPlayerUI] Auto-found SkipButton: {_skipButton != null}"); }
+                else GameLogger.Warn("[VideoPlayerUI] Could not find child: VideoScreen/SkipButtonContainer/SkipButton");
             }
 
             if (_titleLabel == null)
@@ -95,7 +96,7 @@ namespace CriminalCase2.UI
 
         private void LogReferences()
         {
-            Debug.Log($"[VideoPlayerUI] References: " +
+            GameLogger.Info($"[VideoPlayerUI] References: " +
                 $"VideoPlayer={_videoPlayer != null}, " +
                 $"PlayScreen={_playScreen != null}, " +
                 $"VideoScreen={_videoScreen != null}, " +
@@ -106,7 +107,7 @@ namespace CriminalCase2.UI
 
         private void OnEnable()
         {
-            Debug.Log("[VideoPlayerUI] OnEnable called");
+            GameLogger.Info("[VideoPlayerUI] OnEnable called");
             SetupVideoPlayer();
             SetupUI();
             ShowPlayScreen();
@@ -114,7 +115,7 @@ namespace CriminalCase2.UI
 
         private void OnDisable()
         {
-            Debug.Log("[VideoPlayerUI] OnDisable called");
+            GameLogger.Info("[VideoPlayerUI] OnDisable called");
             CleanupVideoPlayer();
             UnbindButtons();
             _isPlaying = false;
@@ -174,7 +175,7 @@ namespace CriminalCase2.UI
         {
             if (_videoPlayer == null)
             {
-                Debug.LogError("[VideoPlayerUI] VideoPlayer is null in SetupVideoPlayer!");
+                GameLogger.Error("[VideoPlayerUI] VideoPlayer is null in SetupVideoPlayer!");
                 return;
             }
 
@@ -187,7 +188,7 @@ namespace CriminalCase2.UI
             _videoPlayer.errorReceived += OnVideoError;
             _videoPlayer.loopPointReached += OnVideoFinished;
 
-            Debug.Log($"[VideoPlayerUI] SetupVideoPlayer: renderMode={_videoPlayer.renderMode}, audioOutputMode={_videoPlayer.audioOutputMode}");
+            GameLogger.Info($"[VideoPlayerUI] SetupVideoPlayer: renderMode={_videoPlayer.renderMode}, audioOutputMode={_videoPlayer.audioOutputMode}");
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             SetupWebGLSource();
@@ -199,32 +200,29 @@ namespace CriminalCase2.UI
 #if UNITY_WEBGL && !UNITY_EDITOR
         private void SetupWebGLSource()
         {
-            string fileName = GameManager.Instance != null
-                ? GameManager.Instance.IntroVideoFileName
-                : "Videos/Intro.webm";
+            string fileName = GameServices.Video?.IntroVideoFileName ?? "Videos/Intro.webm";
             string url = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
             _videoPlayer.source = VideoSource.Url;
             _videoPlayer.url = url;
-            Debug.Log($"[VideoPlayerUI] WebGL mode: URL={url}");
+            GameLogger.Info($"[VideoPlayerUI] WebGL mode: URL={url}");
         }
 #else
         private void SetupEditorSource()
         {
-            if (GameManager.Instance != null && GameManager.Instance.GlobalIntroVideo != null)
+            var globalClip = GameServices.Video?.GlobalIntroVideo;
+            if (globalClip != null)
             {
                 _videoPlayer.source = VideoSource.VideoClip;
-                _videoPlayer.clip = GameManager.Instance.GlobalIntroVideo;
-                Debug.Log($"[VideoPlayerUI] Editor mode: VideoClip={_videoPlayer.clip.name}");
+                _videoPlayer.clip = globalClip;
+                GameLogger.Info($"[VideoPlayerUI] Editor mode: VideoClip={_videoPlayer.clip.name}");
             }
             else
             {
-                string fileName = GameManager.Instance != null
-                    ? GameManager.Instance.IntroVideoFileName
-                    : "Videos/Intro.webm";
+                string fileName = GameServices.Video?.IntroVideoFileName ?? "Videos/Intro.webm";
                 string url = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
                 _videoPlayer.source = VideoSource.Url;
                 _videoPlayer.url = url;
-                Debug.Log($"[VideoPlayerUI] Editor mode (no clip): URL={url}");
+                GameLogger.Info($"[VideoPlayerUI] Editor mode (no clip): URL={url}");
             }
         }
 #endif
@@ -257,11 +255,11 @@ namespace CriminalCase2.UI
 
         private void OnPlayClicked()
         {
-            Debug.Log("[VideoPlayerUI] Play button clicked");
+            GameLogger.Info("[VideoPlayerUI] Play button clicked");
 
             if (_videoPlayer == null)
             {
-                Debug.LogWarning("[VideoPlayerUI] No VideoPlayer, skipping to investigation");
+                GameLogger.Warn("[VideoPlayerUI] No VideoPlayer, skipping to investigation");
                 OnVideoFinishedOrSkipped();
                 return;
             }
@@ -272,12 +270,12 @@ namespace CriminalCase2.UI
 
             if (!hasSource)
             {
-                Debug.LogWarning("[VideoPlayerUI] No video source assigned, skipping to investigation");
+                GameLogger.Warn("[VideoPlayerUI] No video source assigned, skipping to investigation");
                 OnVideoFinishedOrSkipped();
                 return;
             }
 
-            Debug.Log($"[VideoPlayerUI] Source: {_videoPlayer.source}, " +
+            GameLogger.Info($"[VideoPlayerUI] Source: {_videoPlayer.source}, " +
                 $"Clip={(_videoPlayer.clip != null ? _videoPlayer.clip.name : "null")}, " +
                 $"URL={(_videoPlayer.url ?? "null")}");
 
@@ -303,12 +301,12 @@ namespace CriminalCase2.UI
 
         private IEnumerator PrepareAndPlay()
         {
-            Debug.Log("[VideoPlayerUI] PrepareAndPlay: starting Prepare()");
+            GameLogger.Info("[VideoPlayerUI] PrepareAndPlay: starting Prepare()");
             _videoPlayer.Prepare();
 
             if (_videoPlayer.isPrepared)
             {
-                Debug.Log("[VideoPlayerUI] Video already prepared, playing immediately");
+                GameLogger.Info("[VideoPlayerUI] Video already prepared, playing immediately");
             }
             else
             {
@@ -317,14 +315,14 @@ namespace CriminalCase2.UI
                 {
                     if (_videoPlayer == null)
                     {
-                        Debug.LogWarning("[VideoPlayerUI] VideoPlayer destroyed during prepare");
+                        GameLogger.Warn("[VideoPlayerUI] VideoPlayer destroyed during prepare");
                         yield break;
                     }
 
                     elapsed += Time.unscaledDeltaTime;
                     if (elapsed > _prepareTimeoutSeconds)
                     {
-                        Debug.LogWarning($"[VideoPlayerUI] Prepare timeout after {_prepareTimeoutSeconds}s, attempting Play() anyway");
+                        GameLogger.Warn($"[VideoPlayerUI] Prepare timeout after {_prepareTimeoutSeconds}s, attempting Play() anyway");
                         break;
                     }
 
@@ -333,7 +331,7 @@ namespace CriminalCase2.UI
 
                 if (_videoPlayer == null) yield break;
 
-                Debug.Log($"[VideoPlayerUI] Prepare completed in {elapsed:F2}s, isPrepared={_videoPlayer.isPrepared}");
+                GameLogger.Info($"[VideoPlayerUI] Prepare completed in {elapsed:F2}s, isPrepared={_videoPlayer.isPrepared}");
             }
 
             if (_videoRawImage != null && _videoPlayer.texture != null)
@@ -344,25 +342,25 @@ namespace CriminalCase2.UI
 
             _isPlaying = true;
             _videoPlayer.Play();
-            Debug.Log("[VideoPlayerUI] Play() called");
+            GameLogger.Info("[VideoPlayerUI] Play() called");
         }
 
         private void OnSkipClicked()
         {
-            Debug.Log("[VideoPlayerUI] Skip button clicked");
+            GameLogger.Info("[VideoPlayerUI] Skip button clicked");
             StopVideo();
         }
 
         private void OnVideoFinished(VideoPlayer vp)
         {
-            Debug.Log("[VideoPlayerUI] Video finished playing");
+            GameLogger.Info("[VideoPlayerUI] Video finished playing");
             _isPlaying = false;
             OnVideoFinishedOrSkipped();
         }
 
         private void OnVideoError(VideoPlayer vp, string message)
         {
-            Debug.LogError($"[VideoPlayerUI] Video error: {message}");
+            GameLogger.Error($"[VideoPlayerUI] Video error: {message}");
             _isPlaying = false;
             OnVideoFinishedOrSkipped();
         }
@@ -384,8 +382,8 @@ namespace CriminalCase2.UI
         private void OnVideoFinishedOrSkipped()
         {
             ShowPlayScreen();
-            UIManager.Instance?.HideAllPanels();
-            GameManager.Instance?.SetState(GameState.Investigation);
+            GameServices.UI?.HideAllPanels();
+            GameServices.GameState?.SetState(GameState.Investigation);
         }
 
         private void OnDestroy()

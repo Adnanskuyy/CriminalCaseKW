@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
-using CriminalCase2.Managers;
+using CriminalCase2.Services;
 using System.Collections.Generic;
 
 namespace CriminalCase2.UI
@@ -34,8 +34,8 @@ namespace CriminalCase2.UI
 
             var root = _document.rootVisualElement;
 
-            _resultsContainer = root.Q<VisualElement>("results-container");
-            _nextLevelButton = root.Q<Button>("next-level-button");
+            _resultsContainer = root.Q<VisualElement>(UIConstants.Result.ResultsContainer);
+            _nextLevelButton = root.Q<Button>(UIConstants.Result.NextLevelButton);
             if (_nextLevelButton != null)
             {
                 _nextLevelButton.clicked += OnNextLevelClicked;
@@ -79,8 +79,8 @@ namespace CriminalCase2.UI
 
         private void OnNextLevelClicked()
         {
-            GameManager.Instance?.AdvanceToNextLevel();
-            UIManager.Instance?.HideAllPanels();
+            GameServices.GameState?.AdvanceToNextLevel();
+            GameServices.UI?.HideAllPanels();
         }
     }
 }
