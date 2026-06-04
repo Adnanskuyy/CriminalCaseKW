@@ -1,29 +1,34 @@
 using UnityEngine;
 using CriminalCase2.Data;
+using CriminalCase2.Domain;
+using CriminalCase2.Services;
 using CriminalCase2.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace CriminalCase2.Managers
 {
-    public class LevelManager : MonoBehaviour
+    public class LevelManager : MonoBehaviour, ILevelController
     {
         public static LevelManager Instance { get; private set; }
 
         [Header("Level Setup")]
         [SerializeField] private Transform _levelSpawnPoint;
-        
+
         private LevelConfig _currentLevelConfig;
         private GameObject _currentLevelInstance;
         private List<SuspectData> _judgedSuspects = new List<SuspectData>();
         private Dictionary<SuspectData, DrugTestResult> _drugTestResults = new Dictionary<SuspectData, DrugTestResult>();
         private int _drugTestsRemaining;
 
-        public LevelConfig CurrentLevelConfig => _currentLevelConfig;
+        public LevelConfig? CurrentLevelConfig => _currentLevelConfig;
         public GameObject CurrentLevelInstance => _currentLevelInstance;
         public int DrugTestsRemaining => _drugTestsRemaining;
         public bool AllSuspectsJudged => _judgedSuspects.Count >= (_currentLevelConfig?.Suspects.Length ?? 0);
         public int JudgedCount => _judgedSuspects.Count;
         public int TotalSuspects => _currentLevelConfig?.Suspects.Length ?? 0;
+
+        public event Action<LevelConfig>? LevelLoaded;
 
         public bool IsSuspectJudged(SuspectData suspect)
         {
@@ -32,7 +37,10 @@ namespace CriminalCase2.Managers
 
         public SuspectRole GetSuspectVerdict(SuspectData suspect)
         {
-            foreach (var record in GameManager.Instance.VerdictRecords)
+            var verdicts = GameServices.Verdicts;
+            if (verdicts == null) return SuspectRole.Normal;
+
+            foreach (var record in verdicts.Records)
             {
                 if (record.Suspect == suspect)
                 {
@@ -55,10 +63,11 @@ namespace CriminalCase2.Managers
 
         private void Start()
         {
-            // Load initial level from GameManager
-            if (GameManager.Instance != null && GameManager.Instance.CurrentLevel != null)
+            // Load initial level from game session
+            var session = GameServices.GameState;
+            if (session != null && session.CurrentLevel != null)
             {
-                LoadLevel(GameManager.Instance.CurrentLevel);
+                LoadLevel(session.CurrentLevel);
             }
         }
 
@@ -77,7 +86,7 @@ namespace CriminalCase2.Managers
             UnloadCurrentLevel();
 
             _currentLevelConfig = config;
-            
+
             // Spawn level prefab
             if (config.LevelPrefab != null)
             {
@@ -95,6 +104,7 @@ namespace CriminalCase2.Managers
             Initialize(config);
 
             GameLogger.Info($"[LevelManager] Loaded level: {config.LevelName}");
+            LevelLoaded?.Invoke(config);
         }
 
         /// <summary>
@@ -129,7 +139,7 @@ namespace CriminalCase2.Managers
             {
                 _judgedSuspects.Add(suspect);
             }
-            GameManager.Instance.RecordVerdict(suspect, playerChoice);
+            GameServices.Verdicts?.Record(suspect, playerChoice);
 
             if (AllSuspectsJudged)
             {
@@ -174,7 +184,7 @@ namespace CriminalCase2.Managers
 
         private void OnValidate()
         {
-            if (_currentLevelConfig == null && GameManager.Instance != null)
+            if (_currentLevelConfig == null && Instance != null)
             {
                 // This is just for validation in editor
             }

@@ -13,8 +13,11 @@ namespace CriminalCase2.Services
             var root = new GameObject("[GameServicesRoot]");
             Object.DontDestroyOnLoad(root);
 
-            root.AddComponent<GameManager>();
-            root.AddComponent<LevelManager>();
+            var gameManager = root.AddComponent<GameManager>();
+            var levelManager = root.AddComponent<LevelManager>();
+
+            GameServices.Register(gameManager);
+            GameServices.Register(levelManager);
         }
     }
 }

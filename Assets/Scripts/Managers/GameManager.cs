@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.Video;
 using CriminalCase2.Data;
+using CriminalCase2.Domain;
 using CriminalCase2.UI;
 using CriminalCase2.Utils;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace CriminalCase2.Managers
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : MonoBehaviour, IGameStateProvider, IVerdictRecorder, IVideoService
     {
         public static GameManager Instance { get; private set; }
 
@@ -28,13 +29,17 @@ namespace CriminalCase2.Managers
         private bool _isTransitioning;
 
         public GameState CurrentState => _currentState;
-        public LevelConfig CurrentLevel => _currentLevelIndex < _levels.Count ? _levels[_currentLevelIndex] : null;
+        public LevelConfig? CurrentLevel => _currentLevelIndex < _levels.Count ? _levels[_currentLevelIndex] : null;
         public int CurrentLevelIndex => _currentLevelIndex;
         public IReadOnlyList<VerdictRecord> VerdictRecords => _verdictRecords.AsReadOnly();
+        IReadOnlyList<VerdictRecord> IVerdictRecorder.Records => _verdictRecords.AsReadOnly();
         public int TotalLevels => _levels.Count;
-        public VideoClip GlobalIntroVideo => _globalIntroVideo;
-        public string IntroVideoFileName => _introVideoFileName;
+        public VideoClip? GlobalIntroVideo => _globalIntroVideo;
+        public string? IntroVideoFileName => _introVideoFileName;
         public bool IsTransitioning => _isTransitioning;
+
+        public event Action<GameState>? StateChanged;
+        public event Action<VerdictRecord>? VerdictRecorded;
 
         private void Awake()
         {
@@ -57,13 +62,20 @@ namespace CriminalCase2.Managers
         {
             _currentState = newState;
             GameLogger.Info($"[GameManager] State changed to: {newState}");
+            StateChanged?.Invoke(newState);
         }
 
-        public void RecordVerdict(SuspectData suspect, SuspectRole playerChoice)
+        public void Record(SuspectData suspect, SuspectRole playerChoice)
         {
             _verdictRecords.RemoveAll(r => r.Suspect == suspect);
             var record = new VerdictRecord(suspect, playerChoice);
             _verdictRecords.Add(record);
+            VerdictRecorded?.Invoke(record);
+        }
+
+        public void RecordVerdict(SuspectData suspect, SuspectRole playerChoice)
+        {
+            Record(suspect, playerChoice);
         }
 
         /// <summary>
@@ -139,7 +151,7 @@ namespace CriminalCase2.Managers
                     {
                         // Hide all UI panels when screen is fully black
                         UIManager.Instance?.HideAllPanels();
-                        
+
                         // Switch level here (while screen is black)
                         if (LevelManager.Instance != null && CurrentLevel != null)
                         {
@@ -161,7 +173,7 @@ namespace CriminalCase2.Managers
                 // No fade transition available, just switch immediately
                 // Hide all panels before switching
                 UIManager.Instance?.HideAllPanels();
-                
+
                 if (LevelManager.Instance != null && CurrentLevel != null)
                 {
                     LevelManager.Instance.LoadLevel(CurrentLevel);
