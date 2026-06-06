@@ -10,8 +10,6 @@ namespace CriminalCase2.Managers
 {
     public class LevelManager : MonoBehaviour, ILevelController
     {
-        public static LevelManager Instance { get; private set; }
-
         [Header("Level Setup")]
         [SerializeField] private Transform _levelSpawnPoint;
 
@@ -48,17 +46,6 @@ namespace CriminalCase2.Managers
                 }
             }
             return null;
-        }
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
         }
 
         private void Start()
@@ -184,10 +171,7 @@ namespace CriminalCase2.Managers
 
         private void OnValidate()
         {
-            if (_currentLevelConfig == null && Instance != null)
-            {
-                // This is just for validation in editor
-            }
+            // No-op; retained for editor inspector hooks. Instance check removed in commit 5.
         }
     }
 }

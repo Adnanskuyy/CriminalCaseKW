@@ -7,8 +7,6 @@ namespace CriminalCase2.UI
 {
     public class UIManager : MonoBehaviour
     {
-        public static UIManager Instance { get; private set; }
-
         [Header("UI Toolkit Panels")]
         [SerializeField] private UIDocument _videoPlayerDocument;
         [SerializeField] private UIDocument _tutorialPanel;
@@ -29,13 +27,6 @@ namespace CriminalCase2.UI
 
         private void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
             AutoFindPanels();
         }
 

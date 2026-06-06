@@ -12,8 +12,6 @@ namespace CriminalCase2.Managers
 {
     public class GameManager : MonoBehaviour, IGameStateProvider, IVerdictRecorder, IVideoService
     {
-        public static GameManager Instance { get; private set; }
-
         [Header("Level Data")]
         [SerializeField] private List<LevelConfig> _levels;
         [SerializeField] private int _currentLevelIndex = 0;
@@ -44,13 +42,6 @@ namespace CriminalCase2.Managers
 
         private void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
 
