@@ -824,7 +824,7 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: 09113d50ef761d54cb14e04c2a1715ac, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: bf06acdd36f5f2e468b5b3d511bf05bc, type: 3}
   m_SortingOrder: 0
@@ -1433,7 +1433,7 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: 09113d50ef761d54cb14e04c2a1715ac, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 260505f21a105ae49aaa4acf9a70d4b9, type: 3}
   m_SortingOrder: 10
@@ -1487,7 +1487,7 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: 09113d50ef761d54cb14e04c2a1715ac, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: e0384f31bba0d874dbe2630e5d1712cb, type: 3}
   m_SortingOrder: 0
@@ -1721,12 +1721,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edcf4778e0f27b49b42ea396ced4a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CriminalCase2.UI.UIManager
-  _videoPlayerPanel: {fileID: 0}
+  _videoPlayerDocument: {fileID: 0}
   _tutorialPanel: {fileID: 2137827712}
   _suspectDetailPanel: {fileID: 1422299053}
   _checkStatusPanel: {fileID: 1489806697}
   _resultPanel: {fileID: 663030570}
   _statusHUD: {fileID: 1960888862}
+  _commonStyle: {fileID: 11400000, guid: ce86dd4b0e66c6040a3535f7e927556e, type: 2}
 --- !u!4 &1774677760
 Transform:
   m_ObjectHideFlags: 0
@@ -1899,7 +1900,7 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: 09113d50ef761d54cb14e04c2a1715ac, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 0}
   m_SortingOrder: 0
@@ -1955,7 +1956,7 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: 09113d50ef761d54cb14e04c2a1715ac, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 1c08cb499830bc245bbd86e3d0862e43, type: 3}
   m_SortingOrder: 0
@@ -2039,7 +2040,7 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 1429059c8020cc949a2d4be367dba1a0, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: 09113d50ef761d54cb14e04c2a1715ac, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: b3608ca492064904ca937cba467f7fcd, type: 3}
   m_SortingOrder: 0

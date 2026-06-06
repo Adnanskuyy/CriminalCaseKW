@@ -17,6 +17,9 @@ namespace CriminalCase2.UI
         [SerializeField] private UIDocument _resultPanel;
         [SerializeField] private UIDocument _statusHUD;
 
+        [Header("UI Toolkit Styles")]
+        [SerializeField] private StyleSheet _commonStyle;
+
         private VideoPlayerUI _videoPlayerUI;
         private TutorialUI _tutorialUI;
         private SuspectDetailUI _suspectDetailUI;
@@ -61,6 +64,13 @@ namespace CriminalCase2.UI
 
         private void InitializePanels()
         {
+            ApplyCommonStyle(_videoPlayerDocument);
+            ApplyCommonStyle(_tutorialPanel);
+            ApplyCommonStyle(_suspectDetailPanel);
+            ApplyCommonStyle(_checkStatusPanel);
+            ApplyCommonStyle(_resultPanel);
+            ApplyCommonStyle(_statusHUD);
+
             if (_videoPlayerUI == null && _videoPlayerDocument != null)
                 _videoPlayerUI = _videoPlayerDocument.GetComponent<VideoPlayerUI>();
 
@@ -78,6 +88,14 @@ namespace CriminalCase2.UI
 
             if (_statusHUDUI == null && _statusHUD != null)
                 _statusHUDUI = _statusHUD.GetComponent<StatusHUD>();
+        }
+
+        private void ApplyCommonStyle(UIDocument panel)
+        {
+            if (panel == null || _commonStyle == null) return;
+            if (panel.rootVisualElement == null) return;
+            if (panel.rootVisualElement.styleSheets.Contains(_commonStyle)) return;
+            panel.rootVisualElement.styleSheets.Add(_commonStyle);
         }
 
         public void ShowVideoPlayer()

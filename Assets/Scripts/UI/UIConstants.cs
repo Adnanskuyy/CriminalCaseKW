@@ -2,7 +2,7 @@ namespace CriminalCase2.UI
 {
     /// <summary>
     /// Centralized UXML element name constants. Every <c>name="..."</c> attribute
-    /// in a UXML asset under <c>Assets/Resources/UI/</c> must have a matching
+    /// in a UXML asset under <c>Assets/UI/UXML/</c> must have a matching
     /// constant here. Call sites use these instead of inline string literals
     /// so renames stay in sync and the compiler catches typos.
     /// </summary>
