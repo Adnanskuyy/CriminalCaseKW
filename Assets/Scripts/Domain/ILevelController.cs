@@ -12,7 +12,7 @@ namespace CriminalCase2.Domain
         bool AllSuspectsJudged { get; }
 
         bool IsSuspectJudged(SuspectData suspect);
-        SuspectRole GetSuspectVerdict(SuspectData suspect);
+        SuspectRole? GetSuspectVerdict(SuspectData suspect);
         void RecordJudgedSuspect(SuspectData suspect, SuspectRole playerChoice);
 
         bool UseDrugTest();

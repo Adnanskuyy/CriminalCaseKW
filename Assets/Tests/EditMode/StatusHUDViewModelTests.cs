@@ -187,7 +187,7 @@ namespace CriminalCase2.Tests
             public int DrugTestsRemaining => 0;
             public bool AllSuspectsJudged => false;
             public bool IsSuspectJudged(SuspectData suspect) => false;
-            public SuspectRole GetSuspectVerdict(SuspectData suspect) => SuspectRole.Normal;
+            public SuspectRole? GetSuspectVerdict(SuspectData suspect) => SuspectRole.Normal;
             public void RecordJudgedSuspect(SuspectData suspect, SuspectRole playerChoice) { }
             public bool UseDrugTest() => false;
             public void RecordDrugTest(SuspectData suspect, DrugTestResult result) { }

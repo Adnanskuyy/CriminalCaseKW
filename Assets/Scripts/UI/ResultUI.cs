@@ -1,7 +1,9 @@
+#nullable enable
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
 using CriminalCase2.Services;
+using CriminalCase2.ViewModels;
 using System.Collections.Generic;
 
 namespace CriminalCase2.UI
@@ -10,29 +12,58 @@ namespace CriminalCase2.UI
     {
         [SerializeField] private UIDocument _document;
 
-        private Button _nextLevelButton;
-        private VisualElement _resultsContainer;
+        private ResultViewModel? _viewModel;
+
+        private Button _nextLevelButton = null!;
+        private VisualElement _resultsContainer = null!;
+
+        private bool _isBound;
 
         public void Populate(IReadOnlyList<VerdictRecord> records)
         {
-            BuildResultsList(records);
+            if (!_isBound) BindUI();
+            if (_resultsContainer == null) return;
+            if (_viewModel == null) CreateViewModel();
+            if (_viewModel == null) return;
+
+            _viewModel.SetRecords(records);
+            Refresh();
         }
 
         private void OnEnable()
         {
             BindUI();
+            CreateViewModel();
         }
 
         private void OnDisable()
         {
             UnbindUI();
+            DisposeViewModel();
+        }
+
+        private void CreateViewModel()
+        {
+            _viewModel = new ResultViewModel();
+            _viewModel.StateChanged += OnViewModelStateChanged;
+            _viewModel.NextLevelRequested += OnViewModelNextLevelRequested;
+        }
+
+        private void DisposeViewModel()
+        {
+            if (_viewModel == null) return;
+            _viewModel.StateChanged -= OnViewModelStateChanged;
+            _viewModel.NextLevelRequested -= OnViewModelNextLevelRequested;
+            _viewModel.Dispose();
+            _viewModel = null;
         }
 
         private void BindUI()
         {
-            if (_document == null) return;
+            if (_document == null || _isBound) return;
 
             var root = _document.rootVisualElement;
+            if (root == null) return;
 
             _resultsContainer = root.Q<VisualElement>(UIConstants.Result.ResultsContainer);
             _nextLevelButton = root.Q<Button>(UIConstants.Result.NextLevelButton);
@@ -40,6 +71,8 @@ namespace CriminalCase2.UI
             {
                 _nextLevelButton.clicked += OnNextLevelClicked;
             }
+
+            _isBound = true;
         }
 
         private void UnbindUI()
@@ -49,38 +82,54 @@ namespace CriminalCase2.UI
                 _nextLevelButton.clicked -= OnNextLevelClicked;
                 _nextLevelButton = null;
             }
+            _resultsContainer = null;
+            _isBound = false;
         }
 
-        private void BuildResultsList(IReadOnlyList<VerdictRecord> records)
+        private void Refresh()
         {
-            if (_resultsContainer == null) return;
+            if (_viewModel == null || _resultsContainer == null) return;
 
             _resultsContainer.Clear();
 
-            for (int i = 0; i < records.Count; i++)
+            foreach (var entry in _viewModel.Entries)
             {
-                var record = records[i];
-                var entry = new VisualElement();
-                entry.AddToClassList("result-entry");
-
-                var nameLabel = new Label($"{i + 1}. {record.Suspect.SuspectName}");
-                var choiceLabel = new Label($"Vonis Anda: {record.PlayerChoice.ToDisplayName()}");
-                var correctLabel = new Label($"Jawaban Benar: {record.CorrectAnswer.ToDisplayName()}");
-                var feedbackLabel = new Label(record.FeedbackText);
-
-                entry.Add(nameLabel);
-                entry.Add(choiceLabel);
-                entry.Add(correctLabel);
-                entry.Add(feedbackLabel);
-
-                _resultsContainer.Add(entry);
+                _resultsContainer.Add(CreateResultEntry(entry));
             }
+        }
+
+        private VisualElement CreateResultEntry(ResultViewModel.ResultEntry entry)
+        {
+            var row = new VisualElement();
+            row.AddToClassList("result-entry");
+
+            var nameLabel = new Label($"{entry.Index}. {entry.SuspectName}");
+            var choiceLabel = new Label($"Vonis Anda: {entry.PlayerChoiceDisplay}");
+            var correctLabel = new Label($"Jawaban Benar: {entry.CorrectAnswerDisplay}");
+            var feedbackLabel = new Label(entry.FeedbackText);
+
+            row.Add(nameLabel);
+            row.Add(choiceLabel);
+            row.Add(correctLabel);
+            row.Add(feedbackLabel);
+
+            return row;
+        }
+
+        private void OnViewModelStateChanged()
+        {
+            Refresh();
+        }
+
+        private void OnViewModelNextLevelRequested()
+        {
+            GameServices.GameState?.AdvanceToNextLevel();
+            GameServices.UI?.HideAllPanels();
         }
 
         private void OnNextLevelClicked()
         {
-            GameServices.GameState?.AdvanceToNextLevel();
-            GameServices.UI?.HideAllPanels();
+            _viewModel?.RequestNextLevel();
         }
     }
 }

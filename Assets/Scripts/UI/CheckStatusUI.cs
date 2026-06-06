@@ -1,7 +1,9 @@
+#nullable enable
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
 using CriminalCase2.Services;
+using CriminalCase2.ViewModels;
 using System.Collections.Generic;
 
 namespace CriminalCase2.UI
@@ -10,20 +12,25 @@ namespace CriminalCase2.UI
     {
         [SerializeField] private UIDocument _document;
 
-        private VisualElement _container;
-        private VisualElement _emptyState;
-        private Button _closeButton;
-        private Button _checkResultButton;
+        private CheckStatusViewModel? _viewModel;
+
+        private VisualElement _container = null!;
+        private VisualElement _emptyState = null!;
+        private Button _closeButton = null!;
+        private Button _checkResultButton = null!;
+
         private bool _isBound;
 
         private void OnEnable()
         {
             BindUI();
+            CreateViewModel();
         }
 
         private void OnDisable()
         {
             UnbindUI();
+            DisposeViewModel();
         }
 
         private void BindUI()
@@ -66,77 +73,110 @@ namespace CriminalCase2.UI
             }
 
             _container = null;
+            _emptyState = null;
             _isBound = false;
+        }
+
+        private void CreateViewModel()
+        {
+            var levels = GameServices.Levels;
+            if (levels == null) return;
+            _viewModel = new CheckStatusViewModel(levels);
+            _viewModel.StateChanged += OnViewModelStateChanged;
+            _viewModel.CloseRequested += OnViewModelCloseRequested;
+            _viewModel.SubmitRequested += OnViewModelSubmitRequested;
+        }
+
+        private void DisposeViewModel()
+        {
+            if (_viewModel == null) return;
+            _viewModel.StateChanged -= OnViewModelStateChanged;
+            _viewModel.CloseRequested -= OnViewModelCloseRequested;
+            _viewModel.SubmitRequested -= OnViewModelSubmitRequested;
+            _viewModel.Dispose();
+            _viewModel = null;
         }
 
         public void Populate(IReadOnlyList<VerdictRecord> records)
         {
             if (!_isBound) BindUI();
             if (_container == null) return;
+            if (_viewModel == null) CreateViewModel();
+            if (_viewModel == null) return;
+
+            _viewModel.SetRecords(records);
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            if (_viewModel == null || _container == null) return;
 
             _container.Clear();
 
-            // Show/hide empty state based on records count
-            bool hasRecords = records.Count > 0;
-            if (_container != null)
-                _container.style.display = hasRecords ? DisplayStyle.Flex : DisplayStyle.None;
-            if (_emptyState != null)
-                _emptyState.style.display = hasRecords ? DisplayStyle.None : DisplayStyle.Flex;
-
-            foreach (var record in records)
+            if (_viewModel.IsEmpty)
             {
-                var entry = CreateStatusEntry(record);
-                _container.Add(entry);
+                if (_container != null) _container.style.display = DisplayStyle.None;
+                if (_emptyState != null) _emptyState.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                if (_container != null) _container.style.display = DisplayStyle.Flex;
+                if (_emptyState != null) _emptyState.style.display = DisplayStyle.None;
+
+                foreach (var entry in _viewModel.Entries)
+                {
+                    _container.Add(CreateStatusEntry(entry));
+                }
             }
 
-            // Update check result button state
-            var levels = GameServices.Levels;
-            if (_checkResultButton != null && levels != null)
+            if (_checkResultButton != null)
             {
-                bool allJudged = levels.AllSuspectsJudged;
-                _checkResultButton.SetEnabled(allJudged);
-
-                if (!allJudged)
-                {
-                    int remaining = levels.TotalSuspects - levels.JudgedCount;
-                    _checkResultButton.text = $"Kirim Vonis Akhir ({remaining} tersisa)";
-                }
-                else
-                {
-                    _checkResultButton.text = "Kirim Vonis Akhir";
-                }
+                _checkResultButton.SetEnabled(_viewModel.CanSubmit);
+                _checkResultButton.text = _viewModel.SubmitButtonText;
             }
         }
 
-        private VisualElement CreateStatusEntry(VerdictRecord record)
+        private VisualElement CreateStatusEntry(CheckStatusViewModel.StatusEntry entry)
         {
-            var entry = new VisualElement();
-            entry.AddToClassList("check-status-entry");
+            var row = new VisualElement();
+            row.AddToClassList("check-status-entry");
 
-            var nameLabel = new Label(record.Suspect.SuspectName);
+            var nameLabel = new Label(entry.SuspectName);
             nameLabel.AddToClassList("check-status-name");
 
-            var verdictLabel = new Label($"Vonis Anda: {record.PlayerChoice.ToDisplayName()}");
+            var verdictLabel = new Label($"Vonis Anda: {entry.PlayerVerdictDisplay}");
             verdictLabel.AddToClassList("check-status-verdict");
 
-            entry.Add(nameLabel);
-            entry.Add(verdictLabel);
+            row.Add(nameLabel);
+            row.Add(verdictLabel);
 
-            return entry;
+            return row;
         }
 
-        private void OnCloseClicked()
+        private void OnViewModelStateChanged()
+        {
+            Refresh();
+        }
+
+        private void OnViewModelCloseRequested()
         {
             GameServices.UI?.HideCheckStatus();
         }
 
+        private void OnViewModelSubmitRequested()
+        {
+            GameServices.GameState?.SetState(GameState.Results);
+        }
+
+        private void OnCloseClicked()
+        {
+            _viewModel?.RequestClose();
+        }
+
         private void OnCheckResultClicked()
         {
-            var levels = GameServices.Levels;
-            if (levels != null && levels.AllSuspectsJudged)
-            {
-                GameServices.GameState?.SetState(GameState.Results);
-            }
+            _viewModel?.RequestSubmit();
         }
     }
 }

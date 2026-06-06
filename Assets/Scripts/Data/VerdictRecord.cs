@@ -1,22 +1,19 @@
-using CriminalCase2.Data;
-
 namespace CriminalCase2.Data
 {
-    public struct VerdictRecord
+    public sealed record VerdictRecord(
+        SuspectData Suspect,
+        SuspectRole PlayerChoice,
+        SuspectRole CorrectAnswer,
+        bool IsCorrect,
+        string FeedbackText)
     {
-        public SuspectData Suspect;
-        public SuspectRole PlayerChoice;
-        public SuspectRole CorrectAnswer;
-        public bool IsCorrect;
-        public string FeedbackText;
-
         public VerdictRecord(SuspectData suspect, SuspectRole playerChoice)
-        {
-            Suspect = suspect;
-            PlayerChoice = playerChoice;
-            CorrectAnswer = suspect.CorrectRole;
-            IsCorrect = playerChoice == suspect.CorrectRole;
-            FeedbackText = IsCorrect ? suspect.FeedbackTextCorrect : suspect.FeedbackTextWrong;
-        }
+            : this(
+                suspect,
+                playerChoice,
+                suspect.CorrectRole,
+                playerChoice == suspect.CorrectRole,
+                playerChoice == suspect.CorrectRole ? suspect.FeedbackTextCorrect : suspect.FeedbackTextWrong)
+        { }
     }
 }

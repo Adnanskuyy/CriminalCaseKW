@@ -10,8 +10,6 @@ namespace CriminalCase2.Managers
 {
     public class LevelManager : MonoBehaviour, ILevelController
     {
-        public static LevelManager Instance { get; private set; }
-
         [Header("Level Setup")]
         [SerializeField] private Transform _levelSpawnPoint;
 
@@ -35,10 +33,10 @@ namespace CriminalCase2.Managers
             return _judgedSuspects.Contains(suspect);
         }
 
-        public SuspectRole GetSuspectVerdict(SuspectData suspect)
+        public SuspectRole? GetSuspectVerdict(SuspectData suspect)
         {
             var verdicts = GameServices.Verdicts;
-            if (verdicts == null) return SuspectRole.Normal;
+            if (verdicts == null) return null;
 
             foreach (var record in verdicts.Records)
             {
@@ -47,18 +45,7 @@ namespace CriminalCase2.Managers
                     return record.PlayerChoice;
                 }
             }
-            return SuspectRole.Normal;
-        }
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
+            return null;
         }
 
         private void Start()
@@ -180,14 +167,6 @@ namespace CriminalCase2.Managers
         private void OnAllSuspectsJudged()
         {
             GameLogger.Info("[LevelManager] All suspects judged. Waiting for player to check results.");
-        }
-
-        private void OnValidate()
-        {
-            if (_currentLevelConfig == null && Instance != null)
-            {
-                // This is just for validation in editor
-            }
         }
     }
 }

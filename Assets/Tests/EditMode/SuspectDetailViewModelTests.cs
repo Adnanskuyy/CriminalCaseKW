@@ -261,7 +261,7 @@ namespace CriminalCase2.Tests
             public event Action<LevelConfig>? LevelLoaded;
 
             public bool IsSuspectJudged(SuspectData suspect) => false;
-            public SuspectRole GetSuspectVerdict(SuspectData suspect) => SuspectRole.Normal;
+            public SuspectRole? GetSuspectVerdict(SuspectData suspect) => SuspectRole.Normal;
 
             public void RecordJudgedSuspect(SuspectData suspect, SuspectRole playerChoice)
             {

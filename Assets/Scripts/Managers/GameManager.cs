@@ -12,8 +12,6 @@ namespace CriminalCase2.Managers
 {
     public class GameManager : MonoBehaviour, IGameStateProvider, IVerdictRecorder, IVideoService
     {
-        public static GameManager Instance { get; private set; }
-
         [Header("Level Data")]
         [SerializeField] private List<LevelConfig> _levels;
         [SerializeField] private int _currentLevelIndex = 0;
@@ -44,13 +42,6 @@ namespace CriminalCase2.Managers
 
         private void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
 
@@ -72,11 +63,6 @@ namespace CriminalCase2.Managers
             var record = new VerdictRecord(suspect, playerChoice);
             _verdictRecords.Add(record);
             VerdictRecorded?.Invoke(record);
-        }
-
-        public void RecordVerdict(SuspectData suspect, SuspectRole playerChoice)
-        {
-            Record(suspect, playerChoice);
         }
 
         /// <summary>
@@ -192,22 +178,6 @@ namespace CriminalCase2.Managers
         public bool HasNextLevel()
         {
             return _currentLevelIndex < _levels.Count - 1;
-        }
-
-        /// <summary>
-        /// Called when player completes current level and wants to proceed
-        /// </summary>
-        public void OnLevelComplete()
-        {
-            if (HasNextLevel())
-            {
-                AdvanceToNextLevel();
-            }
-            else
-            {
-                GameLogger.Info("[GameManager] Game Complete! All levels finished.");
-                // TODO: Show game complete screen
-            }
         }
 
         private void OnValidate()
