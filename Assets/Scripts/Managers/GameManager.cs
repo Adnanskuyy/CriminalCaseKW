@@ -65,11 +65,6 @@ namespace CriminalCase2.Managers
             VerdictRecorded?.Invoke(record);
         }
 
-        public void RecordVerdict(SuspectData suspect, SuspectRole playerChoice)
-        {
-            Record(suspect, playerChoice);
-        }
-
         /// <summary>
         /// Advance to next level with fade transition
         /// </summary>
@@ -183,22 +178,6 @@ namespace CriminalCase2.Managers
         public bool HasNextLevel()
         {
             return _currentLevelIndex < _levels.Count - 1;
-        }
-
-        /// <summary>
-        /// Called when player completes current level and wants to proceed
-        /// </summary>
-        public void OnLevelComplete()
-        {
-            if (HasNextLevel())
-            {
-                AdvanceToNextLevel();
-            }
-            else
-            {
-                GameLogger.Info("[GameManager] Game Complete! All levels finished.");
-                // TODO: Show game complete screen
-            }
         }
 
         private void OnValidate()

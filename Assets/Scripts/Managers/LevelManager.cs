@@ -168,10 +168,5 @@ namespace CriminalCase2.Managers
         {
             GameLogger.Info("[LevelManager] All suspects judged. Waiting for player to check results.");
         }
-
-        private void OnValidate()
-        {
-            // No-op; retained for editor inspector hooks. Instance check removed in commit 5.
-        }
     }
 }
