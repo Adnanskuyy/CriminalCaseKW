@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Data;
 using CriminalCase2.Services;
-using CriminalCase2.Utils;
 
 namespace CriminalCase2.UI
 {
@@ -62,15 +61,6 @@ namespace CriminalCase2.UI
 
         private void InitializePanels()
         {
-            var commonStyle = Resources.Load<StyleSheet>("UI/Common");
-
-            InitializeUIToolkitPanel(_videoPlayerDocument, "UI/VideoPanel", commonStyle);
-            InitializeUIToolkitPanel(_tutorialPanel, "UI/TutorialPanel", commonStyle);
-            InitializeUIToolkitPanel(_suspectDetailPanel, "UI/SuspectDetailPanel", commonStyle);
-            InitializeUIToolkitPanel(_checkStatusPanel, "UI/CheckStatusPanel", commonStyle);
-            InitializeUIToolkitPanel(_resultPanel, "UI/ResultPanel", commonStyle);
-            InitializeUIToolkitPanel(_statusHUD, "UI/StatusHUD", commonStyle);
-
             if (_videoPlayerUI == null && _videoPlayerDocument != null)
                 _videoPlayerUI = _videoPlayerDocument.GetComponent<VideoPlayerUI>();
 
@@ -88,27 +78,6 @@ namespace CriminalCase2.UI
 
             if (_statusHUDUI == null && _statusHUD != null)
                 _statusHUDUI = _statusHUD.GetComponent<StatusHUD>();
-        }
-
-        private void InitializeUIToolkitPanel(UIDocument panel, string resourcePath, StyleSheet commonStyle)
-        {
-            if (panel == null) return;
-
-            if (panel.visualTreeAsset == null)
-            {
-                var uxml = Resources.Load<VisualTreeAsset>(resourcePath);
-                if (uxml == null)
-                {
-                    GameLogger.Warn($"[UIManager] Failed to load UXML from Resources/{resourcePath}.uxml");
-                    return;
-                }
-                panel.visualTreeAsset = uxml;
-            }
-
-            if (commonStyle != null && panel.rootVisualElement != null)
-            {
-                panel.rootVisualElement.styleSheets.Add(commonStyle);
-            }
         }
 
         public void ShowVideoPlayer()
