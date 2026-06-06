@@ -35,10 +35,10 @@ namespace CriminalCase2.Managers
             return _judgedSuspects.Contains(suspect);
         }
 
-        public SuspectRole GetSuspectVerdict(SuspectData suspect)
+        public SuspectRole? GetSuspectVerdict(SuspectData suspect)
         {
             var verdicts = GameServices.Verdicts;
-            if (verdicts == null) return SuspectRole.Normal;
+            if (verdicts == null) return null;
 
             foreach (var record in verdicts.Records)
             {
@@ -47,7 +47,7 @@ namespace CriminalCase2.Managers
                     return record.PlayerChoice;
                 }
             }
-            return SuspectRole.Normal;
+            return null;
         }
 
         private void Awake()
