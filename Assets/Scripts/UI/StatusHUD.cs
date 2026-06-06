@@ -1,6 +1,8 @@
+#nullable enable
 using UnityEngine;
 using UnityEngine.UIElements;
 using CriminalCase2.Services;
+using CriminalCase2.ViewModels;
 
 namespace CriminalCase2.UI
 {
@@ -8,13 +10,21 @@ namespace CriminalCase2.UI
     {
         [SerializeField] private UIDocument _document;
 
-        private Button _hudButton;
+        private Button _hudButton = null!;
+        private StatusHUDViewModel? _viewModel;
+
         private bool _isBound;
 
         public void Initialize()
         {
             if (!_isBound) BindUI();
-            UpdateButtonText();
+            if (_viewModel == null) CreateViewModel();
+            OnViewModelStateChanged();
+        }
+
+        public void UpdateButtonText()
+        {
+            _viewModel?.Refresh();
         }
 
         private void OnEnable()
@@ -22,13 +32,15 @@ namespace CriminalCase2.UI
             if (_document != null && _document.rootVisualElement != null)
             {
                 BindUI();
-                UpdateButtonText();
+                if (_viewModel == null) CreateViewModel();
+                OnViewModelStateChanged();
             }
         }
 
         private void OnDisable()
         {
             UnbindUI();
+            DisposeViewModel();
         }
 
         private void BindUI()
@@ -45,7 +57,6 @@ namespace CriminalCase2.UI
             }
 
             _isBound = true;
-            UpdateButtonText();
         }
 
         private void UnbindUI()
@@ -53,36 +64,43 @@ namespace CriminalCase2.UI
             if (_hudButton != null)
             {
                 _hudButton.clicked -= OnHudButtonClicked;
-                _hudButton = null;
             }
             _isBound = false;
         }
 
-        public void UpdateButtonText()
+        private void CreateViewModel()
         {
             var levels = GameServices.Levels;
-            if (_hudButton == null || levels == null) return;
+            if (levels == null) return;
 
-            var judged = levels.JudgedCount;
-            var total = levels.TotalSuspects;
+            _viewModel = new StatusHUDViewModel(levels);
+            _viewModel.StateChanged += OnViewModelStateChanged;
+            _viewModel.OpenCheckStatusRequested += OnOpenCheckStatusRequested;
+        }
 
-            if (judged >= total)
-            {
-                _hudButton.text = $"Lihat Hasil ({judged}/{total})";
-            }
-            else if (judged > 0)
-            {
-                _hudButton.text = $"Cek Status ({judged}/{total})";
-            }
-            else
-            {
-                _hudButton.text = $"Cek Status (0/{total})";
-            }
+        private void DisposeViewModel()
+        {
+            if (_viewModel == null) return;
+            _viewModel.StateChanged -= OnViewModelStateChanged;
+            _viewModel.OpenCheckStatusRequested -= OnOpenCheckStatusRequested;
+            _viewModel.Dispose();
+            _viewModel = null;
+        }
+
+        private void OnViewModelStateChanged()
+        {
+            if (_viewModel == null || _hudButton == null) return;
+            _hudButton.text = _viewModel.ButtonText;
+        }
+
+        private void OnOpenCheckStatusRequested()
+        {
+            GameServices.UI?.ShowCheckStatus();
         }
 
         private void OnHudButtonClicked()
         {
-            GameServices.UI?.ShowCheckStatus();
+            _viewModel?.RequestOpenCheckStatus();
         }
     }
 }
