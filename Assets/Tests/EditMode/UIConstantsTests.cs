@@ -9,7 +9,7 @@ namespace CriminalCase2.Tests
 {
     public class UIConstantsTests
     {
-        private const string UxmlFolder = "Assets/Resources/UI";
+        private const string UxmlFolder = "Assets/UI/UXML";
 
         [Test]
         public void Every_Constant_Has_A_Matching_Uxml_Name()
